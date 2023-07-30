@@ -71,7 +71,8 @@ function App() {
             />
           ))}
           <span className="die">
-            {hiLoDie + hiLoDieArray[Math.floor(Math.random() * 2)]}
+            {hiLoDie +
+              (gameStarted ? hiLoDieArray[Math.floor(Math.random() * 2)] : "")}
           </span>
         </div>
       </div>
