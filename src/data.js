@@ -1,4 +1,4 @@
-export const hiLoDieArray = ["hi", "lo"];
+export const hiLoDieArray = ["↑", "↓"];
 
 export const hiTableData = {
   30: 10,
