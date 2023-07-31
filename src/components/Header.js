@@ -6,7 +6,7 @@ export default function Header(props) {
         <span className="player-2-score">p2 score: {props.scores.p2Score}</span>
       </div>
       <div className="right-container">
-        <span className="round">round: 1/5</span>
+        <span className="round">round: {props.roundCount}</span>
         <span className="gear-icon">⚙️</span>
       </div>
     </div>

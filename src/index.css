@@ -10,6 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: whitesmoke;
+  color: rgb(80, 80, 80);
 }
 
 .App {
@@ -48,16 +49,33 @@ body {
 
 .dice-container {
   display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr 1fr;
+  grid-template: 1fr 1fr 1fr / 1fr 1fr;
   gap: 1rem;
 }
 
 .die {
-  height: calc(100vw / 5);
-  width: calc(100vw / 5);
+  height: calc(100vw / 3);
+  width: calc(100vw / 3);
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: rgb(100, 100, 100);
+}
+
+@media (min-width: 420px) {
+  .dice-container {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .die {
+    height: calc(100vw / 8);
+    width: calc(100vw / 8);
+  }
 }
