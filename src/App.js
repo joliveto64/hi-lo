@@ -2,33 +2,24 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Message from "./components/Message";
 import Dice from "./components/Dice";
-import { highTableData, lowTableData, hiLoDieArray } from "./data.js";
+import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 
 function App() {
   const [dice, setDice] = useState(generateDice);
-  const [roundCount, setRoundCount] = useState(1);
-  const [rollCount, setRollCount] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gameFinished, setGameFinished] = useState(false);
-  const [p1Turn, setP1Turn] = useState(true);
-  const [lockCount, setLockCount] = useState(0);
-  const [currentTotal, setCurrentTotal] = useState(0);
-  const [scores, setScores] = useState({
+  const [gameState, setGameState] = useState({
+    playerTurn: 1,
+    lockCount: 0,
     p1Score: 0,
     p2Score: 0,
+    masterCount: 0,
+    gameStarted: false,
   });
 
-  useEffect(() => {
-    let totalLocked = 0;
-
-    for (let die of dice) {
-      if (die.isLocked) {
-        totalLocked += 1;
-      }
-    }
-
-    setLockCount(totalLocked);
-  }, [dice]);
+  const { masterCount, playerTurn, lockCount, p1Score, p2Score, gameStarted } =
+    gameState;
+  const rollCount =
+    masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
+  const roundCount = Math.ceil(masterCount / 10);
 
   function generateDice() {
     let diceArray = Array.from({ length: 5 }).map((element, index) => {
@@ -41,86 +32,92 @@ function App() {
     });
 
     diceArray.push({
-      value: "?",
+      value: "↑↓",
       isLocked: false,
       isPermLocked: false,
       id: 5,
-      isHiLoDie: true,
     });
 
     return diceArray;
   }
 
   function handleButton() {
-    if (
-      (rollCount < 5 && lockCount >= rollCount) ||
-      (rollCount === 5 && lockCount === 6)
-    ) {
-      setGameStarted(true);
+    setGameState((previous) => ({
+      ...previous,
+      masterCount: previous.masterCount + 1,
+      playerTurn:
+        previous.masterCount + 1 > 1 && (previous.masterCount + 1) % 5 === 1
+          ? previous.playerTurn === 1
+            ? 2
+            : 1
+          : previous.playerTurn,
+    }));
 
-      setRollCount((prev) => {
-        if (prev === 5 || lockCount === 6) {
-          if (!p1Turn) {
-            setRoundCount((prev) => (prev === 5 ? 1 : prev + 1));
-          }
-          setP1Turn(!p1Turn);
-          unlockDice();
-          return 1;
-        } else {
-          return prev + 1;
-        }
-      });
-
-      setDice((prev) => {
-        return prev.map((die) => {
-          if (die.isPermLocked) {
-            return die;
-          } else if (die.isLocked) {
-            return { ...die, isPermLocked: true };
-          } else if (die.isHiLoDie) {
-            return {
-              ...die,
-              value: [
-                Math.ceil(Math.random() * 3),
-                hiLoDieArray[Math.floor(Math.random() * 2)],
-              ],
-            };
-          } else {
-            const randomNum = Math.ceil(Math.random() * 6);
-            return { ...die, value: randomNum };
-          }
-        });
-      });
-    }
-  }
-
-  function handleDiceClick(id) {
-    if (gameStarted) {
-      setDice((prev) =>
-        prev.map((die) => {
-          if (die.id === id && !die.isPermLocked) {
-            return { ...die, isLocked: !die.isLocked };
-          } else {
-            return die;
-          }
-        })
-      );
-    }
-  }
-
-  function unlockDice() {
     setDice((prev) =>
-      prev.map((die) => {
-        return { ...die, isLocked: false, isPermLocked: false };
+      prev.map((die, index) => {
+        if (die.isLocked) {
+          return {
+            ...die,
+            isPermLocked: true,
+          };
+        }
+        if (index === prev.length - 1 && !die.isPermLocked) {
+          return {
+            ...die,
+            value:
+              Math.ceil(Math.random() * 3) +
+              hiLoDieArray[Math.floor(Math.random() * 2)],
+          };
+        }
+        if (!die.isPermLocked) {
+          return { ...die, value: Math.ceil(Math.random() * 6) };
+        }
       })
     );
   }
 
-  console.log(lockCount);
+  function handleDiceClick(id) {
+    setDice((prevDice) =>
+      prevDice.map((die) =>
+        die.id === id && !die.isPermLocked
+          ? { ...die, isLocked: !die.isLocked }
+          : die
+      )
+    );
+  }
+
+  function calculateScore() {
+    let total = 0;
+    let totalPoints;
+    let HiLoDieValue = dice[dice.length - 1].value;
+    let hiLoNum = parseInt(HiLoDieValue[0]);
+    let hiLo = HiLoDieValue[1];
+
+    dice.forEach((die, index) => {
+      if (index !== dice.length - 1) {
+        total += die.value;
+      }
+    });
+
+    if (hiLo === "↑") {
+      totalPoints = hiTableData[total] || 1;
+    } else if (hiLo === "↓") {
+      totalPoints = loTableData[total] || 1;
+    }
+
+    const finalScore = totalPoints * hiLoNum;
+
+    console.log(total, totalPoints, finalScore);
+  }
 
   return (
     <div className="App">
-      <Header scores={scores} roundCount={roundCount} p1Turn={p1Turn} />
+      <Header
+        p1Score={p1Score}
+        p2Score={p2Score}
+        roundCount={roundCount}
+        playerTurn={playerTurn}
+      />
       <div>
         <Message rollCount={rollCount} />
         <div className="dice-container">
@@ -136,7 +133,7 @@ function App() {
           ))}
         </div>
       </div>
-      <button onClick={handleButton}>{gameStarted ? "Roll" : "Start"}</button>
+      <button onClick={handleButton}>Roll</button>
     </div>
   );
 }

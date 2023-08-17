@@ -1,18 +1,18 @@
 export default function Header(props) {
   return (
     <div className="header">
-      <div className="scores">
+      <div className="left-container">
         <span
           className="player-1-score"
-          style={{ color: props.p1Turn ? "red" : "black" }}
+          style={{ color: props.playerTurn === 1 ? "red" : "black" }}
         >
-          p1 score: {props.scores.p1Score}
+          p1 score: {props.p1Score}
         </span>
         <span
           className="player-2-score"
-          style={{ color: props.p1Turn ? "black" : "red" }}
+          style={{ color: props.playerTurn === 2 ? "red" : "black" }}
         >
-          p2 score: {props.scores.p2Score}
+          p2 score: {props.p2Score}
         </span>
       </div>
       <div className="right-container">
