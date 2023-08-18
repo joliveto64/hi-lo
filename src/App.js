@@ -7,6 +7,8 @@ import { generateDice } from "./utils";
 function App() {
   // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
+  const [isSpinning, setIsSpinning] = useState(false);
+
   const [gameState, setGameState] = useState({
     playerTurn: 1,
     lockCount: 0,
@@ -19,13 +21,14 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 2;
+  const totalRounds = 1;
   const gameIsOver = roundCount > totalRounds;
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
   function handleButton() {
     advanceRound();
+    handleRollButtonClick();
 
     setGameState((previous) => {
       const newState = { ...previous };
@@ -136,13 +139,17 @@ function App() {
 
   function getButtonText() {
     if (gameIsOver) {
-      return "New Game";
-    } else if (roundCount === totalRounds && playerTurn === 2) {
-      return "End game";
+      return "new Game";
+    } else if (
+      roundCount === totalRounds &&
+      playerTurn === 2 &&
+      (lockCount === 6 || rollCount === 5)
+    ) {
+      return "end game";
     } else if (masterCount < 1) {
-      return "Start";
-    } else if (lockCount === 6) {
-      return "End turn";
+      return "start";
+    } else if (lockCount === 6 || rollCount === 5) {
+      return "end turn";
     } else {
       return "roll";
     }
@@ -172,13 +179,24 @@ function App() {
     });
   }
 
-  let isClicked = false;
+  function handleRollButtonClick() {
+    setIsSpinning(true);
 
-  function rotationTimeOut() {
+    console.log("boobs");
+
     setTimeout(() => {
-      isClicked = true;
+      setIsSpinning(false);
     }, 200);
   }
+
+  console.log(
+    "master:",
+    masterCount,
+    "gameover:",
+    gameIsOver,
+    "roundcount:",
+    roundCount
+  );
 
   return (
     <div className="App">
@@ -195,8 +213,9 @@ function App() {
           {dice.map((die) => (
             <Dice
               key={die.id}
-              value={die.value}
+              value={gameIsOver ? "🎉" : die.value}
               isLocked={die.isLocked}
+              isSpinning={isSpinning}
               clicked={() => {
                 handleDiceClick(die.id);
               }}
@@ -205,8 +224,12 @@ function App() {
         </div>
       </div>
       <button
+        className="button"
         onClick={!gameIsOver ? handleButton : startNewGame}
-        disabled={lockCount < rollCount && !gameIsOver}
+        disabled={
+          (lockCount < rollCount || (rollCount === 5 && lockCount !== 6)) &&
+          !gameIsOver
+        }
       >
         {getButtonText()}
       </button>

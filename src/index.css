@@ -72,7 +72,7 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 0.5rem;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: rgb(100, 100, 100);
@@ -82,6 +82,29 @@ body {
 .locked {
   background-color: #79bfed;
   color: whitesmoke;
+}
+
+.button {
+  border: none;
+  background-color: white;
+  color: rgb(100, 100, 100);
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem 8rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: 0.1s ease-in-out;
+  margin: 1rem;
+}
+
+.button:active {
+  transform: scale(0.95);
+  filter: brightness(0.95);
+}
+
+.button:disabled {
+  filter: opacity(0.5);
+  transition: 0.2s;
 }
 
 @media (min-width: 420px) {
@@ -97,17 +120,33 @@ body {
   }
 }
 
+@media (min-width: 768px) {
+  .header {
+    font-size: 1.5rem;
+  }
+  .round-info {
+    font-size: 2rem;
+  }
+  .button {
+    font-size: 2rem;
+  }
+  .die {
+    font-size: 4rem;
+  }
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(720deg);
   }
 }
 
 .roll {
   animation: rotate 0.25s ease-in-out;
+  will-change: transform;
 }
 
 @keyframes click {
