@@ -37,9 +37,9 @@ function App() {
       if (newState.masterCount > 1 && newState.masterCount % 5 === 1) {
         newState.playerTurn = previous.playerTurn === 1 ? 2 : 1;
 
-        playerTurn === 1
-          ? (newState.p1Score += calculateScore())
-          : (newState.p2Score += calculateScore());
+        // playerTurn === 1
+        //   ? (newState.p1Score += calculateScore())
+        //   : (newState.p2Score += calculateScore());
 
         unlockDice();
       }
@@ -139,17 +139,17 @@ function App() {
 
   function getButtonText() {
     if (gameIsOver) {
-      return "new Game";
+      return "again!";
     } else if (
       roundCount === totalRounds &&
       playerTurn === 2 &&
       (lockCount === 6 || rollCount === 5)
     ) {
-      return "end game";
+      return "finish!";
     } else if (masterCount < 1) {
       return "start";
     } else if (lockCount === 6 || rollCount === 5) {
-      return "end turn";
+      return "end";
     } else {
       return "roll";
     }
@@ -158,7 +158,7 @@ function App() {
   function advanceRound() {
     const score = calculateScore();
     if (lockCount === 6) {
-      unlockDice();
+      // unlockDice();
       setGameState((prev) => ({
         ...prev,
         masterCount: prev.masterCount + (5 - rollCount),

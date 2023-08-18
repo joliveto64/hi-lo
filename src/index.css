@@ -120,7 +120,7 @@ body {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .header {
     font-size: 1.5rem;
   }
