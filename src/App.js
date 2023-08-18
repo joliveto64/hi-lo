@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
-import Message from "./components/Message";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 import { generateDice } from "./utils";
@@ -171,6 +170,14 @@ function App() {
       p2Score: 0,
       masterCount: 0,
     });
+  }
+
+  let isClicked = false;
+
+  function rotationTimeOut() {
+    setTimeout(() => {
+      isClicked = true;
+    }, 200);
   }
 
   return (

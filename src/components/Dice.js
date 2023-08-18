@@ -1,9 +1,9 @@
 export default function Dice(props) {
-  const styles = {
-    backgroundColor: props.isLocked ? "red" : "white",
-  };
   return (
-    <span className="die" onClick={props.clicked} style={styles}>
+    <span
+      className={`die ${props.isLocked ? "locked click" : ""}`}
+      onClick={props.clicked}
+    >
       {props.value}
     </span>
   );

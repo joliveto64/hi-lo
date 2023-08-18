@@ -3,14 +3,12 @@ export default function Header(props) {
     <div className="header">
       <div className="left-container">
         <span
-          className="player-1-score"
-          style={{ color: props.playerTurn === 1 ? "red" : "black" }}
+          className={`player-1-score ${props.playerTurn === 1 ? "blue" : ""}`}
         >
           p1 score: {props.p1Score}
         </span>
         <span
-          className="player-2-score"
-          style={{ color: props.playerTurn === 2 ? "red" : "black" }}
+          className={`player-2-score ${props.playerTurn === 2 ? "blue" : ""}`}
         >
           p2 score: {props.p2Score}
         </span>

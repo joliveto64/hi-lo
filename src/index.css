@@ -10,7 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: whitesmoke;
-  color: rgb(80, 80, 80);
+  color: rgb(120, 120, 120);
 }
 
 .App {
@@ -27,11 +27,20 @@ body {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .left-container {
   display: flex;
   flex-direction: column;
+  /* transition: 0.2s; */
+}
+
+.blue {
+  color: #79bfed;
+  font-weight: bold;
+  transition: 0.2s;
 }
 
 .right-container {
@@ -45,6 +54,8 @@ body {
 
 .round-info {
   text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .dice-container {
@@ -65,6 +76,12 @@ body {
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: rgb(100, 100, 100);
+  transition: 0.1s;
+}
+
+.locked {
+  background-color: #79bfed;
+  color: whitesmoke;
 }
 
 @media (min-width: 420px) {
@@ -78,4 +95,30 @@ body {
     height: calc(100vw / 8);
     width: calc(100vw / 8);
   }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.roll {
+  animation: rotate 0.25s ease-in-out;
+}
+
+@keyframes click {
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.click {
+  animation: click 0.1s ease-in-out;
 }
