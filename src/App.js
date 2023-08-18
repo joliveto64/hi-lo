@@ -3,8 +3,10 @@ import Header from "./components/Header";
 import Message from "./components/Message";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
+import { generateDice } from "./utils";
 
 function App() {
+  // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [gameState, setGameState] = useState({
     playerTurn: 1,
@@ -18,26 +20,10 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
+  const totalRounds = 2;
+  const gameIsOver = roundCount > totalRounds;
 
-  function generateDice() {
-    let diceArray = Array.from({ length: 5 }).map((element, index) => {
-      return {
-        value: "?",
-        isLocked: false,
-        isPermLocked: false,
-        id: index,
-      };
-    });
-
-    diceArray.push({
-      value: "↑↓",
-      isLocked: false,
-      isPermLocked: false,
-      id: 5,
-    });
-
-    return diceArray;
-  }
+  // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
   function handleButton() {
     advanceRound();
@@ -82,18 +68,20 @@ function App() {
     );
   }
 
+  // FUNCTIONS /////////////////////////////////
+
   function messageText() {
-    let text;
-    if (roundCount > 2) {
-      text =
-        p1Score === p2Score
-          ? "tie game!"
-          : p1Score > p2Score
-          ? "p1 wins!"
-          : "p2 wins!";
+    if (!gameIsOver) {
+      return `roll: ${rollCount}/5`;
+    }
+    if (gameIsOver && p1Score === p2Score) {
+      return "tie game!";
+    }
+    if (gameIsOver && p1Score > p2Score) {
+      return "p1 wins!";
     }
 
-    return text;
+    return "p2 wins!";
   }
 
   useEffect(() => {
@@ -148,9 +136,9 @@ function App() {
   }
 
   function getButtonText() {
-    if (roundCount > 2) {
+    if (gameIsOver) {
       return "New Game";
-    } else if (roundCount >= 2 && playerTurn === 2) {
+    } else if (roundCount === totalRounds && playerTurn === 2) {
       return "End game";
     } else if (masterCount < 1) {
       return "Start";
@@ -192,9 +180,10 @@ function App() {
         p2Score={p2Score}
         roundCount={roundCount}
         playerTurn={playerTurn}
+        totalRounds={totalRounds}
       />
       <div>
-        <Message rollCount={messageText()} />
+        <p className="round-info">{messageText()}</p>
         <div className="dice-container">
           {dice.map((die) => (
             <Dice
@@ -209,8 +198,8 @@ function App() {
         </div>
       </div>
       <button
-        onClick={roundCount <= 2 ? handleButton : startNewGame}
-        disabled={lockCount < rollCount && roundCount <= 2}
+        onClick={!gameIsOver ? handleButton : startNewGame}
+        disabled={lockCount < rollCount && !gameIsOver}
       >
         {getButtonText()}
       </button>
