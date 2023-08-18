@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 body {
@@ -82,6 +83,9 @@ body {
 .locked {
   background-color: #79bfed;
   color: whitesmoke;
+}
+.perm-locked {
+  filter: opacity(0.5);
 }
 
 .button {

@@ -3,7 +3,7 @@ export default function Dice(props) {
     <span
       className={`die ${props.isLocked ? "locked click" : ""} ${
         props.isSpinning ? "roll" : ""
-      }`}
+      } ${props.isPermLocked ? "perm-locked" : ""}`}
       onClick={props.clicked}
     >
       {props.value}

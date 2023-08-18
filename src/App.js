@@ -21,7 +21,7 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 1;
+  const totalRounds = 5;
   const gameIsOver = roundCount > totalRounds;
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
@@ -216,6 +216,7 @@ function App() {
               key={die.id}
               value={gameIsOver ? "🎉" : die.value}
               isLocked={die.isLocked}
+              isPermLocked={die.isPermLocked}
               isSpinning={isSpinning}
               clicked={() => {
                 handleDiceClick(die.id);
