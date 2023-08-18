@@ -16,7 +16,9 @@ export default function Header(props) {
         </span>
       </div>
       <div className="right-container">
-        <span className="round">round: {props.roundCount}</span>
+        <span className="round">
+          round: {props.roundCount <= 2 ? props.roundCount : "2"}
+        </span>
         <span className="gear-icon">⚙️</span>
       </div>
     </div>

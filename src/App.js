@@ -12,11 +12,9 @@ function App() {
     p1Score: 0,
     p2Score: 0,
     masterCount: 0,
-    gameStarted: false,
   });
 
-  const { masterCount, playerTurn, lockCount, p1Score, p2Score, gameStarted } =
-    gameState;
+  const { masterCount, playerTurn, lockCount, p1Score, p2Score } = gameState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
@@ -42,16 +40,24 @@ function App() {
   }
 
   function handleButton() {
-    setGameState((previous) => ({
-      ...previous,
-      masterCount: previous.masterCount + 1,
-      playerTurn:
-        previous.masterCount + 1 > 1 && (previous.masterCount + 1) % 5 === 1
-          ? previous.playerTurn === 1
-            ? 2
-            : 1
-          : previous.playerTurn,
-    }));
+    advanceRound();
+
+    setGameState((previous) => {
+      const newState = { ...previous };
+      newState.masterCount = previous.masterCount + 1;
+
+      if (newState.masterCount > 1 && newState.masterCount % 5 === 1) {
+        newState.playerTurn = previous.playerTurn === 1 ? 2 : 1;
+
+        playerTurn === 1
+          ? (newState.p1Score += calculateScore())
+          : (newState.p2Score += calculateScore());
+
+        unlockDice();
+      }
+
+      return newState;
+    });
 
     setDice((prev) =>
       prev.map((die, index) => {
@@ -76,7 +82,39 @@ function App() {
     );
   }
 
+  function messageText() {
+    let text;
+    if (roundCount > 2) {
+      text =
+        p1Score === p2Score
+          ? "tie game!"
+          : p1Score > p2Score
+          ? "p1 wins!"
+          : "p2 wins!";
+    }
+
+    return text;
+  }
+
+  useEffect(() => {
+    const count = dice.reduce(
+      (total, die) => (die.isLocked ? total + 1 : total),
+      0
+    );
+    setGameState((prev) => ({ ...prev, lockCount: count }));
+  }, [dice]);
+
+  function unlockDice() {
+    setDice((oldDice) =>
+      oldDice.map((die) => ({ ...die, isLocked: false, isPermLocked: false }))
+    );
+  }
+
   function handleDiceClick(id) {
+    if (masterCount < 1) {
+      return;
+    }
+
     setDice((prevDice) =>
       prevDice.map((die) =>
         die.id === id && !die.isPermLocked
@@ -106,8 +144,45 @@ function App() {
     }
 
     const finalScore = totalPoints * hiLoNum;
+    return finalScore;
+  }
 
-    console.log(total, totalPoints, finalScore);
+  function getButtonText() {
+    if (roundCount > 2) {
+      return "New Game";
+    } else if (roundCount >= 2 && playerTurn === 2) {
+      return "End game";
+    } else if (masterCount < 1) {
+      return "Start";
+    } else if (lockCount === 6) {
+      return "End turn";
+    } else {
+      return "roll";
+    }
+  }
+
+  function advanceRound() {
+    const score = calculateScore();
+    if (lockCount === 6) {
+      unlockDice();
+      setGameState((prev) => ({
+        ...prev,
+        masterCount: prev.masterCount + (5 - rollCount),
+        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
+        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+      }));
+    }
+  }
+
+  function startNewGame() {
+    setDice(generateDice);
+    setGameState({
+      playerTurn: 1,
+      lockCount: 0,
+      p1Score: 0,
+      p2Score: 0,
+      masterCount: 0,
+    });
   }
 
   return (
@@ -119,7 +194,7 @@ function App() {
         playerTurn={playerTurn}
       />
       <div>
-        <Message rollCount={rollCount} />
+        <Message rollCount={messageText()} />
         <div className="dice-container">
           {dice.map((die) => (
             <Dice
@@ -133,7 +208,12 @@ function App() {
           ))}
         </div>
       </div>
-      <button onClick={handleButton}>Roll</button>
+      <button
+        onClick={roundCount <= 2 ? handleButton : startNewGame}
+        disabled={lockCount < rollCount && roundCount <= 2}
+      >
+        {getButtonText()}
+      </button>
     </div>
   );
 }
