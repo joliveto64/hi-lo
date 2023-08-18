@@ -41,7 +41,7 @@ function App() {
         //   ? (newState.p1Score += calculateScore())
         //   : (newState.p2Score += calculateScore());
 
-        unlockDice();
+        // unlockDice();
       }
 
       return newState;
@@ -158,7 +158,7 @@ function App() {
   function advanceRound() {
     const score = calculateScore();
     if (lockCount === 6) {
-      // unlockDice();
+      unlockDice();
       setGameState((prev) => ({
         ...prev,
         masterCount: prev.masterCount + (5 - rollCount),
@@ -169,6 +169,7 @@ function App() {
   }
 
   function startNewGame() {
+    handleRollButtonClick();
     setDice(generateDice);
     setGameState({
       playerTurn: 1,
