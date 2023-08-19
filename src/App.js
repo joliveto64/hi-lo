@@ -201,6 +201,7 @@ function App() {
               clicked={() => {
                 handleDiceClick(die.id);
               }}
+              isHilo={die.isHilo}
             />
           ))}
         </div>

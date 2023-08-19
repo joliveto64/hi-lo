@@ -1,12 +1,25 @@
-export default function Dice(props) {
+export default function Dice({
+  isHilo,
+  isLocked,
+  isPermLocked,
+  value,
+  isSpinning,
+  clicked,
+}) {
+  const classList = [
+    "die",
+    isLocked ? "locked click" : "",
+    isSpinning ? "roll" : "",
+    isPermLocked ? "perm-locked" : "",
+    isHilo ? "hilo" : "",
+    isHilo && isLocked ? "hilo-locked" : "",
+  ];
+
+  const className = classList.join(" ");
+
   return (
-    <span
-      className={`die ${props.isLocked ? "locked click" : ""} ${
-        props.isSpinning ? "roll" : ""
-      } ${props.isPermLocked ? "perm-locked" : ""}`}
-      onClick={props.clicked}
-    >
-      {props.value}
+    <span className={className} onClick={clicked}>
+      {value}
     </span>
   );
 }

@@ -80,10 +80,21 @@ body {
   transition: 0.1s;
 }
 
+.hilo {
+  background-color: rgb(120, 120, 120);
+  color: whitesmoke;
+}
+
 .locked {
   background-color: #79bfed;
   color: whitesmoke;
 }
+
+.hilo-locked {
+  color: rgb(120, 120, 120);
+  background-color: #79bfed;
+}
+
 .perm-locked {
   filter: opacity(0.5);
   transform: scale(0.9);

@@ -5,6 +5,7 @@ function generateDice() {
       isLocked: false,
       isPermLocked: false,
       id: index,
+      isHilo: false,
     };
   });
 
@@ -13,6 +14,7 @@ function generateDice() {
     isLocked: false,
     isPermLocked: false,
     id: 5,
+    isHilo: true,
   });
 
   return diceArray;
