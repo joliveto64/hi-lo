@@ -86,6 +86,7 @@ body {
 }
 .perm-locked {
   filter: opacity(0.5);
+  transform: scale(0.9);
 }
 
 .button {

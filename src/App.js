@@ -21,27 +21,22 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 5;
+  const totalRounds = 1;
   const gameIsOver = roundCount > totalRounds;
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
   function handleButton() {
-    advanceRound();
+    advanceRoundEarly();
     handleRollButtonClick();
 
     setGameState((previous) => {
       const newState = { ...previous };
       newState.masterCount = previous.masterCount + 1;
 
+      // change turns
       if (newState.masterCount > 1 && newState.masterCount % 5 === 1) {
         newState.playerTurn = previous.playerTurn === 1 ? 2 : 1;
-
-        // playerTurn === 1
-        //   ? (newState.p1Score += calculateScore())
-        //   : (newState.p2Score += calculateScore());
-
-        // unlockDice();
       }
 
       return newState;
@@ -71,6 +66,19 @@ function App() {
   }
 
   // FUNCTIONS /////////////////////////////////
+
+  function advanceRoundEarly() {
+    const score = calculateScore();
+    if (lockCount === 6) {
+      unlockDice();
+      setGameState((prev) => ({
+        ...prev,
+        masterCount: prev.masterCount + (5 - rollCount),
+        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
+        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+      }));
+    }
+  }
 
   function messageText() {
     if (!gameIsOver) {
@@ -155,19 +163,6 @@ function App() {
     }
   }
 
-  function advanceRound() {
-    const score = calculateScore();
-    if (lockCount === 6) {
-      unlockDice();
-      setGameState((prev) => ({
-        ...prev,
-        masterCount: prev.masterCount + (5 - rollCount),
-        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
-        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
-      }));
-    }
-  }
-
   function startNewGame() {
     handleRollButtonClick();
     setDice(generateDice);
@@ -190,14 +185,14 @@ function App() {
     }, 200);
   }
 
-  console.log(
-    "master:",
-    masterCount,
-    "gameover:",
-    gameIsOver,
-    "roundcount:",
-    roundCount
-  );
+  // console.log(
+  //   "master:",
+  //   masterCount,
+  //   "gameover:",
+  //   gameIsOver,
+  //   "roundcount:",
+  //   roundCount
+  // );
 
   return (
     <div className="App">
