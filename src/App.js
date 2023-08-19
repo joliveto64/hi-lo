@@ -11,36 +11,45 @@ function App() {
 
   const [gameState, setGameState] = useState({
     playerTurn: 1,
-    lockCount: 0,
     p1Score: 0,
     p2Score: 0,
     masterCount: 0,
   });
 
-  const { masterCount, playerTurn, lockCount, p1Score, p2Score } = gameState;
+  const lockCount = dice.reduce(
+    (total, die) => (die.isLocked ? total + 1 : total),
+    0
+  );
+  const { masterCount, playerTurn, p1Score, p2Score } = gameState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 1;
+  const totalRounds = 5;
   const gameIsOver = roundCount > totalRounds;
+  const gameIsStarted = masterCount >= 1;
+  const rollFive = rollCount === 5;
+  const allDiceLocked = lockCount === 6;
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
   function handleButton() {
-    advanceRoundEarly();
+    const score = calculateScore();
+    if (allDiceLocked) {
+      unlockDice();
+      setGameState((prev) => ({
+        ...prev,
+        masterCount: prev.masterCount + (6 - rollCount),
+        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
+        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+      }));
+    } else if (lockCount < 6) {
+      setGameState((previous) => ({
+        ...previous,
+        masterCount: previous.masterCount + 1,
+      }));
+    }
+
     handleRollButtonClick();
-
-    setGameState((previous) => {
-      const newState = { ...previous };
-      newState.masterCount = previous.masterCount + 1;
-
-      // change turns
-      if (newState.masterCount > 1 && newState.masterCount % 5 === 1) {
-        newState.playerTurn = previous.playerTurn === 1 ? 2 : 1;
-      }
-
-      return newState;
-    });
 
     setDice((prev) =>
       prev.map((die, index) => {
@@ -65,20 +74,16 @@ function App() {
     );
   }
 
-  // FUNCTIONS /////////////////////////////////
-
-  function advanceRoundEarly() {
-    const score = calculateScore();
-    if (lockCount === 6) {
-      unlockDice();
+  useEffect(() => {
+    if (masterCount > 1 && masterCount % 5 === 1) {
       setGameState((prev) => ({
         ...prev,
-        masterCount: prev.masterCount + (5 - rollCount),
-        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
-        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+        playerTurn: prev.playerTurn === 1 ? 2 : 1,
       }));
     }
-  }
+  }, [masterCount]);
+
+  // FUNCTIONS /////////////////////////////////
 
   function messageText() {
     if (!gameIsOver) {
@@ -94,14 +99,6 @@ function App() {
     return "p2 wins!";
   }
 
-  useEffect(() => {
-    const count = dice.reduce(
-      (total, die) => (die.isLocked ? total + 1 : total),
-      0
-    );
-    setGameState((prev) => ({ ...prev, lockCount: count }));
-  }, [dice]);
-
   function unlockDice() {
     setDice((oldDice) =>
       oldDice.map((die) => ({ ...die, isLocked: false, isPermLocked: false }))
@@ -109,7 +106,7 @@ function App() {
   }
 
   function handleDiceClick(id) {
-    if (masterCount < 1) {
+    if (!gameIsStarted) {
       return;
     }
 
@@ -151,12 +148,12 @@ function App() {
     } else if (
       roundCount === totalRounds &&
       playerTurn === 2 &&
-      (lockCount === 6 || rollCount === 5)
+      (allDiceLocked || rollFive)
     ) {
       return "finish!";
-    } else if (masterCount < 1) {
+    } else if (!gameIsStarted) {
       return "start";
-    } else if (lockCount === 6 || rollCount === 5) {
+    } else if (allDiceLocked || rollFive) {
       return "end";
     } else {
       return "roll";
@@ -178,21 +175,12 @@ function App() {
   function handleRollButtonClick() {
     setIsSpinning(true);
 
-    console.log("boobs");
-
     setTimeout(() => {
       setIsSpinning(false);
     }, 200);
   }
 
-  // console.log(
-  //   "master:",
-  //   masterCount,
-  //   "gameover:",
-  //   gameIsOver,
-  //   "roundcount:",
-  //   roundCount
-  // );
+  console.log("rendered");
 
   return (
     <div className="App">
@@ -224,8 +212,7 @@ function App() {
         className="button"
         onClick={!gameIsOver ? handleButton : startNewGame}
         disabled={
-          (lockCount < rollCount || (rollCount === 5 && lockCount !== 6)) &&
-          !gameIsOver
+          (lockCount < rollCount || (rollFive && !allDiceLocked)) && !gameIsOver
         }
       >
         {getButtonText()}
