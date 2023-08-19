@@ -95,11 +95,12 @@ body {
   color: rgb(100, 100, 100);
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 1rem 8rem;
+  padding: 1rem;
   border-radius: 0.25rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: 0.1s ease-in-out;
   margin: 1rem;
+  width: calc(100vw / 2.5);
 }
 
 .button:active {

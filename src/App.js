@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
@@ -10,7 +10,6 @@ function App() {
   const [isSpinning, setIsSpinning] = useState(false);
 
   const [gameState, setGameState] = useState({
-    playerTurn: 1,
     p1Score: 0,
     p2Score: 0,
     masterCount: 0,
@@ -20,15 +19,16 @@ function App() {
     (total, die) => (die.isLocked ? total + 1 : total),
     0
   );
-  const { masterCount, playerTurn, p1Score, p2Score } = gameState;
+  const { masterCount, p1Score, p2Score } = gameState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 5;
+  const totalRounds = 1;
   const gameIsOver = roundCount > totalRounds;
   const gameIsStarted = masterCount >= 1;
   const rollFive = rollCount === 5;
   const allDiceLocked = lockCount === 6;
+  const playerTurn = (Math.floor((masterCount - 1) / 5) % 2) + 1;
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
@@ -73,15 +73,6 @@ function App() {
       })
     );
   }
-
-  useEffect(() => {
-    if (masterCount > 1 && masterCount % 5 === 1) {
-      setGameState((prev) => ({
-        ...prev,
-        playerTurn: prev.playerTurn === 1 ? 2 : 1,
-      }));
-    }
-  }, [masterCount]);
 
   // FUNCTIONS /////////////////////////////////
 
@@ -197,7 +188,13 @@ function App() {
           {dice.map((die) => (
             <Dice
               key={die.id}
-              value={gameIsOver ? "🎉" : die.value}
+              value={
+                gameIsOver && p1Score === p2Score
+                  ? "🤝"
+                  : gameIsOver
+                  ? "🎉"
+                  : die.value
+              }
               isLocked={die.isLocked}
               isPermLocked={die.isPermLocked}
               isSpinning={isSpinning}
