@@ -202,6 +202,7 @@ function App() {
                 handleDiceClick(die.id);
               }}
               isHilo={die.isHilo}
+              gameIsOver={gameIsOver}
             />
           ))}
         </div>

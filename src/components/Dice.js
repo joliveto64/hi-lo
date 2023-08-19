@@ -5,13 +5,14 @@ export default function Dice({
   value,
   isSpinning,
   clicked,
+  gameIsOver,
 }) {
   const classList = [
     "die",
     isLocked ? "locked click" : "",
     isSpinning ? "roll" : "",
     isPermLocked ? "perm-locked" : "",
-    isHilo ? "hilo" : "",
+    isHilo && !gameIsOver ? "hilo" : "",
     isHilo && isLocked ? "hilo-locked" : "",
   ];
 
