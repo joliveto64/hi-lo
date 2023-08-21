@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 import { generateDice } from "./utils";
 import Menu from "./components/Menu";
+import { db } from "./firebase.js";
 
 function App() {
   // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
 
   const [gameState, setGameState] = useState({
     p1Score: 0,
@@ -32,7 +35,22 @@ function App() {
   const allDiceLocked = lockCount === 6;
   const playerTurn = (Math.floor((masterCount - 1) / 5) % 2) + 1;
 
+  // FIREBASE FUNCTIONS /////////////////////////////////////////
+
+  function initDatabase() {
+    if (isOnline) {
+      db.ref("/gameState").set(gameState);
+      db.ref("/dice").set(dice);
+    }
+
+    setIsInitialized(true);
+  }
+
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
+
+  useEffect(() => {
+    initDatabase();
+  }, []);
 
   function handleButton() {
     const score = calculateScore();
@@ -159,8 +177,6 @@ function App() {
     handleDiceSpinAnimation();
     setDice(generateDice);
     setGameState({
-      playerTurn: 1,
-      lockCount: 0,
       p1Score: 0,
       p2Score: 0,
       masterCount: 0,
