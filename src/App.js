@@ -39,6 +39,7 @@ function App() {
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     function initDatabase() {
       if (isOnline) {
