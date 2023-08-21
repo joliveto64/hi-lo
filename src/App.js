@@ -3,11 +3,13 @@ import Header from "./components/Header";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 import { generateDice } from "./utils";
+import Menu from "./components/Menu";
 
 function App() {
   // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const [gameState, setGameState] = useState({
     p1Score: 0,
@@ -23,7 +25,7 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 1;
+  const totalRounds = 5;
   const gameIsOver = roundCount > totalRounds;
   const gameIsStarted = masterCount >= 1;
   const rollFive = rollCount === 5;
@@ -49,7 +51,7 @@ function App() {
       }));
     }
 
-    handleRollButtonClick();
+    handleDiceSpinAnimation();
 
     setDice((prev) =>
       prev.map((die, index) => {
@@ -78,7 +80,9 @@ function App() {
 
   function messageText() {
     if (!gameIsOver) {
-      return `roll: ${rollCount}/5`;
+      return `${
+        playerTurn === 1 ? "p1" : playerTurn === 2 ? "p2" : ""
+      } roll: ${rollCount}/5`;
     }
     if (gameIsOver && p1Score === p2Score) {
       return "tie game!";
@@ -152,7 +156,7 @@ function App() {
   }
 
   function startNewGame() {
-    handleRollButtonClick();
+    handleDiceSpinAnimation();
     setDice(generateDice);
     setGameState({
       playerTurn: 1,
@@ -163,7 +167,7 @@ function App() {
     });
   }
 
-  function handleRollButtonClick() {
+  function handleDiceSpinAnimation() {
     setIsSpinning(true);
 
     setTimeout(() => {
@@ -175,6 +179,7 @@ function App() {
 
   return (
     <div className="App">
+      {showMenu && <Menu />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}

@@ -21,7 +21,7 @@ export default function Header(props) {
             : props.totalRounds}
           /{props.totalRounds}
         </span>
-        <span className="gear-icon">⚙️</span>
+        <a className="gear-icon">⚙️</a>
       </div>
     </div>
   );

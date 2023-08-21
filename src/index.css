@@ -35,13 +35,12 @@ body {
 .left-container {
   display: flex;
   flex-direction: column;
-  /* transition: 0.2s; */
 }
 
 .blue {
   color: #79bfed;
-  font-weight: bold;
   transition: 0.2s;
+  transform: translateX(1rem);
 }
 
 .right-container {
@@ -177,4 +176,9 @@ body {
 
 .click {
   animation: click 0.1s ease-in-out;
+}
+
+.charts {
+  width: 100vw;
+  height: 100vh;
 }
