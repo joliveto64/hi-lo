@@ -10,8 +10,8 @@ function App() {
   // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
-  // const [showMenu, setShowMenu] = useState(false);
-  const [, setIsInitialized] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [isOnline] = useState(false);
 
   const [gameState, setGameState] = useState({
@@ -38,18 +38,6 @@ function App() {
   // FIREBASE FUNCTIONS /////////////////////////////////////////
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
-
-  // useEffect(() => {
-  //   function initDatabase() {
-  //     if (isOnline) {
-  //       db.ref("/gameState").set(gameState);
-  //       db.ref("/dice").set(dice);
-  //     }
-
-  //     setIsInitialized(true);
-  //   }
-  //   initDatabase();
-  // }, []);
 
   function handleButton() {
     const score = calculateScore();
@@ -195,7 +183,7 @@ function App() {
 
   return (
     <div className="App">
-      {<Menu />}
+      {showMenu && <Menu />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}
