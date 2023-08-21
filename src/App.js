@@ -10,9 +10,9 @@ function App() {
   // CONSTANTS AND SETTING UP STATE /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isOnline, setIsOnline] = useState(false);
+  // const [showMenu, setShowMenu] = useState(false);
+  const [, setIsInitialized] = useState(false);
+  const [isOnline] = useState(false);
 
   const [gameState, setGameState] = useState({
     p1Score: 0,
@@ -37,18 +37,17 @@ function App() {
 
   // FIREBASE FUNCTIONS /////////////////////////////////////////
 
-  function initDatabase() {
-    if (isOnline) {
-      db.ref("/gameState").set(gameState);
-      db.ref("/dice").set(dice);
-    }
-
-    setIsInitialized(true);
-  }
-
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
   useEffect(() => {
+    function initDatabase() {
+      if (isOnline) {
+        db.ref("/gameState").set(gameState);
+        db.ref("/dice").set(dice);
+      }
+
+      setIsInitialized(true);
+    }
     initDatabase();
   }, []);
 
@@ -90,6 +89,7 @@ function App() {
         if (!die.isPermLocked) {
           return { ...die, value: Math.ceil(Math.random() * 6) };
         }
+        return die;
       })
     );
   }
