@@ -39,18 +39,17 @@ function App() {
 
   // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    function initDatabase() {
-      if (isOnline) {
-        db.ref("/gameState").set(gameState);
-        db.ref("/dice").set(dice);
-      }
+  // useEffect(() => {
+  //   function initDatabase() {
+  //     if (isOnline) {
+  //       db.ref("/gameState").set(gameState);
+  //       db.ref("/dice").set(dice);
+  //     }
 
-      setIsInitialized(true);
-    }
-    initDatabase();
-  }, []);
+  //     setIsInitialized(true);
+  //   }
+  //   initDatabase();
+  // }, []);
 
   function handleButton() {
     const score = calculateScore();
