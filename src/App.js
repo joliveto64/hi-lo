@@ -195,7 +195,7 @@ function App() {
 
   return (
     <div className="App">
-      {showMenu && <Menu />}
+      {<Menu />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}
