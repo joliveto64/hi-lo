@@ -40,7 +40,6 @@ body {
 .blue {
   color: #79bfed;
   transition: 0.2s;
-  transform: translateX(1rem);
 }
 
 .right-container {
@@ -86,7 +85,9 @@ body {
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: rgb(100, 100, 100);
-  transition: 0.1s;
+  transition: 0.2s;
+  perspective: 1;
+  backface-visibility: hidden;
 }
 
 .hilo {
@@ -118,7 +119,7 @@ body {
   padding: 1rem;
   border-radius: 0.25rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: 0.1s ease-in-out;
+  transition: 0.2s ease-in-out;
   margin: 1rem;
   width: calc(100vw / 2.5);
 }
@@ -171,7 +172,7 @@ body {
 }
 
 .roll {
-  animation: rotate 0.25s ease-in-out;
+  animation: rotate 0.3s ease-in-out;
   will-change: transform;
 }
 
@@ -185,7 +186,7 @@ body {
 }
 
 .click {
-  animation: click 0.1s ease-in-out;
+  animation: click 0.2s ease-in-out;
 }
 
 .charts {

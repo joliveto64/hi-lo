@@ -5,14 +5,15 @@ import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 import { generateDice } from "./utils";
 import Menu from "./components/Menu";
 import { db } from "./firebase.js";
+import { set, ref, onValue } from "firebase/database";
 
 function App() {
-  // CONSTANTS AND SETTING UP STATE /////////////////////////////////
+  // CONSTANTS AND STATE INIT /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isOnline] = useState(false);
+  const [isOnline] = useState(true);
 
   const [gameState, setGameState] = useState({
     p1Score: 0,
@@ -35,11 +36,58 @@ function App() {
   const allDiceLocked = lockCount === 6;
   const playerTurn = (Math.floor((masterCount - 1) / 5) % 2) + 1;
 
-  // FIREBASE FUNCTIONS /////////////////////////////////////////
+  // FIREBASE /////////////////////////////////////////////////////
+  useEffect(() => {
+    function initDatabase() {
+      if (isOnline) {
+        set(ref(db, "/gameState"), gameState);
+        set(ref(db, "/dice"), dice);
+        console.log("initializing...");
+      }
 
-  // MAIN LOGIC & BUTTON CLICK /////////////////////////////////
+      setIsInitialized(true);
+    }
+    initDatabase();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (isOnline && isInitialized) {
+      const gameStateRef = ref(db, "/gameState");
+      const unsubscribe = onValue(gameStateRef, (snapshot) => {
+        const newGameState = snapshot.val();
+        if (newGameState != null) {
+          setGameState(newGameState);
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [isOnline, isInitialized]);
+
+  useEffect(() => {
+    if (isOnline && isInitialized) {
+      set(ref(db, "/gameState"), gameState).catch((error) => {
+        console.error("Error updating gameState in database: ", error);
+      });
+    }
+  }, [gameState, isOnline, isInitialized]);
+
+  useEffect(() => {
+    if (isOnline && isInitialized) {
+      set(ref(db, "/dice"), dice).catch((error) => {
+        console.error("Error updating dice in database: ", error);
+      });
+    }
+  }, [dice, isOnline, isInitialized]);
+
+  // MAIN LOGIC & BUTTON CLICK //////////////////////////////////////////
 
   function handleButton() {
+    handleDiceSpinAnimation();
+
     const score = calculateScore();
     if (allDiceLocked) {
       unlockDice();
@@ -55,8 +103,6 @@ function App() {
         masterCount: previous.masterCount + 1,
       }));
     }
-
-    handleDiceSpinAnimation();
 
     setDice((prev) =>
       prev.map((die, index) => {
@@ -82,7 +128,7 @@ function App() {
     );
   }
 
-  // FUNCTIONS /////////////////////////////////
+  // FUNCTIONS ///////////////////////////////////////////////////////
 
   function messageText() {
     if (!gameIsOver) {
@@ -179,7 +225,7 @@ function App() {
     }, 200);
   }
 
-  console.log("rendered");
+  // RETURN //////////////////////////////////////////////////
 
   return (
     <div className="App">

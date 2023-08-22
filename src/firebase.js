@@ -15,15 +15,3 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 export { db };
-
-// useEffect(() => {
-//   function initDatabase() {
-//     if (isOnline) {
-//       db.ref("/gameState").set(gameState);
-//       db.ref("/dice").set(dice);
-//     }
-
-//     setIsInitialized(true);
-//   }
-//   initDatabase();
-// }, []);
