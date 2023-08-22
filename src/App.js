@@ -8,23 +8,20 @@ import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
 
 function App() {
-  // CONSTANTS AND STATE INIT /////////////////////////////////
+  // STATE INITIALIZATION /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isOnline] = useState(true);
-
+  const [isOnline] = useState(false);
+  const [betweenRound, setBetweenRound] = useState(false);
   const [gameState, setGameState] = useState({
     p1Score: 0,
     p2Score: 0,
     masterCount: 0,
   });
 
-  const lockCount = dice.reduce(
-    (total, die) => (die.isLocked ? total + 1 : total),
-    0
-  );
+  // CONSTANTS/DERIVED STATES ///////////////////////////////////////
   const { masterCount, p1Score, p2Score } = gameState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
@@ -33,8 +30,12 @@ function App() {
   const gameIsOver = roundCount > totalRounds;
   const gameIsStarted = masterCount >= 1;
   const rollFive = rollCount === 5;
-  const allDiceLocked = lockCount === 6;
   const playerTurn = (Math.floor((masterCount - 1) / 5) % 2) + 1;
+  const lockCount = dice.reduce(
+    (total, die) => (die.isLocked ? total + 1 : total),
+    0
+  );
+  const allDiceLocked = lockCount === 6;
 
   // FIREBASE /////////////////////////////////////////////////////
   useEffect(() => {
@@ -83,27 +84,42 @@ function App() {
     }
   }, [dice, isOnline, isInitialized]);
 
-  // MAIN LOGIC & BUTTON CLICK //////////////////////////////////////////
+  // MAIN LOGIC // BUTTON CLICK //////////////////////////////////////////
 
   function handleButton() {
     handleDiceSpinAnimation();
-
     const score = calculateScore();
-    if (allDiceLocked) {
+
+    if (betweenRound) {
+      rollDice();
+      setBetweenRound(!betweenRound);
+      return;
+    }
+
+    if (allDiceLocked && !betweenRound) {
+      setBetweenRound(!betweenRound);
       unlockDice();
+      setDice(generateDice);
       setGameState((prev) => ({
         ...prev,
         masterCount: prev.masterCount + (6 - rollCount),
         p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
         p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
       }));
-    } else if (lockCount < 6) {
+    }
+
+    if (lockCount < 6 && !betweenRound) {
       setGameState((previous) => ({
         ...previous,
         masterCount: previous.masterCount + 1,
       }));
+      rollDice();
     }
+  }
 
+  // FUNCTIONS ///////////////////////////////////////////////////////
+
+  function rollDice() {
     setDice((prev) =>
       prev.map((die, index) => {
         if (die.isLocked) {
@@ -128,8 +144,6 @@ function App() {
     );
   }
 
-  // FUNCTIONS ///////////////////////////////////////////////////////
-
   function messageText() {
     if (!gameIsOver) {
       return `${
@@ -153,7 +167,7 @@ function App() {
   }
 
   function handleDiceClick(id) {
-    if (!gameIsStarted) {
+    if (!gameIsStarted || betweenRound) {
       return;
     }
 
@@ -215,6 +229,7 @@ function App() {
       p2Score: 0,
       masterCount: 0,
     });
+    setBetweenRound(false);
   }
 
   function handleDiceSpinAnimation() {
@@ -226,7 +241,7 @@ function App() {
   }
 
   // RETURN //////////////////////////////////////////////////
-
+  console.log("m:", masterCount, betweenRound);
   return (
     <div className="App">
       {showMenu && <Menu />}
@@ -266,7 +281,9 @@ function App() {
         className="button"
         onClick={!gameIsOver ? handleButton : startNewGame}
         disabled={
-          (lockCount < rollCount || (rollFive && !allDiceLocked)) && !gameIsOver
+          ((!betweenRound && lockCount < rollCount) ||
+            (rollFive && !allDiceLocked)) &&
+          !gameIsOver
         }
       >
         {getButtonText()}
