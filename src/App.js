@@ -12,17 +12,16 @@ function App() {
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isOnline] = useState(false);
-  const [betweenRound, setBetweenRound] = useState(false);
+  const [isOnline] = useState(true);
   const [gameState, setGameState] = useState({
     p1Score: 0,
     p2Score: 0,
     masterCount: 0,
+    betweenRound: false,
   });
 
   // CONSTANTS/DERIVED STATES ///////////////////////////////////////
-  const { masterCount, p1Score, p2Score } = gameState;
+  const { masterCount, p1Score, p2Score, betweenRound } = gameState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
@@ -38,53 +37,54 @@ function App() {
   const allDiceLocked = lockCount === 6;
 
   // FIREBASE /////////////////////////////////////////////////////
-  useEffect(() => {
-    function initDatabase() {
-      if (isOnline) {
-        set(ref(db, "/gameState"), gameState);
-        set(ref(db, "/dice"), dice);
-        console.log("initializing...");
-      }
 
-      setIsInitialized(true);
+  function updateDb(diceState, mainState) {
+    if (isOnline) {
+      const betweenRoundRef = ref(db, "/betweenRound");
+      const gameStateRef = ref(db, `/gameState`);
+      const diceRef = ref(db, "/dice");
+      set(diceRef, diceState);
+      set(gameStateRef, mainState);
     }
-    initDatabase();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }
+  useEffect(() => {
+    // update DB whenever masterCount changes
+    updateDb(dice, gameState);
+  }, [masterCount]);
+
+  useEffect(() => {
+    if (!isOnline) {
+      return;
+    }
+    onValue(
+      ref(db, "/dice"),
+      (snapshot) => {
+        const data = snapshot.val();
+        setDice(data);
+      },
+      (error) => {
+        console.error("Error: ", error);
+      }
+    );
   }, []);
 
   useEffect(() => {
-    if (isOnline && isInitialized) {
-      const gameStateRef = ref(db, "/gameState");
-      const unsubscribe = onValue(gameStateRef, (snapshot) => {
-        const newGameState = snapshot.val();
-        if (newGameState != null) {
-          setGameState(newGameState);
-        }
-      });
-
-      return () => {
-        unsubscribe();
-      };
+    if (!isOnline) {
+      return;
     }
-  }, [isOnline, isInitialized]);
+    onValue(
+      ref(db, "/gameState"),
+      (snapshot) => {
+        const data = snapshot.val();
+        setGameState(data);
+      },
+      (error) => {
+        console.error("Error: ", error);
+      }
+    );
+  }, []);
 
-  useEffect(() => {
-    if (isOnline && isInitialized) {
-      set(ref(db, "/gameState"), gameState).catch((error) => {
-        console.error("Error updating gameState in database: ", error);
-      });
-    }
-  }, [gameState, isOnline, isInitialized]);
-
-  useEffect(() => {
-    if (isOnline && isInitialized) {
-      set(ref(db, "/dice"), dice).catch((error) => {
-        console.error("Error updating dice in database: ", error);
-      });
-    }
-  }, [dice, isOnline, isInitialized]);
-
-  // MAIN LOGIC // BUTTON CLICK //////////////////////////////////////////
+  // MAIN LOGIC FOR BUTTON CLICK //////////////////////////////////////////
 
   function handleButton() {
     handleDiceSpinAnimation();
@@ -92,12 +92,11 @@ function App() {
 
     if (betweenRound) {
       rollDice();
-      setBetweenRound(!betweenRound);
+      setGameState((prev) => ({ ...prev, betweenRound: false }));
       return;
     }
 
     if (allDiceLocked && !betweenRound) {
-      setBetweenRound(!betweenRound);
       unlockDice();
       setDice(generateDice);
       setGameState((prev) => ({
@@ -105,6 +104,7 @@ function App() {
         masterCount: prev.masterCount + (6 - rollCount),
         p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
         p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+        betweenRound: true,
       }));
     }
 
@@ -228,8 +228,8 @@ function App() {
       p1Score: 0,
       p2Score: 0,
       masterCount: 0,
+      betweenRound: false,
     });
-    setBetweenRound(false);
   }
 
   function handleDiceSpinAnimation() {
@@ -241,7 +241,7 @@ function App() {
   }
 
   // RETURN //////////////////////////////////////////////////
-  console.log("m:", masterCount, betweenRound);
+  console.log("m:", masterCount);
   return (
     <div className="App">
       {showMenu && <Menu />}
