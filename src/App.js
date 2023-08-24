@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
 import { generateDice } from "./utils";
-import Menu from "./components/Menu";
+import Settings from "./components/Settings";
 import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
 
@@ -12,7 +12,7 @@ function App() {
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [isOnline] = useState(true);
+  const [isOnline] = useState(false);
   const [gameState, setGameState] = useState({
     p1Score: 0,
     p2Score: 0,
@@ -37,25 +37,21 @@ function App() {
   const allDiceLocked = lockCount === 6;
 
   // FIREBASE /////////////////////////////////////////////////////
-
-  function updateDb(diceState, mainState) {
-    if (isOnline) {
-      const betweenRoundRef = ref(db, "/betweenRound");
-      const gameStateRef = ref(db, `/gameState`);
-      const diceRef = ref(db, "/dice");
-      set(diceRef, diceState);
-      set(gameStateRef, mainState);
-    }
-  }
   useEffect(() => {
     // update DB whenever masterCount changes
-    updateDb(dice, gameState);
+    if (isOnline) {
+      const gameStateRef = ref(db, `/gameState`);
+      const diceRef = ref(db, "/dice");
+      set(diceRef, dice);
+      set(gameStateRef, gameState);
+    }
   }, [masterCount]);
 
   useEffect(() => {
     if (!isOnline) {
       return;
     }
+    // fetch dice data
     onValue(
       ref(db, "/dice"),
       (snapshot) => {
@@ -72,11 +68,13 @@ function App() {
     if (!isOnline) {
       return;
     }
+    // fetch gameState data
     onValue(
       ref(db, "/gameState"),
       (snapshot) => {
         const data = snapshot.val();
         setGameState(data);
+        handleDiceSpinAnimation();
       },
       (error) => {
         console.error("Error: ", error);
@@ -244,13 +242,16 @@ function App() {
   console.log("m:", masterCount);
   return (
     <div className="App">
-      {showMenu && <Menu />}
+      {showMenu && <Settings />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}
         roundCount={roundCount}
         playerTurn={playerTurn}
         totalRounds={totalRounds}
+        menuClick={() => {
+          setShowMenu(!showMenu);
+        }}
       />
       <div>
         <p className="round-info">{messageText()}</p>

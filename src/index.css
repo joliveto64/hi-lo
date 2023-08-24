@@ -10,7 +10,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: whitesmoke;
   color: rgb(120, 120, 120);
 }
 
@@ -22,6 +21,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  background-color: whitesmoke;
 }
 
 .header {
@@ -55,6 +55,7 @@ body {
   font: inherit;
   cursor: pointer;
   margin: 0;
+  z-index: 1000;
 }
 
 .round {
@@ -189,7 +190,39 @@ body {
   animation: click 0.2s ease-in-out;
 }
 
-.charts {
+.settings {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 10;
+  background-color: whitesmoke;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.charts {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid darkgray;
+}
+
+.chart {
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  line-height: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.rules {
+  line-height: 2rem;
+  font-size: 1.2rem;
 }

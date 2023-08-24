@@ -21,7 +21,9 @@ export default function Header(props) {
             : props.totalRounds}
           /{props.totalRounds}
         </span>
-        <button className="gear-icon">⚙️</button>
+        <button onClick={props.menuClick} className="gear-icon">
+          ⚙️
+        </button>
       </div>
     </div>
   );
