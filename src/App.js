@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
 import { hiLoDieArray, hiTableData, loTableData } from "./data.js";
@@ -6,10 +6,13 @@ import { generateDice } from "./utils";
 import Settings from "./components/Settings";
 import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
+import Npc from "./components/Npc";
 
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
+
+  const [npc, setNpc] = useState(true);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isOnline] = useState(false);
@@ -115,8 +118,46 @@ function App() {
     }
   }
 
-  // FUNCTIONS ///////////////////////////////////////////////////////
+  // NPC LOGIC ////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (npc && playerTurn === 2 && lockCount < 6) {
+      handleNpc();
+    }
+  }, [npc, playerTurn]);
 
+  useEffect(() => {
+    if (npc && playerTurn === 2 && allDiceLocked) {
+      setTimeout(() => {
+        handleButton();
+      }, 1000);
+    }
+  }, [npc, playerTurn, allDiceLocked]);
+
+  function keepDie(die) {
+    if (die > 4) {
+      return true;
+    }
+  }
+
+  function handleNpc() {
+    if (!(npc && playerTurn === 2)) {
+      return;
+    }
+
+    setTimeout(() => {
+      handleButton();
+    }, 1000);
+
+    setDice((prevDice) =>
+      prevDice.map((die, i) =>
+        i === index && keepDie(die) ? { ...die, isLocked: true } : die
+      )
+    );
+
+    setTimeout(lockAll, 2000);
+  }
+
+  // FUNCTIONS ///////////////////////////////////////////////////////
   function rollDice() {
     setDice((prev) =>
       prev.map((die, index) => {
@@ -289,6 +330,7 @@ function App() {
       >
         {getButtonText()}
       </button>
+      <Npc npc={npc} gameState={gameState} dice={dice} />
     </div>
   );
 }

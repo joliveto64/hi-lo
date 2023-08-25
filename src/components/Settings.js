@@ -4,7 +4,9 @@ export default function Settings() {
       <div className="charts">
         <div className="chart">
           <h2>hi ↑</h2>
-          <p>dice = points</p>
+          <p>
+            <strong>dice / points</strong>
+          </p>
           <p>30 = 10</p>
           <p>29 = 8</p>
           <p>28 = 7</p>
@@ -17,7 +19,9 @@ export default function Settings() {
         </div>
         <div className="chart">
           <h2>lo ↓</h2>
-          <p>dice = points</p>
+          <p>
+            <strong className="points">dice / points</strong>
+          </p>
           <p>5 = 10</p>
           <p>6 = 8</p>
           <p>7 = 7</p>
