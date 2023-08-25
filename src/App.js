@@ -11,7 +11,8 @@ import Npc from "./components/Npc";
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
-
+  const [npcHasRolled, setNpcHasRolled] = useState(false);
+  const [npcHasLocked, setNpcHasLocked] = useState(false);
   const [npc, setNpc] = useState(true);
   const [isSpinning, setIsSpinning] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -119,42 +120,97 @@ function App() {
   }
 
   // NPC LOGIC ////////////////////////////////////////////////////////////
-  useEffect(() => {
-    if (npc && playerTurn === 2 && lockCount < 6) {
-      handleNpc();
-    }
-  }, [npc, playerTurn]);
 
   useEffect(() => {
-    if (npc && playerTurn === 2 && allDiceLocked) {
+    if (
+      npc &&
+      playerTurn === 2 &&
+      (allDiceLocked || lockCount === 0 || npcHasLocked)
+    ) {
       setTimeout(() => {
         handleButton();
+        setNpcHasRolled(true);
+        setNpcHasLocked(false);
       }, 1000);
     }
-  }, [npc, playerTurn, allDiceLocked]);
+  }, [npc, playerTurn, allDiceLocked, lockCount, npcHasLocked]);
+
+  useEffect(() => {
+    if (npc && playerTurn === 2 && !allDiceLocked && npcHasRolled) {
+      setTimeout(() => {
+        setDice((prevDice) =>
+          prevDice.map((die) =>
+            keepDie(die.value) && !die.isPermLocked
+              ? { ...die, isLocked: true }
+              : die
+          )
+        );
+        setNpcHasLocked(true);
+        setNpcHasRolled(false);
+      }, 1750);
+    }
+  }, [npc, playerTurn, allDiceLocked, npcHasRolled]);
 
   function keepDie(die) {
-    if (die > 4) {
+    let executed = false;
+    const hi = dice[5].value[1] === "↑";
+    const lo = dice[5].value[1] === "↓";
+    const hiLoNum = dice[5].value[0];
+    let goingHi = false;
+    let goingLo = false;
+    const counts = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+    };
+
+    for (let i = 0; i <= 4; i++) {
+      counts[dice[i].value]++;
+    }
+
+    if (counts[1] + counts[2] + counts[3] > counts[4] + counts[5] + counts[6]) {
+      goingLo = true;
+    } else {
+      goingHi = true;
+    }
+
+    console.log(die.length > 1);
+
+    if ((goingHi && die === 5) || (goingHi && die === 6)) {
+      return true;
+    } else if (
+      (goingHi && die === 4 && rollCount === 4) ||
+      (goingHi && die === 4 && lockCount < rollCount)
+    ) {
+      executed = true;
       return true;
     }
-  }
 
-  function handleNpc() {
-    if (!(npc && playerTurn === 2)) {
-      return;
+    if ((goingLo && die === 1) || (goingLo && die === 2)) {
+      return true;
+    } else if (
+      (goingLo && die === 3 && rollCount === 4) ||
+      (goingLo && die === 3 && lockCount < rollCount)
+    ) {
+      executed = true;
+      return true;
     }
 
-    setTimeout(() => {
-      handleButton();
-    }, 1000);
+    if (
+      (goingHi && hiLoNum >= 2 && hi && die.length > 1) ||
+      (goingLo && hiLoNum >= 2 && lo && die.length > 1)
+    ) {
+      return true;
+    }
 
-    setDice((prevDice) =>
-      prevDice.map((die, i) =>
-        i === index && keepDie(die) ? { ...die, isLocked: true } : die
-      )
-    );
+    if (rollCount === 5) {
+      return true;
+    }
 
-    setTimeout(lockAll, 2000);
+    return false;
   }
 
   // FUNCTIONS ///////////////////////////////////////////////////////
@@ -280,7 +336,6 @@ function App() {
   }
 
   // RETURN //////////////////////////////////////////////////
-  console.log("m:", masterCount);
   return (
     <div className="App">
       {showMenu && <Settings />}
