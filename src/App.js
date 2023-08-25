@@ -147,18 +147,17 @@ function App() {
         );
         setNpcHasLocked(true);
         setNpcHasRolled(false);
-      }, 2700);
+      }, 1750);
     }
   }, [npc, playerTurn, allDiceLocked, npcHasRolled]);
 
   function keepDie(die) {
-    const hi = dice[5].value[1] === "↑";
-    const lo = dice[5].value[1] === "↓";
-    const hiLoNum = dice[5].value[0];
     let goingHi = false;
     let goingLo = false;
-    let hiPoints = 0;
-    let loPoints = 0;
+    let hi = dice[5].value[1] === "↑";
+    let lo = dice[5].value[1] === "↓";
+    // let hiPoints = 0;
+    // let loPoints = 0;
     const totalCounts = {
       1: 0,
       2: 0,
@@ -175,19 +174,19 @@ function App() {
       5: 0,
       6: 0,
     };
-    const hiPointsChart = {
-      5: 1,
-      6: 2,
-      "3↑": 2,
-      "2↑": 1,
-    };
+    // const hiPointsChart = {
+    //   5: 1,
+    //   6: 2,
+    //   "3↑": 2,
+    //   "2↑": 1,
+    // };
 
-    const loPointsChart = {
-      1: 2,
-      2: 1,
-      "3↓": 2,
-      "2↓": 1,
-    };
+    // const loPointsChart = {
+    //   1: 2,
+    //   2: 1,
+    //   "3↓": 2,
+    //   "2↓": 1,
+    // };
 
     for (let i = 0; i <= 5; i++) {
       totalCounts[dice[i].value]++;
@@ -196,26 +195,33 @@ function App() {
         unlockedCounts[dice[i].value]++;
       }
 
-      hiPoints += hiPointsChart[dice[i].value] || 0;
-      loPoints += loPointsChart[dice[i].value] || 0;
+      // hiPoints += hiPointsChart[dice[i].value] || 0;
+      // loPoints += loPointsChart[dice[i].value] || 0;
     }
 
-    console.log(hiPoints, loPoints);
-
-    if (hiPoints > loPoints) {
-      goingHi = true;
-    } else {
+    if (
+      totalCounts[1] * 3 + totalCounts[2] * 2 + totalCounts[3] >
+      totalCounts[4] + totalCounts[5] * 2 + totalCounts[6] * 3
+    ) {
       goingLo = true;
+    } else {
+      goingHi = true;
     }
+
+    // console.log(
+    //   totalCounts[1] * 3 + totalCounts[2] * 2 + totalCounts[3],
+    //   totalCounts[4] + totalCounts[5] * 2 + totalCounts[6] * 3
+    // );
+
+    console.log(unlockedCounts[5] + unlockedCounts[6]);
 
     if ((goingHi && die === 5) || (goingHi && die === 6)) {
       return true;
     } else if (
-      (goingHi && die === 4 && rollCount === 4) ||
-      (goingHi &&
-        die === 4 &&
-        lockCount < rollCount &&
-        unlockedCounts[5] + unlockedCounts[6] === 0)
+      goingHi &&
+      die === 4 &&
+      (rollCount === 4 ||
+        (lockCount < rollCount && unlockedCounts[5] + unlockedCounts[6] === 0))
     ) {
       return true;
     }
@@ -232,11 +238,11 @@ function App() {
       return true;
     }
 
-    if (goingHi && hiLoNum >= 2 && hi && die === "3↑") {
+    if (goingHi && (die === "3↑" || die === "2↑")) {
       return true;
     }
 
-    if (goingLo && hiLoNum >= 2 && lo && die === "3↓") {
+    if (goingLo && (die === "3↓" || die === "2↓")) {
       return true;
     }
 
