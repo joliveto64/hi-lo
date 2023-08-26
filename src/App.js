@@ -131,7 +131,7 @@ function App() {
         handleButton();
         setNpcHasRolled(true);
         setNpcHasLocked(false);
-      }, 1000);
+      }, 750);
     }
   }, [npc, playerTurn, allDiceLocked, lockCount, npcHasLocked]);
 
@@ -147,7 +147,7 @@ function App() {
         );
         setNpcHasLocked(true);
         setNpcHasRolled(false);
-      }, 1750);
+      }, 1250);
     }
   }, [npc, playerTurn, allDiceLocked, npcHasRolled]);
 
@@ -173,51 +173,72 @@ function App() {
     }
 
     if (
-      totalCounts[1] * 3 +
-        totalCounts[2] * 2 +
-        totalCounts[3] +
-        totalCounts["2↓"] * 2 +
-        totalCounts["3↓"] * 4 >=
-      totalCounts[4] +
-        totalCounts[5] * 2 +
-        totalCounts[6] * 3 +
-        totalCounts["2↑"] * 2 +
-        totalCounts["3↑"] * 4
+      goingLo
+        ? 10
+        : 0 +
+            totalCounts[1] * 3 +
+            totalCounts[2] * 2 +
+            totalCounts[3] +
+            totalCounts["2↓"] * 2 +
+            totalCounts["3↓"] * 3 >=
+          goingHi
+        ? 10
+        : 0 +
+          totalCounts[4] +
+          totalCounts[5] * 2 +
+          totalCounts[6] * 3 +
+          totalCounts["2↑"] * 2 +
+          totalCounts["3↑"] * 3
     ) {
       goingLo = true;
     } else {
       goingHi = true;
     }
 
-    console.log(goingHi, goingLo);
+    console.log(rollCount);
 
     if ((goingHi && die === 5) || (goingHi && die === 6)) {
       return true;
-    }
-
-    if ((goingLo && die === 1) || (goingLo && die === 2)) {
+    } else if ((goingLo && die === 1) || (goingLo && die === 2)) {
       return true;
     }
 
     if (goingHi && (die === "3↑" || die === "2↑")) {
       return true;
-    }
-
-    if (goingLo && (die === "3↓" || die === "2↓")) {
+    } else if (goingLo && (die === "3↓" || die === "2↓")) {
       return true;
     }
 
-    if (lockCount < rollCount && lockCount === 0 && die === 3 && goingLo) {
+    if (
+      lockCount < rollCount &&
+      die === 3 &&
+      goingLo &&
+      totalCounts[1] === 0 &&
+      totalCounts[2] === 0
+    ) {
       return true;
     }
 
-    if (lockCount < rollCount && lockCount === 0 && die === 4 && goingHi) {
+    if (
+      lockCount < rollCount &&
+      die === 4 &&
+      goingHi &&
+      totalCounts[5] === 0 &&
+      totalCounts[6] === 0
+    ) {
+      return true;
+    }
+
+    if (rollCount === 4 && goingHi && (die === 4 || die === "1↑")) {
+      return true;
+    } else if (rollCount === 4 && goingLo && (die === 3 || die === "1↓")) {
       return true;
     }
 
     if (rollCount === 5) {
       return true;
     }
+
     return false;
   }
 
