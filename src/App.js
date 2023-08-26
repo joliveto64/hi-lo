@@ -153,8 +153,8 @@ function App() {
 
   function keepDie(die) {
     const randomNum = Math.floor(Math.random() * 2);
-    let goingHi = false; // add to state
-    let goingLo = false; // add to state
+    let goingHi = false;
+    let goingLo = false;
     const totalCounts = {
       1: 0,
       2: 0,
@@ -177,17 +177,19 @@ function App() {
         totalCounts[2] * 2 +
         totalCounts[3] +
         totalCounts["2↓"] * 2 +
-        totalCounts["3↓"] * 3 >=
+        totalCounts["3↓"] * 4 >=
       totalCounts[4] +
         totalCounts[5] * 2 +
         totalCounts[6] * 3 +
         totalCounts["2↑"] * 2 +
-        totalCounts["3↑"] * 3
+        totalCounts["3↑"] * 4
     ) {
       goingLo = true;
     } else {
       goingHi = true;
     }
+
+    console.log(goingHi, goingLo);
 
     if ((goingHi && die === 5) || (goingHi && die === 6)) {
       return true;
