@@ -174,7 +174,7 @@ function App() {
 
     if (
       goingLo
-        ? 10
+        ? 5
         : 0 +
             totalCounts[1] * 3 +
             totalCounts[2] * 2 +
@@ -182,7 +182,7 @@ function App() {
             totalCounts["2↓"] * 2 +
             totalCounts["3↓"] * 3 >=
           goingHi
-        ? 10
+        ? 5
         : 0 +
           totalCounts[4] +
           totalCounts[5] * 2 +
@@ -194,8 +194,6 @@ function App() {
     } else {
       goingHi = true;
     }
-
-    console.log(rollCount);
 
     if ((goingHi && die === 5) || (goingHi && die === 6)) {
       return true;
@@ -210,21 +208,21 @@ function App() {
     }
 
     if (
-      lockCount < rollCount &&
       die === 3 &&
       goingLo &&
       totalCounts[1] === 0 &&
-      totalCounts[2] === 0
+      totalCounts[2] === 0 &&
+      totalCounts["2↓"] === 0 &&
+      totalCounts["3↓"] === 0
     ) {
       return true;
-    }
-
-    if (
-      lockCount < rollCount &&
+    } else if (
       die === 4 &&
       goingHi &&
       totalCounts[5] === 0 &&
-      totalCounts[6] === 0
+      totalCounts[6] === 0 &&
+      totalCounts["2↑"] === 0 &&
+      totalCounts["3↑"] === 0
     ) {
       return true;
     }
