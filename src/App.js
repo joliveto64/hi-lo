@@ -138,9 +138,25 @@ function App() {
   useEffect(() => {
     if (npc && playerTurn === 2 && !allDiceLocked && npcHasRolled) {
       setTimeout(() => {
+        const totalCounts = {
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
+          6: 0,
+          "3↑": 0,
+          "2↑": 0,
+          "3↓": 0,
+          "2↓": 0,
+        };
+
+        for (let i = 0; i <= 5; i++) {
+          totalCounts[dice[i].value]++;
+        }
         setDice((prevDice) =>
           prevDice.map((die) =>
-            keepDie(die.value) && !die.isPermLocked
+            keepDie(die.value, totalCounts) && !die.isPermLocked
               ? { ...die, isLocked: true }
               : die
           )
@@ -151,90 +167,73 @@ function App() {
     }
   }, [npc, playerTurn, allDiceLocked, npcHasRolled]);
 
-  function keepDie(die) {
-    const randomNum = Math.floor(Math.random() * 2);
+  function keepDie(die, totalCounts) {
     let goingHi = false;
     let goingLo = false;
-    const totalCounts = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-      "3↑": 0,
-      "2↑": 0,
-      "3↓": 0,
-      "2↓": 0,
-    };
-
-    for (let i = 0; i <= 5; i++) {
-      totalCounts[dice[i].value]++;
-    }
 
     let loScore =
       totalCounts[1] * 3 +
       totalCounts[2] * 2 +
-      totalCounts[3] +
       totalCounts["2↓"] * 2 +
       totalCounts["3↓"] * 3;
 
     let hiScore =
-      totalCounts[4] +
       totalCounts[5] * 2 +
       totalCounts[6] * 3 +
       totalCounts["2↑"] * 2 +
       totalCounts["3↑"] * 3;
 
-    if ((goingLo ? 5 : 0) + loScore >= (goingHi ? 5 : 0) + hiScore) {
+    console.log();
+
+    if ((goingLo ? 10 : 0) + loScore >= (goingHi ? 10 : 0) + hiScore) {
       goingLo = true;
     } else {
       goingHi = true;
     }
 
-    if ((goingHi && die === 5) || (goingHi && die === 6)) {
-      return true;
-    } else if ((goingLo && die === 1) || (goingLo && die === 2)) {
-      return true;
+    if (goingHi) {
+      if (rollCount === 1) {
+        if (
+          die === 4 &&
+          totalCounts[6] === 0 &&
+          totalCounts[5] === 0 &&
+          totalCounts["3↑"] === 0 &&
+          totalCounts["2↑"] === 0
+        ) {
+          return true;
+        }
+      }
+
+      if (die === 5 || die === 6 || die === "3↑" || die === "2↑") {
+        return true;
+      } else if (die === 4 && lockCount < rollCount && rollCount > 1) {
+        return true;
+      }
     }
 
-    if (goingHi && (die === "3↑" || die === "2↑")) {
-      return true;
-    } else if (goingLo && (die === "3↓" || die === "2↓")) {
-      return true;
-    }
+    if (goingLo) {
+      if (rollCount === 1) {
+        if (
+          die === 3 &&
+          totalCounts[1] === 0 &&
+          totalCounts[2] === 0 &&
+          totalCounts["3↓"] === 0 &&
+          totalCounts["2↓"] === 0
+        ) {
+          return true;
+        }
+      }
 
-    if (
-      die === 3 &&
-      goingLo &&
-      totalCounts[1] === 0 &&
-      totalCounts[2] === 0 &&
-      totalCounts["2↓"] === 0 &&
-      totalCounts["3↓"] === 0
-    ) {
-      return true;
-    } else if (
-      die === 4 &&
-      goingHi &&
-      totalCounts[5] === 0 &&
-      totalCounts[6] === 0 &&
-      totalCounts["2↑"] === 0 &&
-      totalCounts["3↑"] === 0
-    ) {
-      return true;
-    }
-
-    if (rollCount === 4 && goingHi && (die === 4 || die === "1↑")) {
-      return true;
-    } else if (rollCount === 4 && goingLo && (die === 3 || die === "1↓")) {
-      return true;
+      if (die === 1 || die === 2 || die === "3↓" || die === "2↓") {
+        return true;
+      } else if (die === 3 && lockCount < rollCount && rollCount > 1) {
+        return true;
+      }
     }
 
     if (rollCount === 5) {
       return true;
     }
-
-    return false;
   }
 
   // FUNCTIONS ///////////////////////////////////////////////////////
@@ -254,9 +253,11 @@ function App() {
               Math.ceil(Math.random() * 3) +
               hiLoDieArray[Math.floor(Math.random() * 2)],
           };
-        }
-        if (!die.isPermLocked) {
-          return { ...die, value: Math.ceil(Math.random() * 6) };
+        } else if (!die.isPermLocked) {
+          return {
+            ...die,
+            value: Math.ceil(Math.random() * 6),
+          };
         }
         return die;
       })
