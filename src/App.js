@@ -174,16 +174,16 @@ function App() {
     let loScore =
       totalCounts[1] * 3 +
       totalCounts[2] * 2 +
+      totalCounts[3] +
       totalCounts["2↓"] * 2 +
       totalCounts["3↓"] * 3;
 
     let hiScore =
+      totalCounts[4] +
       totalCounts[5] * 2 +
       totalCounts[6] * 3 +
       totalCounts["2↑"] * 2 +
       totalCounts["3↑"] * 3;
-
-    console.log();
 
     if ((goingLo ? 10 : 0) + loScore >= (goingHi ? 10 : 0) + hiScore) {
       goingLo = true;
@@ -191,42 +191,32 @@ function App() {
       goingHi = true;
     }
 
-    if (goingHi) {
-      if (rollCount === 1) {
-        if (
-          die === 4 &&
-          totalCounts[6] === 0 &&
-          totalCounts[5] === 0 &&
-          totalCounts["3↑"] === 0 &&
-          totalCounts["2↑"] === 0
-        ) {
-          return true;
-        }
-      }
+    console.log(totalCounts);
 
+    if (goingHi) {
       if (die === 5 || die === 6 || die === "3↑" || die === "2↑") {
         return true;
-      } else if (die === 4 && lockCount < rollCount && rollCount > 1) {
+      } else if (
+        die === 4 &&
+        totalCounts[5] === 0 &&
+        totalCounts[6] === 0 &&
+        totalCounts["3↑"] === 0 &&
+        totalCounts["2↑"] === 0
+      ) {
         return true;
       }
     }
 
     if (goingLo) {
-      if (rollCount === 1) {
-        if (
-          die === 3 &&
-          totalCounts[1] === 0 &&
-          totalCounts[2] === 0 &&
-          totalCounts["3↓"] === 0 &&
-          totalCounts["2↓"] === 0
-        ) {
-          return true;
-        }
-      }
-
       if (die === 1 || die === 2 || die === "3↓" || die === "2↓") {
         return true;
-      } else if (die === 3 && lockCount < rollCount && rollCount > 1) {
+      } else if (
+        die === 3 &&
+        totalCounts[1] === 0 &&
+        totalCounts[2] === 0 &&
+        totalCounts["2↓"] === 0 &&
+        totalCounts["3↓"] === 0
+      ) {
         return true;
       }
     }
