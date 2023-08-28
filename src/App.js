@@ -11,12 +11,7 @@ import Npc from "./components/Npc";
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [dice, setDice] = useState(generateDice);
-  const [npcHasRolled, setNpcHasRolled] = useState(false);
-  const [npcHasLocked, setNpcHasLocked] = useState(false);
-  const [npc, setNpc] = useState(true);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
-  const [isOnline] = useState(false);
   const [gameState, setGameState] = useState({
     p1Score: 0,
     p2Score: 0,
@@ -24,8 +19,17 @@ function App() {
     betweenRound: false,
   });
 
+  const [showMenu, setShowMenu] = useState(false);
+  const [isOnline] = useState(false);
+  const [npcState, setNpcState] = useState({
+    hasRolled: false,
+    hasLocked: false,
+    isActive: true,
+  });
+
   // CONSTANTS/DERIVED STATES ///////////////////////////////////////
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
+  const { hasRolled, hasLocked, isActive } = npcState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
@@ -123,106 +127,86 @@ function App() {
 
   useEffect(() => {
     if (
-      npc &&
+      isActive &&
       playerTurn === 2 &&
-      (allDiceLocked || lockCount === 0 || npcHasLocked)
+      (allDiceLocked || lockCount === 0 || hasLocked)
     ) {
       setTimeout(() => {
         handleButton();
-        setNpcHasRolled(true);
-        setNpcHasLocked(false);
+        setNpcState((prev) => ({ ...prev, hasRolled: true, hasLocked: false }));
       }, 750);
     }
-  }, [npc, playerTurn, allDiceLocked, lockCount, npcHasLocked]);
+  }, [isActive, playerTurn, allDiceLocked, lockCount, hasLocked]);
 
   useEffect(() => {
-    if (npc && playerTurn === 2 && !allDiceLocked && npcHasRolled) {
+    if (isActive && playerTurn === 2 && !allDiceLocked && hasRolled) {
       setTimeout(() => {
-        const totalCounts = {
-          1: 0,
-          2: 0,
-          3: 0,
-          4: 0,
-          5: 0,
-          6: 0,
-          "3↑": 0,
-          "2↑": 0,
-          "3↓": 0,
-          "2↓": 0,
-        };
-
-        for (let i = 0; i <= 5; i++) {
-          totalCounts[dice[i].value]++;
-        }
         setDice((prevDice) =>
           prevDice.map((die) =>
-            keepDie(die.value, totalCounts) && !die.isPermLocked
+            keepDie(die.value) && !die.isPermLocked
               ? { ...die, isLocked: true }
               : die
           )
         );
-        setNpcHasLocked(true);
-        setNpcHasRolled(false);
+        setNpcState((prev) => ({ ...prev, hasLocked: true, hasRolled: false }));
       }, 1250);
     }
-  }, [npc, playerTurn, allDiceLocked, npcHasRolled]);
+  }, [isActive, playerTurn, allDiceLocked, hasRolled]);
 
-  function keepDie(die, totalCounts) {
-    let goingHi = false;
-    let goingLo = false;
+  function keepDie(die) {
+    const totalCounts = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      "3↑": 0,
+      "2↑": 0,
+      "1↑": 0,
+      "3↓": 0,
+      "2↓": 0,
+      "1↓": 0,
+    };
+
+    for (let i = 0; i <= 5; i++) {
+      totalCounts[dice[i].value]++;
+    }
 
     let loScore =
-      totalCounts[1] * 3 +
-      totalCounts[2] * 2 +
-      totalCounts[3] +
-      totalCounts["2↓"] * 2 +
-      totalCounts["3↓"] * 3;
+      totalCounts[1] * (rollCount === 1 ? 6 : 3) +
+      totalCounts[2] * (rollCount === 1 ? 4 : 2) +
+      totalCounts["2↓"] * (rollCount === 1 ? 4 : 2) +
+      totalCounts["3↓"] * (rollCount === 1 ? 6 : 3);
 
     let hiScore =
-      totalCounts[4] +
-      totalCounts[5] * 2 +
-      totalCounts[6] * 3 +
-      totalCounts["2↑"] * 2 +
-      totalCounts["3↑"] * 3;
+      totalCounts[5] * (rollCount === 1 ? 4 : 2) +
+      totalCounts[6] * (rollCount === 1 ? 6 : 3) +
+      totalCounts["2↑"] * (rollCount === 1 ? 4 : 2) +
+      totalCounts["3↑"] * (rollCount === 1 ? 6 : 3);
 
-    if ((goingLo ? 10 : 0) + loScore >= (goingHi ? 10 : 0) + hiScore) {
-      goingLo = true;
-    } else {
-      goingHi = true;
-    }
+    let goingHi = hiScore > loScore;
 
-    console.log(totalCounts);
-
-    if (goingHi) {
-      if (die === 5 || die === 6 || die === "3↑" || die === "2↑") {
-        return true;
-      } else if (
-        die === 4 &&
-        totalCounts[5] === 0 &&
-        totalCounts[6] === 0 &&
-        totalCounts["3↑"] === 0 &&
-        totalCounts["2↑"] === 0
-      ) {
-        return true;
-      }
-    }
-
-    if (goingLo) {
-      if (die === 1 || die === 2 || die === "3↓" || die === "2↓") {
-        return true;
-      } else if (
-        die === 3 &&
-        totalCounts[1] === 0 &&
-        totalCounts[2] === 0 &&
-        totalCounts["2↓"] === 0 &&
-        totalCounts["3↓"] === 0
-      ) {
-        return true;
-      }
+    if (
+      goingHi &&
+      (die === 4 || die === 5 || die === 6 || die === "3↑" || die === "2↑")
+    ) {
+      return true;
+    } else if (
+      !goingHi &&
+      (die === 1 || die === 2 || die === 3 || die === "3↓" || die === "2↓")
+    ) {
+      return true;
     }
 
     if (rollCount === 5) {
       return true;
+    }
+
+    if (lockCount < rollCount && rollCount > 1) {
+      if ((goingHi && die <= 4) || (!goingHi && die >= 3)) {
+        return true;
+      }
     }
   }
 
@@ -340,6 +324,7 @@ function App() {
       masterCount: 0,
       betweenRound: false,
     });
+    setNpcState((prev) => ({ ...prev, hasRolled: false, hasLocked: false }));
   }
 
   function handleDiceSpinAnimation() {
@@ -400,7 +385,7 @@ function App() {
       >
         {getButtonText()}
       </button>
-      <Npc npc={npc} gameState={gameState} dice={dice} />
+      <Npc npc={isActive} gameState={gameState} dice={dice} />
     </div>
   );
 }
