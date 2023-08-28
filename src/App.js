@@ -172,24 +172,21 @@ function App() {
       totalCounts[dice[i].value]++;
     }
 
-    if (
-      goingLo
-        ? 5
-        : 0 +
-            totalCounts[1] * 3 +
-            totalCounts[2] * 2 +
-            totalCounts[3] +
-            totalCounts["2↓"] * 2 +
-            totalCounts["3↓"] * 3 >=
-          goingHi
-        ? 5
-        : 0 +
-          totalCounts[4] +
-          totalCounts[5] * 2 +
-          totalCounts[6] * 3 +
-          totalCounts["2↑"] * 2 +
-          totalCounts["3↑"] * 3
-    ) {
+    let loScore =
+      totalCounts[1] * 3 +
+      totalCounts[2] * 2 +
+      totalCounts[3] +
+      totalCounts["2↓"] * 2 +
+      totalCounts["3↓"] * 3;
+
+    let hiScore =
+      totalCounts[4] +
+      totalCounts[5] * 2 +
+      totalCounts[6] * 3 +
+      totalCounts["2↑"] * 2 +
+      totalCounts["3↑"] * 3;
+
+    if ((goingLo ? 5 : 0) + loScore >= (goingHi ? 5 : 0) + hiScore) {
       goingLo = true;
     } else {
       goingHi = true;
