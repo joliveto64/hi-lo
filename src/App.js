@@ -148,81 +148,121 @@ function App() {
   }, [npcIsActive, playerTurn, allDiceLocked, hasRolled]);
 
   function keepDie() {
+    let goingHi = false;
+    let goingLo = false;
+    let flagToEndRoll = false;
     const newDice = [...dice];
-    const totalCounts = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-      "3↑": 0,
-      "2↑": 0,
-      "1↑": 0,
-      "3↓": 0,
-      "2↓": 0,
-      "1↓": 0,
-    };
+
+    function createTotalsObject() {
+      return {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        "3↑": 0,
+        "2↑": 0,
+        "1↑": 0,
+        "3↓": 0,
+        "2↓": 0,
+        "1↓": 0,
+      };
+    }
+
+    let totals = createTotalsObject();
+    let totalsUnlocked = createTotalsObject();
+    let totalsPermLocked = createTotalsObject();
 
     for (let i = 0; i < newDice.length; i++) {
-      totalCounts[newDice[i].value]++;
+      totals[newDice[i].value]++;
+
+      if (!newDice[i].isPermLocked) {
+        totalsUnlocked[newDice[i].value]++;
+      }
+
+      if (newDice[i].isPermLocked) {
+        totalsPermLocked[newDice[i].value]++;
+      }
     }
 
     let loScore =
-      totalCounts[1] * 2 +
-      totalCounts[2] * 1 +
-      totalCounts["2↓"] * 1 +
-      totalCounts["3↓"] * 2;
+      totals[1] * 5 +
+      totalsPermLocked[1] * 10 +
+      totals[2] * 3 +
+      totalsPermLocked[2] * 6 +
+      totals[3] +
+      totals["2↓"] * 3 +
+      totalsPermLocked["2↓"] * 6 +
+      totals["3↓"] * 5 +
+      totalsPermLocked["3↓"] * 10;
 
     let hiScore =
-      totalCounts[5] * 1 +
-      totalCounts[6] * 2 +
-      totalCounts["2↑"] * 1 +
-      totalCounts["3↑"] * 2;
+      totals[4] +
+      totals[5] * 3 +
+      totalsPermLocked[5] * 6 +
+      totals[6] * 5 +
+      totalsPermLocked[6] * 10 +
+      totals["2↑"] * 3 +
+      totalsPermLocked["2↑"] * 6 +
+      totals["3↑"] * 5 +
+      totalsPermLocked["3↑"] * 10;
 
-    let goingHi = hiScore > loScore;
+    if (loScore >= hiScore) {
+      goingLo = true;
+    } else {
+      goingHi = true;
+    }
+
+    console.log(hiScore, loScore);
 
     for (let i = 0; i < newDice.length; i++) {
       let die = newDice[i];
       let value = newDice[i].value;
 
       if (!die.isPermLocked) {
-        if (
-          goingHi &&
-          (value === 5 || value === 6 || value === "3↑" || value === "2↑")
-        ) {
-          die.isLocked = true;
-          continue;
-        } else if (
-          goingHi &&
-          value === 4 &&
-          totalCounts[5] === 0 &&
-          totalCounts[6] === 0 &&
-          totalCounts["2↑"] === 0 &&
-          totalCounts["3↑"] === 0 &&
-          lockCount < rollCount
-        ) {
-          die.isLocked = true;
-          continue;
+        if (goingHi) {
+          if (value === 5 || value === 6 || value === "3↑" || value === "2↑") {
+            die.isLocked = true;
+            continue;
+          } else if (rollCount >= 4 && (value === 4 || value === "1↑")) {
+            die.isLocked = true;
+            continue;
+          } else if (
+            value === 4 &&
+            totalsUnlocked[5] === 0 &&
+            totalsUnlocked[6] === 0 &&
+            totalsUnlocked["2↑"] === 0 &&
+            totalsUnlocked["3↑"] === 0 &&
+            lockCount < rollCount &&
+            !flagToEndRoll
+          ) {
+            die.isLocked = true;
+            flagToEndRoll = true;
+            continue;
+          }
         }
 
-        if (
-          !goingHi &&
-          (value === 1 || value === 2 || value === "3↓" || value === "2↓")
-        ) {
-          die.isLocked = true;
-          continue;
-        } else if (
-          !goingHi &&
-          value === 3 &&
-          totalCounts[1] === 0 &&
-          totalCounts[2] === 0 &&
-          totalCounts["2↓"] === 0 &&
-          totalCounts["3↓"] === 0 &&
-          lockCount < rollCount
-        ) {
-          die.isLocked = true;
-          continue;
+        if (goingLo) {
+          if (value === 1 || value === 2 || value === "3↓" || value === "2↓") {
+            die.isLocked = true;
+            continue;
+          } else if (rollCount >= 4 && (value === 3 || value === "1↓")) {
+            die.isLocked = true;
+            continue;
+          } else if (
+            value === 3 &&
+            totalsUnlocked[1] === 0 &&
+            totalsUnlocked[2] === 0 &&
+            totalsUnlocked["2↓"] === 0 &&
+            totalsUnlocked["3↓"] === 0 &&
+            lockCount < rollCount &&
+            !flagToEndRoll
+          ) {
+            die.isLocked = true;
+            flagToEndRoll = true;
+            continue;
+          }
         }
 
         if (rollCount === 5) {
