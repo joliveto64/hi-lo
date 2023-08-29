@@ -23,13 +23,13 @@ function App() {
   const [isOnline] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
-    hasLocked: false,
-    isActive: true,
+    hasLocked: true,
+    npcIsActive: true,
   });
 
   // CONSTANTS/DERIVED STATES ///////////////////////////////////////
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
-  const { hasRolled, hasLocked, isActive } = npcState;
+  const { hasRolled, hasLocked, npcIsActive } = npcState;
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
@@ -124,37 +124,36 @@ function App() {
   }
 
   // NPC LOGIC ////////////////////////////////////////////////////////////
+  // useEffect(() =>{
+  //   if (playerTurn === 2 && npcIsActive)
+  // }, [playerTurn, npcIsActive])
 
   useEffect(() => {
-    if (
-      isActive &&
-      playerTurn === 2 &&
-      (allDiceLocked || lockCount === 0 || hasLocked)
-    ) {
-      setTimeout(() => {
+    let timeoutId;
+    if (npcIsActive && playerTurn === 2 && hasLocked) {
+      console.log("useEffct-handleButton", gameState);
+      timeoutId = setTimeout(() => {
         handleButton();
         setNpcState((prev) => ({ ...prev, hasRolled: true, hasLocked: false }));
       }, 750);
     }
-  }, [isActive, playerTurn, allDiceLocked, lockCount, hasLocked]);
+    return () => clearTimeout(timeoutId);
+  }, [npcIsActive, playerTurn, hasLocked]);
 
   useEffect(() => {
-    if (isActive && playerTurn === 2 && !allDiceLocked && hasRolled) {
-      setTimeout(() => {
-        setDice((prevDice) =>
-          prevDice.map((die) =>
-            keepDie(die.value) && !die.isPermLocked
-              ? { ...die, isLocked: true }
-              : die
-          )
-        );
-
+    let timeoutId;
+    if (npcIsActive && playerTurn === 2 && !allDiceLocked && hasRolled) {
+      console.log("useEffect-keepDie", gameState);
+      timeoutId = setTimeout(() => {
+        keepDie();
         setNpcState((prev) => ({ ...prev, hasLocked: true, hasRolled: false }));
       }, 1250);
     }
-  }, [isActive, playerTurn, allDiceLocked, hasRolled]);
+    return () => clearTimeout(timeoutId);
+  }, [npcIsActive, playerTurn, allDiceLocked, hasRolled]);
 
-  function keepDie(die) {
+  function keepDie() {
+    const newDice = [...dice];
     const totalCounts = {
       1: 0,
       2: 0,
@@ -170,45 +169,61 @@ function App() {
       "1↓": 0,
     };
 
-    for (let i = 0; i <= 5; i++) {
-      totalCounts[dice[i].value]++;
+    for (let i = 0; i < newDice.length; i++) {
+      totalCounts[newDice[i].value]++;
     }
 
     let loScore =
-      totalCounts[1] * (rollCount === 1 ? 6 : 3) +
-      totalCounts[2] * (rollCount === 1 ? 4 : 2) +
-      totalCounts["2↓"] * (rollCount === 1 ? 4 : 2) +
-      totalCounts["3↓"] * (rollCount === 1 ? 6 : 3);
+      totalCounts[1] * 2 +
+      totalCounts[2] * 1 +
+      totalCounts["2↓"] * 1 +
+      totalCounts["3↓"] * 2;
 
     let hiScore =
-      totalCounts[5] * (rollCount === 1 ? 4 : 2) +
-      totalCounts[6] * (rollCount === 1 ? 6 : 3) +
-      totalCounts["2↑"] * (rollCount === 1 ? 4 : 2) +
-      totalCounts["3↑"] * (rollCount === 1 ? 6 : 3);
+      totalCounts[5] * 1 +
+      totalCounts[6] * 2 +
+      totalCounts["2↑"] * 1 +
+      totalCounts["3↑"] * 2;
 
     let goingHi = hiScore > loScore;
 
-    if (
-      goingHi &&
-      (die === 4 || die === 5 || die === 6 || die === "3↑" || die === "2↑")
-    ) {
-      return true;
-    } else if (
-      !goingHi &&
-      (die === 1 || die === 2 || die === 3 || die === "3↓" || die === "2↓")
-    ) {
-      return true;
-    }
+    for (let i = 0; i < newDice.length; i++) {
+      let die = newDice[i];
+      let value = newDice[i].value;
 
-    if (rollCount === 5) {
-      return true;
-    }
+      if (!die.isPermLocked) {
+        if (
+          goingHi &&
+          (value === 4 ||
+            value === 5 ||
+            value === 6 ||
+            value === "3↑" ||
+            value === "2↑")
+        ) {
+          die.isLocked = true;
+          continue;
+        }
 
-    if (lockCount < rollCount && rollCount > 1) {
-      if ((goingHi && die <= 4) || (!goingHi && die >= 3)) {
-        return true;
+        if (
+          !goingHi &&
+          (value === 1 ||
+            value === 2 ||
+            value === 3 ||
+            value === "3↓" ||
+            value === "2↓")
+        ) {
+          die.isLocked = true;
+          continue;
+        }
+
+        if (rollCount === 5) {
+          die.isLocked = true;
+          continue;
+        }
       }
     }
+
+    setDice(newDice);
   }
 
   // FUNCTIONS ///////////////////////////////////////////////////////
@@ -325,7 +340,7 @@ function App() {
       masterCount: 0,
       betweenRound: false,
     });
-    setNpcState((prev) => ({ ...prev, hasRolled: false, hasLocked: false }));
+    setNpcState((prev) => ({ ...prev, hasRolled: false, hasLocked: true }));
   }
 
   function handleDiceSpinAnimation() {
@@ -386,7 +401,7 @@ function App() {
       >
         {getButtonText()}
       </button>
-      <Npc npc={isActive} gameState={gameState} dice={dice} />
+      <Npc npc={npcIsActive} gameState={gameState} dice={dice} />
     </div>
   );
 }
