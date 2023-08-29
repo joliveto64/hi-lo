@@ -148,6 +148,7 @@ function App() {
               : die
           )
         );
+
         setNpcState((prev) => ({ ...prev, hasLocked: true, hasRolled: false }));
       }, 1250);
     }
