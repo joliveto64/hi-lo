@@ -194,8 +194,8 @@ function App() {
       totals[3] +
       totals["2↓"] * 3 +
       totalsPermLocked["2↓"] * 6 +
-      totals["3↓"] * 5 +
-      totalsPermLocked["3↓"] * 10;
+      totals["3↓"] * 10 +
+      totalsPermLocked["3↓"] * 20;
 
     let hiScore =
       totals[4] +
@@ -205,8 +205,8 @@ function App() {
       totalsPermLocked[6] * 10 +
       totals["2↑"] * 3 +
       totalsPermLocked["2↑"] * 6 +
-      totals["3↑"] * 5 +
-      totalsPermLocked["3↑"] * 10;
+      totals["3↑"] * 10 +
+      totalsPermLocked["3↑"] * 20;
 
     if (loScore >= hiScore) {
       goingLo = true;
