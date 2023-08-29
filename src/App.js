@@ -124,14 +124,10 @@ function App() {
   }
 
   // NPC LOGIC ////////////////////////////////////////////////////////////
-  // useEffect(() =>{
-  //   if (playerTurn === 2 && npcIsActive)
-  // }, [playerTurn, npcIsActive])
 
   useEffect(() => {
     let timeoutId;
     if (npcIsActive && playerTurn === 2 && hasLocked) {
-      console.log("useEffct-handleButton", gameState);
       timeoutId = setTimeout(() => {
         handleButton();
         setNpcState((prev) => ({ ...prev, hasRolled: true, hasLocked: false }));
@@ -143,11 +139,10 @@ function App() {
   useEffect(() => {
     let timeoutId;
     if (npcIsActive && playerTurn === 2 && !allDiceLocked && hasRolled) {
-      console.log("useEffect-keepDie", gameState);
       timeoutId = setTimeout(() => {
         keepDie();
         setNpcState((prev) => ({ ...prev, hasLocked: true, hasRolled: false }));
-      }, 1250);
+      }, 1000);
     }
     return () => clearTimeout(timeoutId);
   }, [npcIsActive, playerTurn, allDiceLocked, hasRolled]);
@@ -194,11 +189,18 @@ function App() {
       if (!die.isPermLocked) {
         if (
           goingHi &&
-          (value === 4 ||
-            value === 5 ||
-            value === 6 ||
-            value === "3↑" ||
-            value === "2↑")
+          (value === 5 || value === 6 || value === "3↑" || value === "2↑")
+        ) {
+          die.isLocked = true;
+          continue;
+        } else if (
+          goingHi &&
+          value === 4 &&
+          totalCounts[5] === 0 &&
+          totalCounts[6] === 0 &&
+          totalCounts["2↑"] === 0 &&
+          totalCounts["3↑"] === 0 &&
+          lockCount < rollCount
         ) {
           die.isLocked = true;
           continue;
@@ -206,11 +208,18 @@ function App() {
 
         if (
           !goingHi &&
-          (value === 1 ||
-            value === 2 ||
-            value === 3 ||
-            value === "3↓" ||
-            value === "2↓")
+          (value === 1 || value === 2 || value === "3↓" || value === "2↓")
+        ) {
+          die.isLocked = true;
+          continue;
+        } else if (
+          !goingHi &&
+          value === 3 &&
+          totalCounts[1] === 0 &&
+          totalCounts[2] === 0 &&
+          totalCounts["2↓"] === 0 &&
+          totalCounts["3↓"] === 0 &&
+          lockCount < rollCount
         ) {
           die.isLocked = true;
           continue;
