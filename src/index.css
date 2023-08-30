@@ -10,26 +10,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: rgb(120, 120, 120);
   color: whitesmoke;
 }
 
-.dark-mode {
-  --background-color: linear-gradient(
-    to bottom,
-    rgb(80, 80, 80),
-    rgb(60, 60, 60)
-  );
+.dark {
+  --background-color: rgb(80, 80, 80);
   --text-color: whitesmoke;
 }
 
-.light-mode {
-  --background-color: linear-gradient(
-    to bottom,
-    rgb(250, 250, 250),
-    rgb(240, 240, 240)
-  );
-  --text-color: rgb(120, 120, 120;);
+.light {
+  --background-color: whitesmoke;
+  --text-color: rgb(120, 120, 120);
 }
 
 .App {
@@ -40,12 +31,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: linear-gradient(
-    to bottom,
-    rgb(250, 250, 250),
-    rgb(240, 240, 240)
-  );
-  background: linear-gradient(to bottom, rgb(80, 80, 80), rgb(60, 60, 60));
+  background-color: rgb(80, 80, 80);
 }
 
 .main-menu-container {
@@ -68,7 +54,7 @@ body {
 
 .main-menu-logo {
   margin: 0;
-  color: rgba(121, 191, 237);
+  color: rgba(121, 191, 237, 0.5);
   animation: pulse 5s infinite;
   height: 12rem;
   width: 12rem;
@@ -87,20 +73,15 @@ body {
 @keyframes pulse {
   0%,
   100% {
-    text-shadow: 0 0 0px rgba(121, 191, 237, 0);
-    box-shadow: 0 0 0px rgba(121, 191, 237, 0);
-    color: whitesmoke;
+    text-shadow: 0 0 20px rgba(121, 191, 237, 0.3);
+    box-shadow: 0 0 20px rgba(121, 191, 237, 0.3);
   }
   30%,
   70% {
-    text-shadow: 0 0 30px rgba(121, 191, 237, 1);
-    box-shadow: 0 0 40px rgba(121, 191, 237, 0.8);
+    text-shadow: 0 0 20px rgba(121, 191, 237, 1);
+    box-shadow: 0 0 50px rgba(121, 191, 237, 1);
     color: rgba(121, 191, 237);
   }
-}
-
-.pulsing {
-  animation: pulse 5s infinite;
 }
 
 .main-menu-text {
@@ -189,7 +170,6 @@ body {
 .die {
   height: calc(100vw / 3);
   width: calc(100vw / 3);
-  background-color: white;
   background-color: rgb(120, 120, 120);
   display: flex;
   justify-content: center;
@@ -198,7 +178,6 @@ body {
   font-size: 3rem;
   font-weight: bold;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  color: rgb(120, 120, 120);
   color: whitesmoke;
   transition: 0.2s;
   perspective: 1;
