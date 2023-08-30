@@ -34,7 +34,7 @@ export default function Settings() {
         </div>
       </div>
       <div className="rules">
-        <h2>Rules:</h2>
+        <h2>How to play hilo:</h2>
         <ul>
           <li>
             <strong>5</strong> rolls per turn
@@ -46,7 +46,9 @@ export default function Settings() {
             <strong>low</strong> numbers (1 is best)
           </li>
           <li>The number on the "↑↓" die multiplies your points (3 is best)</li>
-          <li>"↑" or "↓" determines which chart (above) is used for scoring</li>
+          <li>
+            "↑" or "↓" determines which chart (above/left) is used for scoring
+          </li>
           <li>
             <strong>A perfect score is all 6s or all 1s plus "3↑"</strong>
           </li>
@@ -63,7 +65,7 @@ export default function Settings() {
             Read the "↑" chart, 24 = <strong>3 points</strong>{" "}
           </li>
           <li>
-            3 points x 2 on the "↑↓" die = grand total of <strong>6</strong>
+            3 points x 2 on the "↑↓" die = <strong>grand total of 6</strong>
           </li>
         </ul>
       </div>

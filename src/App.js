@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
 import Settings from "./components/Settings";
+import Welcome from "./components/Welcome";
 import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
 import {
@@ -16,12 +17,13 @@ import {
 
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
-  const [showMenu, setShowMenu] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [welcomeScreen, setWelcomeScreen] = useState(true);
   const [isOnline] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
     hasLocked: true,
-    npcIsActive: true,
+    npcIsActive: false,
   });
   const [dice, setDice] = useState(generateDice);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -200,7 +202,8 @@ function App() {
   // RETURN //////////////////////////////////////////////////
   return (
     <div className="App">
-      {showMenu && <Settings />}
+      <Welcome />
+      {showSettings && <Settings />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}
@@ -208,7 +211,7 @@ function App() {
         playerTurn={playerTurn}
         totalRounds={totalRounds}
         menuClick={() => {
-          setShowMenu(!showMenu);
+          setShowSettings(!showSettings);
         }}
       />
       <div>

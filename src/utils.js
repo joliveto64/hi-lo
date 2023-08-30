@@ -130,8 +130,6 @@ function keepDie(dice, setDice, rollCount, lockCount) {
     goingHi = true;
   }
 
-  console.log(hiScore, loScore);
-
   for (let i = 0; i < newDice.length; i++) {
     let die = newDice[i];
     let value = newDice[i].value;
