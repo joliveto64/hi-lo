@@ -19,7 +19,7 @@ function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [showSettings, setShowSettings] = useState(false);
   const [welcomeScreen, setWelcomeScreen] = useState(true);
-  const [isOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
     hasLocked: true,
@@ -121,7 +121,7 @@ function App() {
       (snapshot) => {
         const data = snapshot.val();
         setGameState(data);
-        handleDiceSpinAnimation();
+        handleDiceSpinAnimation(setIsSpinning);
       },
       (error) => {
         console.error("Error: ", error);
@@ -199,11 +199,38 @@ function App() {
     setNpcState((prev) => ({ ...prev, hasRolled: false, hasLocked: true }));
   }
 
-  // RETURN //////////////////////////////////////////////////
+  function resetToWelcomeScreen() {
+    startNewGame();
+    setIsOnline(false);
+    setNpcState((prev) => ({ ...prev, npcIsActive: false }));
+    setWelcomeScreen(true);
+    setShowSettings(false);
+  }
+
+  // RETURN //////////////////////////////////////////////
   return (
     <div className="App">
-      <Welcome />
-      {showSettings && <Settings />}
+      {welcomeScreen && (
+        <Welcome
+          clicked={(name) => {
+            if (name === "single") {
+              setNpcState((prev) => ({ ...prev, npcIsActive: true }));
+            } else if (name === "online") {
+              setIsOnline(true);
+            }
+            setWelcomeScreen(false);
+          }}
+        />
+      )}
+      {showSettings && (
+        <Settings
+          menuClick={() => {
+            setShowSettings(!showSettings);
+          }}
+          welcomeScreen={welcomeScreen}
+          resetToWelcomeScreen={resetToWelcomeScreen}
+        />
+      )}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}

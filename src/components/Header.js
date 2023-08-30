@@ -13,6 +13,7 @@ export default function Header(props) {
           p2 score: {props.p2Score}
         </span>
       </div>
+      <div className="center-container"></div>
       <div className="right-container">
         <span className="round">
           round:{" "}

@@ -1,12 +1,35 @@
-export default function Welcome() {
+export default function Welcome({ clicked }) {
   return (
     <div className="main-menu-container">
-      <h1 className="main-menu-logo">↑↓</h1>
-      <p className="main-menu-text">Welcome to hi-lo!</p>
+      <span className="main-menu-logo">
+        <span className="arrows">↑↓</span>
+      </span>
+
       <div className="main-menu-button-container">
-        <button>single player</button>
-        <button>two player</button>
-        <button>online</button>
+        <p className="main-menu-text">
+          Welcome to hi-lo! See how to play in settings (top right).
+        </p>
+        <button
+          onClick={() => {
+            clicked("single");
+          }}
+        >
+          single player
+        </button>
+        <button
+          onClick={() => {
+            clicked("two");
+          }}
+        >
+          two players
+        </button>
+        <button
+          onClick={() => {
+            clicked("online");
+          }}
+        >
+          online
+        </button>
       </div>
     </div>
   );

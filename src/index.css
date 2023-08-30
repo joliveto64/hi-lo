@@ -39,7 +39,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   background: linear-gradient(
     to bottom,
     rgb(250, 250, 250),
@@ -62,46 +62,63 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  padding: 1.5rem;
 }
 
 .main-menu-logo {
-  font-size: 15rem;
   margin: 0;
   color: rgba(121, 191, 237);
   animation: pulse 5s infinite;
+  height: 12rem;
+  width: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 7rem;
+  font-weight: bold;
+  border-radius: 0.75rem;
+}
+
+.arrows {
+  transform: translateY(-0.25rem);
 }
 
 @keyframes pulse {
-  0% {
-    text-shadow: 0 0 10px rgba(121, 191, 237, 0);
-  }
-  50% {
-    text-shadow: 0 0 10px rgba(121, 191, 237, 0.8);
-  }
+  0%,
   100% {
-    text-shadow: 0 0 10px rgba(121, 191, 237, 0);
+    text-shadow: 0 0 0px rgba(121, 191, 237, 0);
+    box-shadow: 0 0 0px rgba(121, 191, 237, 0);
+    color: whitesmoke;
+  }
+  30%,
+  70% {
+    text-shadow: 0 0 30px rgba(121, 191, 237, 1);
+    box-shadow: 0 0 40px rgba(121, 191, 237, 0.8);
+    color: rgba(121, 191, 237);
   }
 }
 
 .pulsing {
-  animation: pulse 2s infinite;
+  animation: pulse 5s infinite;
 }
 
 .main-menu-text {
   font-weight: bold;
-  margin: 0 0 2rem 0;
-  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .main-menu-button-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .main-menu-button-container button {
   border: none;
-  width: calc(100vw * 0.3);
+  width: 15rem;
   padding: 1rem;
   margin-bottom: 0.5rem;
   border-radius: 0.2rem;
@@ -117,11 +134,6 @@ body {
   transform: scale(0.99);
 }
 
-.main-menu-button-container button:hover {
-  background-color: rgba(121, 191, 237);
-  transition: 0.2s;
-}
-
 .header {
   display: flex;
   width: 100%;
@@ -133,6 +145,7 @@ body {
 .left-container {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .blue {
@@ -153,6 +166,7 @@ body {
   font: inherit;
   cursor: pointer;
   margin: 0;
+  font-size: 1.5rem;
   z-index: 1000;
 }
 
@@ -189,6 +203,7 @@ body {
   transition: 0.2s;
   perspective: 1;
   backface-visibility: hidden;
+  cursor: pointer;
 }
 
 .hilo {
@@ -202,8 +217,6 @@ body {
   background-color: #79bfed;
   color: whitesmoke;
   color: rgb(100, 100, 100);
-  box-shadow: 0px 0px 30px rgba(121, 191, 237, 0.2);
-  filter: brightness(1.1);
 }
 
 .hilo-locked {
@@ -231,6 +244,7 @@ body {
   transition: 0.2s ease-in-out;
   margin: 1rem;
   width: calc(100vw / 2.5);
+  cursor: pointer;
 }
 
 .button:active {
@@ -300,6 +314,27 @@ body {
   padding: 1.25rem;
 }
 
+.settings-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  margin: 0;
+  color: inherit;
+  font-size: 3rem;
+  text-align: left;
+  line-height: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+}
+
 .charts {
   display: flex;
   justify-content: space-evenly;
@@ -335,11 +370,22 @@ body {
   .die {
     font-size: 4rem;
   }
+
   .settings {
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
+
+  .settings-top {
+    text-align: center;
+  }
+
+  .settings-bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
   .charts {
     border: none;
   }
