@@ -8,7 +8,6 @@ import { set, ref, onValue } from "firebase/database";
 import {
   generateDice,
   keepDie,
-  handleDiceSpinAnimation,
   rollDice,
   unlockDice,
   calculateScore,
@@ -54,7 +53,7 @@ function App() {
 
   // MAIN LOGIC FOR BUTTON CLICK //////////////////////////////////////////
   function handleButton() {
-    handleDiceSpinAnimation(setIsSpinning);
+    handleDiceSpinAnimation();
     const score = calculateScore(dice);
 
     if (betweenRound) {
@@ -128,7 +127,7 @@ function App() {
       (snapshot) => {
         const data = snapshot.val();
         setGameState(data);
-        handleDiceSpinAnimation(setIsSpinning);
+        handleDiceSpinAnimation();
       },
       (error) => {
         console.error("Error: ", error);
@@ -210,7 +209,7 @@ function App() {
   function messageText() {
     if (!gameIsOver) {
       return `${
-        playerTurn === 1 ? "p1" : playerTurn === 2 ? "p2" : ""
+        playerTurn === 1 ? " p1" : playerTurn === 2 ? " p2" : ""
       } roll: ${rollCount}/5`;
     }
     if (gameIsOver && p1Score === p2Score) {
@@ -224,7 +223,7 @@ function App() {
   }
 
   function startNewGame() {
-    handleDiceSpinAnimation(setIsSpinning);
+    handleDiceSpinAnimation();
     setDice(generateDice);
     setGameState({
       p1Score: 0,
@@ -233,6 +232,14 @@ function App() {
       betweenRound: false,
     });
     setNpcState((prev) => ({ ...prev, hasRolled: false, hasLocked: true }));
+  }
+
+  function handleDiceSpinAnimation() {
+    setIsSpinning(true);
+
+    setTimeout(() => {
+      setIsSpinning(false);
+    }, 200);
   }
 
   function resetToWelcomeScreen() {

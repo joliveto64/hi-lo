@@ -74,13 +74,14 @@ body {
   0%,
   100% {
     text-shadow: 0 0 20px rgba(121, 191, 237, 0.3);
-    box-shadow: 0 0 20px rgba(121, 191, 237, 0.3);
+    box-shadow: 0 0 50px rgba(121, 191, 237, 0.3);
   }
   30%,
   70% {
     text-shadow: 0 0 20px rgba(121, 191, 237, 1);
     box-shadow: 0 0 70px rgba(121, 191, 237, 1);
     color: rgba(121, 191, 237);
+    filter: brightness(1.05);
   }
 }
 

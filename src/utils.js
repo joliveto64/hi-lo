@@ -189,14 +189,6 @@ function keepDie(dice, setDice, rollCount, lockCount) {
   setDice(newDice);
 }
 
-function handleDiceSpinAnimation(setIsSpinning) {
-  setIsSpinning(true);
-
-  setTimeout(() => {
-    setIsSpinning(false);
-  }, 200);
-}
-
 function unlockDice(setDice) {
   setDice((oldDice) =>
     oldDice.map((die) => ({ ...die, isLocked: false, isPermLocked: false }))
@@ -228,7 +220,6 @@ function calculateScore(dice) {
 export {
   generateDice,
   keepDie,
-  handleDiceSpinAnimation,
   rollDice,
   unlockDice,
   calculateScore,
