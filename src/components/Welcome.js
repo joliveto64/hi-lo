@@ -7,7 +7,7 @@ export default function Welcome({ clicked }) {
 
       <div className="main-menu-button-container">
         <p className="main-menu-text">
-          Welcome to hi-lo! See how to play in settings (top right).
+          Welcome to hi-lo! Click the three dots to see how to play.
         </p>
         <button
           onClick={() => {

@@ -4,11 +4,9 @@ export default function Settings(props) {
   }
   return (
     <div className="settings">
-      <header className="settings-top">
-        <button onClick={handleClick} className="back-button">
-          {props.welcomeScreen ? "" : "end game"}
-        </button>
-      </header>
+      <button onClick={handleClick} className="back-button">
+        {props.welcomeScreen ? "" : "quit game"}
+      </button>
       <div className="settings-bottom">
         <div className="charts">
           <div className="chart">
@@ -51,7 +49,7 @@ export default function Settings(props) {
               <strong>5</strong> rolls per turn
             </li>
             <li>Tap dice to lock them</li>
-            <li>You can't roll if you haven't locked enough dice</li>
+            <li>Number locked must be ≥ number of rolls</li>
             <li>
               Aim for all <strong>high</strong> numbers (6 is best) or all{" "}
               <strong>low</strong> numbers (1 is best)

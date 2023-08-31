@@ -30,7 +30,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 1.75rem;
   background-color: rgb(80, 80, 80);
 }
 
@@ -79,7 +79,7 @@ body {
   30%,
   70% {
     text-shadow: 0 0 20px rgba(121, 191, 237, 1);
-    box-shadow: 0 0 50px rgba(121, 191, 237, 1);
+    box-shadow: 0 0 70px rgba(121, 191, 237, 1);
     color: rgba(121, 191, 237);
   }
 }
@@ -116,17 +116,11 @@ body {
 }
 
 .header {
-  display: flex;
+  display: grid;
   width: 100%;
-  justify-content: space-between;
+  grid-template: 1fr 1fr / 1fr 1fr;
   font-weight: bold;
   font-size: 1.25rem;
-}
-
-.left-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .blue {
@@ -134,10 +128,8 @@ body {
   transition: 0.2s;
 }
 
-.right-container {
-  display: flex;
-  text-align: right;
-  align-items: flex-start;
+.round {
+  justify-self: end;
 }
 
 .gear-icon {
@@ -149,16 +141,17 @@ body {
   margin: 0;
   font-size: 1.5rem;
   z-index: 1000;
-}
-
-.round {
-  padding-right: 1rem;
+  color: whitesmoke;
+  line-height: 0rem;
+  justify-self: end;
+  align-self: flex-start;
 }
 
 .round-info {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
+  justify-self: end;
 }
 
 .dice-container {
@@ -287,10 +280,13 @@ body {
   z-index: 10;
   background-color: whitesmoke;
   background-color: rgb(80, 80, 80);
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 1.25rem;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 .settings-bottom {
@@ -299,19 +295,15 @@ body {
 }
 
 .back-button {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
   margin: 0;
+  background-color: rgb(80, 80, 80);
+  border: none;
+  font: inherit;
   color: inherit;
-  font-size: 3rem;
-  text-align: left;
-  line-height: 2rem;
-  margin-bottom: 1rem;
+  cursor: pointer;
   font-size: 1.5rem;
-  line-height: 1.5rem;
+  padding: 0rem;
+  text-align: center;
 }
 
 .charts {
