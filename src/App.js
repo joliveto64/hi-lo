@@ -146,7 +146,8 @@ function App() {
       }, 750);
     }
     return () => clearTimeout(timeoutId);
-  }, [npcIsActive, playerTurn, hasLocked, handleButton]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [npcIsActive, playerTurn, hasLocked]);
 
   useEffect(() => {
     let timeoutId;
