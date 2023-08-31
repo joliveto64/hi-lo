@@ -19,6 +19,7 @@ function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [showSettings, setShowSettings] = useState(false);
   const [welcomeScreen, setWelcomeScreen] = useState(true);
+  const [resetActive, setResetActive] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
@@ -85,13 +86,18 @@ function App() {
 
   // FIREBASE STUFF /////////////////////////////////////////////////////
   useEffect(() => {
-    // update DB whenever masterCount changes
-    if (isOnline) {
-      const gameStateRef = ref(db, `/gameState`);
-      const diceRef = ref(db, "/dice");
-      set(diceRef, dice);
-      set(gameStateRef, gameState);
-    }
+    const updateDatabase = async () => {
+      if (isOnline) {
+        const gameStateRef = ref(db, `/gameState`);
+        const diceRef = ref(db, "/dice");
+        await set(diceRef, dice);
+        await set(gameStateRef, gameState);
+      }
+    };
+
+    updateDatabase();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [masterCount]);
 
   useEffect(() => {
@@ -109,7 +115,8 @@ function App() {
         console.error("Error: ", error);
       }
     );
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOnline]);
 
   useEffect(() => {
     if (!isOnline) {
@@ -127,7 +134,8 @@ function App() {
         console.error("Error: ", error);
       }
     );
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOnline]);
 
   // NPC STUFF ///////////////////////////////////////////////////////////
   useEffect(() => {
@@ -139,7 +147,7 @@ function App() {
       }, 750);
     }
     return () => clearTimeout(timeoutId);
-  }, [npcIsActive, playerTurn, hasLocked]);
+  }, [npcIsActive, playerTurn, hasLocked, handleButton]);
 
   useEffect(() => {
     let timeoutId;
@@ -150,9 +158,37 @@ function App() {
       }, 1000);
     }
     return () => clearTimeout(timeoutId);
-  }, [npcIsActive, playerTurn, allDiceLocked, hasRolled]);
+  }, [
+    npcIsActive,
+    playerTurn,
+    allDiceLocked,
+    hasRolled,
+    dice,
+    lockCount,
+    rollCount,
+  ]);
 
   // FUNCTIONS ///////////////////////////////////////////////////////
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (resetActive) {
+        setResetActive(false);
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [resetActive]);
+
+  function handleReset() {
+    if (!resetActive) {
+      setResetActive(true);
+    } else if (resetActive) {
+      startNewGame();
+    }
+  }
+
+  console.log(resetActive);
+
   function getButtonText() {
     if (gameIsOver) {
       return "again!";
@@ -242,7 +278,16 @@ function App() {
         }}
       />
       <div>
-        <p className="round-info">{messageText()}</p>
+        <p className="round-info">
+          <span
+            className={`restart ${resetActive ? "restart-active" : ""}`}
+            onClick={handleReset}
+          >
+            ↺
+          </span>
+          &nbsp;
+          {messageText()}
+        </p>
         <div className="dice-container">
           {dice.map((die) => (
             <Dice

@@ -283,10 +283,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-}
-
-.hidden {
-  opacity: 0;
+  padding: 1.5rem 1.75rem;
 }
 
 .settings-bottom {
@@ -304,6 +301,7 @@ body {
   font-size: 1.5rem;
   padding: 0rem;
   text-align: center;
+  padding: 1rem;
 }
 
 .charts {
@@ -360,4 +358,25 @@ body {
   .charts {
     border: none;
   }
+}
+
+.restart {
+  cursor: pointer;
+}
+
+@keyframes restart {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.restart-active {
+  color: #79bfed;
+  animation: restart 2s ease-in-out;
+  display: inline-block;
+  animation-direction: reverse;
 }
