@@ -281,7 +281,7 @@ function App() {
         roundCount={roundCount}
         playerTurn={playerTurn}
         totalRounds={totalRounds}
-        menuClick={() => {
+        clicked={() => {
           setShowSettings(!showSettings);
         }}
       />

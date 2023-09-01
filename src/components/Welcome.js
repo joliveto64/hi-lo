@@ -2,14 +2,14 @@ import { handleDiceSpinAnimation } from "../utils";
 
 export default function Welcome({ clicked, isSpinning, setIsSpinning }) {
   return (
-    <div className={`main-menu-container`}>
-      <span className="main-menu-logo">
-        <span className="arrows">↑↓</span>
+    <div className="welcome-container">
+      <span className="welcome-logo">
+        <span className="welcome-arrows">↑↓</span>
       </span>
 
-      <div className="main-menu-button-container">
-        <p className="main-menu-text">
-          Welcome to hi-lo! Click the three dots to see the rules.
+      <div className="welcome-button-container">
+        <p className="welcome-text">
+          Welcome to hi-lo! Click the three dots for rules.
         </p>
         <button
           onClick={() => {

@@ -13,7 +13,7 @@ export default function Dice({
     isSpinning ? "roll" : "",
     isPermLocked ? "perm-locked" : "",
     isHilo && !gameIsOver ? "hilo" : "",
-    isHilo && isLocked ? "hilo-locked" : "",
+    isHilo && value === "3↑" ? "three-hi" : "",
   ];
 
   const className = classList.join(" ");

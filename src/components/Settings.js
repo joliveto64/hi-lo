@@ -5,7 +5,7 @@ export default function Settings(props) {
   return (
     <div className="settings">
       <button onClick={handleClick} className="back-button">
-        {props.welcomeScreen ? "" : "quit game"}
+        {props.welcomeScreen ? "hi-lo" : "quit game"}
       </button>
       <div className="settings-bottom">
         <div className="charts">
@@ -43,7 +43,7 @@ export default function Settings(props) {
           </div>
         </div>
         <div className="rules">
-          <h2>How to play hilo:</h2>
+          <h2>How to play:</h2>
           <ul>
             <li>
               <strong>5</strong> rolls per turn

@@ -6,7 +6,7 @@ export default function Header(props) {
       >
         p1 score: {props.p1Score}
       </span>
-      <button onClick={props.menuClick} className="gear-icon">
+      <button onClick={props.clicked} className="gear-icon">
         . . .
       </button>
       <span
