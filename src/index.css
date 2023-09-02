@@ -69,6 +69,14 @@ body {
   font-size: 7rem;
   font-weight: bold;
   border-radius: 0.75rem;
+  background: none;
+  border: none;
+  transition: 0.2s;
+}
+
+.welcome-logo:active {
+  transform: scale(1.05);
+  transition: 0.2s;
 }
 
 .welcome-arrows {
@@ -196,10 +204,6 @@ body {
   color: rgb(100, 100, 100);
 }
 
-/* .three-hi {
-  animation: pulse 5s infinite;
-} */
-
 .locked {
   background-color: #79bfed;
   color: rgb(100, 100, 100);
@@ -212,7 +216,7 @@ body {
 }
 
 .roll {
-  animation: rotate 0.3s ease-in-out;
+  animation: rotate 0.4s ease-in-out;
   will-change: transform;
 }
 
@@ -254,7 +258,7 @@ body {
 
 .restart-active {
   color: #79bfed;
-  animation: restart 2s ease-in-out;
+  animation: rotate 2s ease-in-out;
   display: inline-block;
   animation-direction: reverse;
 }
@@ -385,37 +389,12 @@ body {
   }
 }
 
-@keyframes mini-pulse {
-  0%,
-  100% {
-    text-shadow: 0 0 30px rgba(121, 191, 237, 0.3);
-    box-shadow: 0 0 10px rgba(121, 191, 237, 0.3);
-  }
-  30%,
-  70% {
-    text-shadow: 0 0 30px rgba(121, 191, 237, 1);
-    box-shadow: 0 0 10px rgba(121, 191, 237, 1);
-    color: rgba(121, 191, 237);
-    filter: brightness(1.05);
-  }
-}
-
-@keyframes restart {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(720deg);
+    transform: rotate(360deg);
   }
 }
 

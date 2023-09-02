@@ -4,9 +4,9 @@ export default function Welcome({ clicked, toggleSettings }) {
       <button onClick={toggleSettings} className="gear-icon">
         . . .
       </button>
-      <span className={`welcome-logo`}>
+      <button className={`welcome-logo`}>
         <span className="welcome-arrows">↑↓</span>
-      </span>
+      </button>
 
       <div className="welcome-button-container">
         <p className="welcome-text">
