@@ -187,8 +187,6 @@ function App() {
     }
   }
 
-  console.log(resetActive);
-
   function getButtonText() {
     if (gameIsOver) {
       return "again!";
@@ -251,11 +249,16 @@ function App() {
     setShowSettings(false);
   }
 
+  function toggleSettings() {
+    setShowSettings(!showSettings);
+  }
+
   // RETURN //////////////////////////////////////////////
   return (
     <div className="App">
       {welcomeScreen && (
         <Welcome
+          toggleSettings={toggleSettings}
           clicked={(name) => {
             if (name === "single") {
               setNpcState((prev) => ({ ...prev, npcIsActive: true }));
@@ -273,6 +276,7 @@ function App() {
           }}
           welcomeScreen={welcomeScreen}
           resetToWelcomeScreen={resetToWelcomeScreen}
+          toggleSettings={toggleSettings}
         />
       )}
       <Header
@@ -281,9 +285,7 @@ function App() {
         roundCount={roundCount}
         playerTurn={playerTurn}
         totalRounds={totalRounds}
-        clicked={() => {
-          setShowSettings(!showSettings);
-        }}
+        toggleSettings={toggleSettings}
       />
       <div>
         <p className="round-info">
@@ -311,7 +313,14 @@ function App() {
               isPermLocked={die.isPermLocked}
               isSpinning={isSpinning}
               clicked={() => {
-                handleDiceClick(die.id, gameIsStarted, betweenRound, setDice);
+                handleDiceClick(
+                  die.id,
+                  gameIsStarted,
+                  betweenRound,
+                  setDice,
+                  npcIsActive,
+                  playerTurn
+                );
               }}
               isHilo={die.isHilo}
               gameIsOver={gameIsOver}
@@ -329,9 +338,9 @@ function App() {
           }
         }}
         disabled={
-          ((!betweenRound && lockCount < rollCount) ||
-            (rollFive && !allDiceLocked)) &&
-          !gameIsOver
+          (!betweenRound && lockCount < rollCount) ||
+          (rollFive && !allDiceLocked) ||
+          (npcIsActive && playerTurn === 2)
         }
       >
         {getButtonText()}

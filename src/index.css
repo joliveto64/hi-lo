@@ -59,7 +59,7 @@ body {
 
 .welcome-logo {
   margin: 0;
-  color: rgba(121, 191, 237, 0.8);
+  color: rgb(121, 191, 237);
   animation: pulse 5s infinite;
   height: 12rem;
   width: 12rem;
@@ -119,6 +119,14 @@ body {
   overflow: hidden;
 }
 
+.player-1-score {
+  grid-area: 1/1;
+}
+
+.player-2-score {
+  grid-area: 2/1;
+}
+
 .blue {
   color: #79bfed;
   transition: 0.2s;
@@ -126,9 +134,13 @@ body {
 
 .round {
   justify-self: end;
+  grid-area: 2/2;
 }
 
 .gear-icon {
+  position: fixed;
+  top: 1rem;
+  right: 1.5rem;
   background: none;
   border: none;
   padding: 0;
@@ -136,11 +148,12 @@ body {
   cursor: pointer;
   margin: 0;
   font-size: 1.5rem;
-  z-index: 1000;
+  /* z-index: 1000; */
   color: whitesmoke;
   line-height: 0rem;
   justify-self: end;
   align-self: flex-start;
+  font-weight: bold;
 }
 
 /* ROUND INFO /////////////////////////////////////////////////////////*/

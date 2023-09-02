@@ -49,8 +49,15 @@ function rollDice(setDice) {
   );
 }
 
-function handleDiceClick(id, gameIsStarted, betweenRound, setDice) {
-  if (!gameIsStarted || betweenRound) {
+function handleDiceClick(
+  id,
+  gameIsStarted,
+  betweenRound,
+  setDice,
+  npcIsActive,
+  playerTurn
+) {
+  if (!gameIsStarted || betweenRound || (npcIsActive && playerTurn === 2)) {
     return;
   }
 

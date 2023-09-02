@@ -4,6 +4,9 @@ export default function Settings(props) {
   }
   return (
     <div className="settings">
+      <button onClick={props.toggleSettings} className="gear-icon">
+        . . .
+      </button>
       <button onClick={handleClick} className="back-button">
         {props.welcomeScreen ? "hi-lo" : "quit game"}
       </button>
