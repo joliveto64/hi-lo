@@ -19,7 +19,7 @@ export default function Dice({
 
   return (
     <span className={className} onClick={clicked}>
-      {isHilo && value != "↑↓" && <span className="x">x</span>}
+      {isHilo && value != "↑↓" && !gameIsOver && <span className="x">x</span>}
       {value}
     </span>
   );
