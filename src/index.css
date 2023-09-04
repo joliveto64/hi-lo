@@ -152,7 +152,6 @@ body {
   cursor: pointer;
   margin: 0;
   font-size: 1.5rem;
-  /* z-index: 1000; */
   color: whitesmoke;
   line-height: 0rem;
   justify-self: end;
@@ -266,7 +265,7 @@ body {
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 10;
+  z-index: 2;
   background-color: whitesmoke;
   background-color: rgb(40, 40, 40);
   overflow-y: auto;
