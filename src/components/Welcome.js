@@ -10,7 +10,7 @@ export default function Welcome({ clicked, toggleSettings }) {
 
       <div className="welcome-button-container">
         <p className="welcome-text">
-          Welcome to hi-lo! Click the three dots for rules.
+          Welcome to hi-lo! Click the gear for rules.
         </p>
         <button
           onClick={() => {
