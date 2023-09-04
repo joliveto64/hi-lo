@@ -362,6 +362,10 @@ body {
   .charts {
     border-bottom: none;
   }
+
+  .chart {
+    padding-left: 0.5rem;
+  }
 }
 
 /* ANIMATIONS ///////////////////////////////////////////////////*/
