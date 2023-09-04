@@ -21,10 +21,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem 1.25rem 1.5rem;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
   overflow-y: auto;
+  padding: 1.5rem;
 }
 
 /* LIGHT AND DARK MODE ///////////////////////////////////////////////////*/
@@ -147,16 +147,12 @@ body {
   right: 1.5rem;
   background: none;
   border: none;
-  padding: 0;
   font: inherit;
   cursor: pointer;
-  margin: 0;
   font-size: 1.5rem;
   color: whitesmoke;
-  line-height: 0rem;
-  justify-self: end;
-  align-self: flex-start;
   font-weight: bold;
+  padding: 0;
 }
 
 /* ROUND INFO /////////////////////////////////////////////////////////*/
@@ -271,7 +267,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.75rem;
+  padding: 1.5rem;
 }
 
 .settings-bottom {
@@ -289,7 +285,7 @@ body {
   font-size: 1.5rem;
   padding: 0rem;
   text-align: center;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid darkgray;
 }
 

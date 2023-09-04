@@ -9,7 +9,7 @@ export default function Header({
   return (
     <div className="header">
       <button onClick={toggleSettings} className="gear-icon">
-        . . .
+        ⚙️
       </button>
       <span className={`player-1-score ${playerTurn === 1 ? "blue" : ""}`}>
         p1 score: {p1Score}
