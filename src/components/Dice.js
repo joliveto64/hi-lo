@@ -13,13 +13,13 @@ export default function Dice({
     isSpinning ? "roll" : "",
     isPermLocked ? "perm-locked" : "",
     isHilo && !gameIsOver ? "hilo" : "",
-    isHilo && value === "3↑" ? "three-hi" : "",
   ];
 
   const className = classList.join(" ");
 
   return (
     <span className={className} onClick={clicked}>
+      {isHilo && value != "↑↓" && <span className="x">x</span>}
       {value}
     </span>
   );

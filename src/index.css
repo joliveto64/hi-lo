@@ -173,6 +173,7 @@ body {
 }
 
 .die {
+  position: relative;
   height: calc(100vw / 3);
   width: calc(100vw / 3);
   background-color: rgb(100, 100, 100);
@@ -185,7 +186,6 @@ body {
   font-size: 3rem;
   font-weight: bold;
   transition: 0.2s;
-  perspective: 1;
   backface-visibility: hidden;
   cursor: pointer;
 }
@@ -322,6 +322,7 @@ body {
   .die {
     height: calc(100vw / 8);
     width: calc(100vw / 8);
+    font-size: 2.5rem;
   }
 
   .welcome-container {
@@ -342,7 +343,6 @@ body {
   .die {
     font-size: 4rem;
   }
-
   .settings {
     flex-direction: column;
     justify-content: space-evenly;
