@@ -8,7 +8,7 @@ export default function Settings(props) {
         ⚙️
       </button>
       <button onClick={handleClick} className="back-button">
-        {props.welcomeScreen ? "hi-lo" : "quit game"}
+        {props.welcomeScreen ? "hi-lo" : "Quit game"}
       </button>
       <div className="settings-bottom">
         <div className="charts">
@@ -49,39 +49,39 @@ export default function Settings(props) {
           <h2>How to play:</h2>
           <ul>
             <li>
-              <strong>5</strong> rolls per turn
-            </li>
-            <li>Tap dice to lock them</li>
-            <li>Number locked must be ≥ number of rolls</li>
-            <li>
-              Aim for all <strong>high</strong> numbers (6 is best) or all{" "}
-              <strong>low</strong> numbers (1 is best)
+              You are given five rolls per turn. Tap on a die to lock it in
+              place.
             </li>
             <li>
-              The number on the "↑↓" die multiplies your points (3 is best)
+              The number locked must be ≥ the number of rolls to continue.{" "}
             </li>
             <li>
-              "↑" or "↓" determines which chart (above/left) is used for scoring
+              Based on the luck of your first role, aim for either high or low
+              numbers.
             </li>
             <li>
-              <strong>A perfect score is all 6s or all 1s plus "3↑"</strong>
+              The final ↑↓ die is special. The number multiplies your score.
             </li>
-            <li>Highest score after 5 rounds wins!</li>
+            <li>
+              ↑ or ↓ will determine which chart is used to calculate your score.
+            </li>
+            <li>
+              Perfect score is all 6s and x3↑ <strong>or</strong> all 1s and x3↓
+            </li>
+            <li>The player with the highest score after 5 rounds wins!</li>
           </ul>
 
           <ul>
             <strong>Example:</strong>
+            <li>You roll 6, 5, 5, 4, 4 and "x2↑" </li>
             <li>
-              When your turn is over, your dice are 5, 4, 5, 6, 4 and "2↑"{" "}
+              6 + 5 + 5 + 4 + 4 = <strong>24</strong>{" "}
             </li>
             <li>
-              5 + 4 + 5 + 6 + 4 = <strong>dice total of 24</strong>{" "}
+              24 = <strong>4 points</strong> on the ↑ chart{" "}
             </li>
             <li>
-              Read the "↑" chart, 24 = <strong>3 points</strong>{" "}
-            </li>
-            <li>
-              3 points x 2 on the "↑↓" die = <strong>grand total of 6</strong>
+              4 points x 2 = <strong>final score of 6</strong>
             </li>
           </ul>
         </div>

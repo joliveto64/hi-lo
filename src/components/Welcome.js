@@ -17,22 +17,22 @@ export default function Welcome({ clicked, toggleSettings }) {
             clicked("single");
           }}
         >
-          single player
+          Single player
         </button>
         <button
           onClick={() => {
             clicked("two");
           }}
         >
-          two players
+          Two players
         </button>
-        <button
+        {/* <button
           onClick={() => {
             clicked("online");
           }}
         >
           online
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -189,36 +189,36 @@ function App() {
 
   function getButtonText() {
     if (gameIsOver) {
-      return "again!";
+      return "Again!";
     } else if (
       roundCount === totalRounds &&
       playerTurn === 2 &&
       (allDiceLocked || rollFive)
     ) {
-      return "finish!";
+      return "Finish!";
     } else if (!gameIsStarted) {
-      return "start";
+      return "Start";
     } else if (allDiceLocked || rollFive) {
-      return "end";
+      return "End";
     } else {
-      return "roll";
+      return "Roll";
     }
   }
 
   function messageText() {
     if (!gameIsOver) {
       return `${
-        playerTurn === 1 ? " p1" : playerTurn === 2 ? " p2" : ""
+        playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
       } roll: ${rollCount}/5`;
     }
     if (gameIsOver && p1Score === p2Score) {
-      return "tie game!";
+      return "Tie game!";
     }
     if (gameIsOver && p1Score > p2Score) {
-      return "p1 wins!";
+      return "P1 wins!";
     }
 
-    return "p2 wins!";
+    return "P2 wins!";
   }
 
   function startNewGame() {
