@@ -262,13 +262,17 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .chart {
   display: grid;
   grid-template: repeat(11, 1fr) / 1fr 1fr;
   margin-block: 1rem;
+}
+
+.chart p {
+  margin: 0.25rem;
 }
 
 .border-bottom {
@@ -285,9 +289,9 @@ body {
 }
 
 .rules {
-  line-height: 1.75rem;
   font-size: 1.1rem;
   margin-bottom: 2rem;
+  padding: 0;
 }
 
 .rules h1 {
@@ -297,10 +301,10 @@ body {
 
 .rules li {
   margin-bottom: 1rem;
+  list-style-type: none;
 }
 
 .example {
-  line-height: 1.75rem;
   font-size: 1.1rem;
   margin-bottom: 1rem;
 }
