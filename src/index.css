@@ -21,7 +21,6 @@ body {
 }
 
 .App {
-  /* position: fixed; */
   min-height: 100vh;
   width: 100vw;
   display: flex;
@@ -32,6 +31,10 @@ body {
   color: whitesmoke;
   overflow-y: auto;
   padding: 1rem;
+}
+
+.flip-screen {
+  transform: rotate(180deg);
 }
 
 :root {
@@ -258,11 +261,23 @@ body {
   z-index: 1000;
 }
 
+.quit-button {
+  text-align: center;
+  line-height: 1.6rem;
+  border: none;
+  color: whitesmoke;
+  background-color: rgb(100, 100, 100);
+  height: 1.75rem;
+  width: 4rem;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+}
+
 .charts {
   display: flex;
   flex-direction: column;
   font-size: 1.1rem;
-  /* margin-bottom: 1rem; */
+  margin-bottom: 2rem;
 }
 
 .chart {
@@ -307,6 +322,7 @@ body {
 .example {
   font-size: 1.1rem;
   margin-bottom: 1rem;
+  line-height: 1rem;
 }
 
 /* ARE YOU SURE */

@@ -35,7 +35,7 @@ export default function Welcome({ clicked }) {
 
       <div className="welcome-button-container">
         <p className="welcome-text">
-          Welcome to hi-lo! Tap the die to change colors.
+          Welcome to hi-lo! Tap the die to change color.
         </p>
         <button
           onClick={() => {

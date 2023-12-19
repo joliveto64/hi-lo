@@ -1,6 +1,12 @@
-export default function Settings() {
+export default function Settings(props) {
   return (
     <div className="settings">
+      <span
+        className={`${props.autoRotate ? "blue" : ""}`}
+        onClick={props.rotateScreen}
+      >
+        {props.autoRotate ? "Auto-rotate: On" : "Auto-rotate: Off"}
+      </span>
       <div className="settings-bottom">
         <div className="rules">
           <h1 className="change-color">

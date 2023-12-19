@@ -20,6 +20,8 @@ function App() {
   const [welcomeScreen, setWelcomeScreen] = useState(true);
   const [resetActive, setResetActive] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
+  const [flipped, setFlipped] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
     hasLocked: true,
@@ -292,9 +294,25 @@ function App() {
     return "P2 wins!";
   }
 
+  function rotateScreen() {
+    setAutoRotate(!autoRotate);
+  }
+
+  useEffect(() => {
+    if (!npcIsActive) {
+      if (playerTurn === 2 && autoRotate && !flipped) {
+        setFlipped(true);
+      } else if (playerTurn === 1 && autoRotate && flipped) {
+        setFlipped(false);
+      }
+    }
+  }, [autoRotate, playerTurn, flipped]);
+
+  console.log("rot:", autoRotate, "flip:", flipped, "turn:", playerTurn);
+
   // RETURN //////////////////////////////////////////////
   return (
-    <div className="App">
+    <div className={`App ${flipped ? "flip-screen" : ""}`}>
       {modal()}
       {welcomeScreen && (
         <Welcome
@@ -308,7 +326,9 @@ function App() {
           }}
         />
       )}
-      {showSettings && <Settings />}
+      {showSettings && (
+        <Settings rotateScreen={rotateScreen} autoRotate={autoRotate} />
+      )}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}

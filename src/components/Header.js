@@ -12,9 +12,11 @@ export default function Header({
 }) {
   return (
     <div className="header">
-      <span onClick={handleQuitGame}>{welcomeScreen ? "" : "Quit"}</span>{" "}
+      <span className="quit-button" onClick={handleQuitGame}>
+        {welcomeScreen ? "" : "Quit"}
+      </span>{" "}
       <span className="rules-button-main" onClick={toggleSettings}>
-        {showSettings ? "Close" : "Rules"}
+        {showSettings ? "Close" : "Menu"}
       </span>
       <span className={`p1-score ${playerTurn === 1 ? "blue" : ""}`}>
         P1 score: {p1Score}
