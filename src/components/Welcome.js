@@ -1,6 +1,8 @@
 import { useState } from "react";
-export default function Welcome({ clicked, toggleSettings, showSettings }) {
+
+export default function Welcome({ clicked }) {
   let [index, setIndex] = useState(0);
+
   let colors = [
     // blue
     "121, 191, 237",
@@ -24,18 +26,16 @@ export default function Welcome({ clicked, toggleSettings, showSettings }) {
       colors[nextIndex]
     );
   }
+
   return (
     <div className="welcome-container">
-      <button onClick={toggleSettings} className="gear-icon">
-        {showSettings ? "Close" : "Rules"}
-      </button>
       <span onClick={handleColorChange} className={`welcome-logo`}>
         <span className="welcome-arrows">↑↓</span>
       </span>
 
       <div className="welcome-button-container">
         <p className="welcome-text">
-          Welcome to hi-lo! Click the gear for rules.
+          Welcome to hi-lo! Tap the die to change colors.
         </p>
         <button
           onClick={() => {

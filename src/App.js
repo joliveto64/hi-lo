@@ -205,22 +205,6 @@ function App() {
     }
   }
 
-  function messageText() {
-    if (!gameIsOver) {
-      return `${
-        playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
-      } roll: ${rollCount}/5`;
-    }
-    if (gameIsOver && p1Score === p2Score) {
-      return "Tie game!";
-    }
-    if (gameIsOver && p1Score > p2Score) {
-      return "P1 wins!";
-    }
-
-    return "P2 wins!";
-  }
-
   function startNewGame() {
     handleDiceSpinAnimation();
     setDice(generateDice);
@@ -292,14 +276,28 @@ function App() {
     }
   }
 
+  function messageText() {
+    if (!gameIsOver) {
+      return `${
+        playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
+      } roll: ${rollCount}/5`;
+    }
+    if (gameIsOver && p1Score === p2Score) {
+      return "Tie game!";
+    }
+    if (gameIsOver && p1Score > p2Score) {
+      return "P1 wins!";
+    }
+
+    return "P2 wins!";
+  }
+
   // RETURN //////////////////////////////////////////////
   return (
     <div className="App">
       {modal()}
       {welcomeScreen && (
         <Welcome
-          toggleSettings={toggleSettings}
-          showSettings={showSettings}
           clicked={(name) => {
             if (name === "single") {
               setNpcState((prev) => ({ ...prev, npcIsActive: true }));
@@ -310,14 +308,7 @@ function App() {
           }}
         />
       )}
-      {showSettings && (
-        <Settings
-          welcomeScreen={welcomeScreen}
-          resetToWelcomeScreen={resetToWelcomeScreen}
-          toggleSettings={toggleSettings}
-          showSettings={showSettings}
-        />
-      )}
+      {showSettings && <Settings />}
       <Header
         p1Score={p1Score}
         p2Score={p2Score}
@@ -327,9 +318,11 @@ function App() {
         toggleSettings={toggleSettings}
         showSettings={showSettings}
         resetToWelcomeScreen={resetToWelcomeScreen}
-        messageText={messageText}
         handleQuitGame={handleQuitGame}
         welcomeScreen={welcomeScreen}
+        gameIsOver={gameIsOver}
+        rollCount={rollCount}
+        messageText={messageText}
       />
       <div>
         <div className="dice-container">

@@ -1,11 +1,6 @@
-export default function Settings(props) {
+export default function Settings() {
   return (
     <div className="settings">
-      <div className="menu-buttons">
-        <button onClick={props.toggleSettings} className="gear-icon">
-          {props.showSettings ? "Close" : "Rules"}
-        </button>
-      </div>
       <div className="settings-bottom">
         <div className="rules">
           <h1 className="change-color">

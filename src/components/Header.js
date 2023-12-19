@@ -13,11 +13,13 @@ export default function Header({
   return (
     <div className="header">
       <span onClick={handleQuitGame}>{welcomeScreen ? "" : "Quit"}</span>{" "}
-      <span onClick={toggleSettings}>{showSettings ? "Close" : "Rules"}</span>
-      <span className={`player-1-score ${playerTurn === 1 ? "blue" : ""}`}>
+      <span className="rules-button-main" onClick={toggleSettings}>
+        {showSettings ? "Close" : "Rules"}
+      </span>
+      <span className={`p1-score ${playerTurn === 1 ? "blue" : ""}`}>
         P1 score: {p1Score}
       </span>
-      <span className={`player-2-score ${playerTurn === 2 ? "blue" : ""}`}>
+      <span className={`p2-score ${playerTurn === 2 ? "blue" : ""}`}>
         P2 score: {p2Score}
       </span>
       <span className="round-info">{messageText()}</span>
