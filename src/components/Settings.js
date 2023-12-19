@@ -1,89 +1,115 @@
 export default function Settings(props) {
-  function handleClick() {
-    props.resetToWelcomeScreen();
-  }
   return (
     <div className="settings">
-      <button onClick={props.toggleSettings} className="gear-icon">
-        ⚙️
-      </button>
-      <button onClick={handleClick} className="back-button">
-        {props.welcomeScreen ? "hi-lo" : "Quit game"}
-      </button>
+      <div className="menu-buttons">
+        <button onClick={props.toggleSettings} className="gear-icon">
+          {props.showSettings ? "Close" : "Rules"}
+        </button>
+      </div>
       <div className="settings-bottom">
-        <div className="charts">
-          <div className="chart">
-            <h2>hi ↑</h2>
-            <p>
-              <strong>dice / points</strong>
-            </p>
-            <p>30 = 10</p>
-            <p>29 = 9</p>
-            <p>28 = 8</p>
-            <p>27 = 7</p>
-            <p>26 = 6</p>
-            <p>25 = 5</p>
-            <p>24 = 4</p>
-            <p>23 = 3</p>
-            <p>22 = 2</p>
-            <p>&lt;22 = 1</p>
-          </div>
-          <div className="chart">
-            <h2>lo ↓</h2>
-            <p>
-              <strong className="points">dice / points</strong>
-            </p>
-            <p>5 = 10</p>
-            <p>6 = 9</p>
-            <p>7 = 8</p>
-            <p>8 = 7</p>
-            <p>9 = 6</p>
-            <p>10 = 5</p>
-            <p>11 = 4</p>
-            <p>12 = 3</p>
-            <p>13 = 2</p>
-            <p>&gt;13 = 1 </p>
-          </div>
-        </div>
         <div className="rules">
-          <h2>How to play:</h2>
+          <h1 className="change-color">
+            <strong>How to play:</strong>
+          </h1>
           <ul>
             <li>
-              You are given five rolls per turn. Tap on a die to lock it in
-              place.
+              1. You are given five rolls per turn. Tap on a die to lock it.
             </li>
             <li>
-              The number locked must be ≥ the number of rolls to continue.{" "}
+              2. The number of dice locked must be equal to or greater than the
+              roll you're on. So if it's roll #2, you need to have 2 dice locked
+              to continue.{" "}
             </li>
             <li>
-              Based on the luck of your first role, aim for either high or low
-              numbers.
+              3. For the most points, you want the highest OR the lowest rolls
+              possible. You decide!
             </li>
             <li>
-              The final ↑↓ die is special. The number multiplies your score.
+              4. The ↑↓ die is special. You want "↑" if you're going for high
+              rolls, or "↓" if you're going for low rolls. The number on this
+              die multiplies your points, so you want 3x whenever possible!
             </li>
-            <li>
-              ↑ or ↓ will determine which chart is used to calculate your score.
-            </li>
-            <li>
-              Perfect score is all 6s and x3↑ <strong>or</strong> all 1s and x3↓
-            </li>
+            <li>5. Perfect score is all 6s and x3↑ OR all 1s and x3↓</li>
             <li>The player with the highest score after 5 rounds wins!</li>
           </ul>
+        </div>
 
-          <ul>
-            <strong>Example:</strong>
-            <li>You roll 6, 5, 5, 4, 4 and "x2↑" </li>
-            <li>
-              6 + 5 + 5 + 4 + 4 = <strong>24</strong>{" "}
-            </li>
-            <li>
-              24 = <strong>4 points</strong> on the ↑ chart{" "}
-            </li>
-            <li>
-              4 points x 2 = <strong>final score of 6</strong>
-            </li>
-          </ul>
+        <div className="charts">
+          <p>
+            <strong className="change-color">Scoring:</strong> The number on the
+            left is the total for the 5 regular dice at the end of your turn.
+            The number on the right is how many points you get for a x1
+            multiplier on the hi-lo die.{" "}
+          </p>
+          <div className="chart">
+            <p>
+              <strong className="change-color">dice total ↑</strong>
+            </p>
+            <p>
+              <strong className="change-color">points</strong>
+            </p>
+            <p className="border-bottom">30↑</p>
+            <p className="border-bottom">10</p>
+            <p className="border-bottom">29↑</p>
+            <p className="border-bottom">9</p>
+            <p className="border-bottom">28↑</p>
+            <p className="border-bottom">8</p>
+            <p className="border-bottom">27↑</p>
+            <p className="border-bottom">7</p>
+            <p className="border-bottom">26↑</p>
+            <p className="border-bottom">6</p>
+            <p className="border-bottom">25↑</p>
+            <p className="border-bottom">5</p>
+            <p className="border-bottom">24↑</p>
+            <p className="border-bottom">4</p>
+            <p className="border-bottom">23↑</p>
+            <p className="border-bottom">3</p>
+            <p className="border-bottom">22↑</p>
+            <p className="border-bottom">2</p>
+            <p>less than 22↑</p>
+            <p>1</p>
+          </div>
+          <div className="chart">
+            <p>
+              <strong className="change-color">dice total↓</strong>
+            </p>
+            <p>
+              <strong className="change-color">points</strong>
+            </p>
+            <p className="border-bottom">5↓</p>
+            <p className="border-bottom">10</p>
+            <p className="border-bottom">6↓</p>
+            <p className="border-bottom">9</p>
+            <p className="border-bottom">7↓</p>
+            <p className="border-bottom">8</p>
+            <p className="border-bottom">8↓</p>
+            <p className="border-bottom">7</p>
+            <p className="border-bottom">9↓</p>
+            <p className="border-bottom">6</p>
+            <p className="border-bottom">10↓</p>
+            <p className="border-bottom">5</p>
+            <p className="border-bottom">11↓</p>
+            <p className="border-bottom">4</p>
+            <p className="border-bottom">12↓</p>
+            <p className="border-bottom">3</p>
+            <p className="border-bottom">13↓</p>
+            <p className="border-bottom">2</p>
+            <p>more than 13↓</p>
+            <p>1</p>
+          </div>
+        </div>
+        <div className="example">
+          <strong className="change-color">Example:</strong>
+          <li>You roll 1, 2, 2, 3, 3 and "x2↓" </li>
+          <li>
+            1 + 2 + 2 + 3 + 3 = <strong>11</strong>{" "}
+          </li>
+          <li>
+            11 = <strong>4 points</strong> on the ↓ chart{" "}
+          </li>
+          <li>
+            4 points x 2 = <strong>final score of 8</strong>
+          </li>
         </div>
       </div>
     </div>

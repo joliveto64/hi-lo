@@ -1,10 +1,35 @@
-export default function Welcome({ clicked, toggleSettings }) {
+import { useState } from "react";
+export default function Welcome({ clicked, toggleSettings, showSettings }) {
+  let [index, setIndex] = useState(0);
+  let colors = [
+    // blue
+    "121, 191, 237",
+    // orange
+    "255, 170, 100",
+    // green
+    "128, 228, 152",
+    // red
+    "230, 90, 90",
+    // purple
+    "214, 159, 237",
+    // yellow
+    "231, 208, 98",
+  ];
+
+  function handleColorChange() {
+    let nextIndex = index >= colors.length - 1 ? 0 : index + 1;
+    setIndex(nextIndex);
+    document.documentElement.style.setProperty(
+      "--main-color",
+      colors[nextIndex]
+    );
+  }
   return (
     <div className="welcome-container">
       <button onClick={toggleSettings} className="gear-icon">
-        ⚙️
+        {showSettings ? "Close" : "Rules"}
       </button>
-      <span className={`welcome-logo`}>
+      <span onClick={handleColorChange} className={`welcome-logo`}>
         <span className="welcome-arrows">↑↓</span>
       </span>
 

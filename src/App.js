@@ -252,13 +252,54 @@ function App() {
   function toggleSettings() {
     setShowSettings(!showSettings);
   }
+  // /////////
+  let [modalActive, setModalActive] = useState(false);
+
+  function handleYes() {
+    setModalActive(false);
+    resetToWelcomeScreen();
+  }
+
+  function handleNo() {
+    setModalActive(false);
+  }
+
+  function handleQuitGame() {
+    if (!gameIsStarted) {
+      handleYes();
+    } else {
+      setModalActive(true);
+    }
+  }
+
+  function modal() {
+    if (!modalActive) {
+      return <></>;
+    } else {
+      return (
+        <div className="are-you-sure">
+          <h1>Are you sure?</h1>
+          <div className="yes-no">
+            <span className="yes" onClick={handleYes}>
+              Yes
+            </span>
+            <span className="no" onClick={handleNo}>
+              No
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
 
   // RETURN //////////////////////////////////////////////
   return (
     <div className="App">
+      {modal()}
       {welcomeScreen && (
         <Welcome
           toggleSettings={toggleSettings}
+          showSettings={showSettings}
           clicked={(name) => {
             if (name === "single") {
               setNpcState((prev) => ({ ...prev, npcIsActive: true }));
@@ -271,12 +312,10 @@ function App() {
       )}
       {showSettings && (
         <Settings
-          menuClick={() => {
-            setShowSettings(!showSettings);
-          }}
           welcomeScreen={welcomeScreen}
           resetToWelcomeScreen={resetToWelcomeScreen}
           toggleSettings={toggleSettings}
+          showSettings={showSettings}
         />
       )}
       <Header
@@ -286,18 +325,13 @@ function App() {
         playerTurn={playerTurn}
         totalRounds={totalRounds}
         toggleSettings={toggleSettings}
+        showSettings={showSettings}
+        resetToWelcomeScreen={resetToWelcomeScreen}
+        messageText={messageText}
+        handleQuitGame={handleQuitGame}
+        welcomeScreen={welcomeScreen}
       />
       <div>
-        <p className="round-info">
-          <span
-            className={`restart ${resetActive ? "restart-active" : ""}`}
-            onClick={handleReset}
-          >
-            ↺
-          </span>
-          &nbsp;
-          {messageText()}
-        </p>
         <div className="dice-container">
           {dice.map((die) => (
             <Dice

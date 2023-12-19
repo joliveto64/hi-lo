@@ -34,18 +34,9 @@ body {
   padding: 1rem;
 }
 
-/* LIGHT AND DARK MODE ///////////////////////////////////////////////////*/
-
-.dark {
-  --background-color: rgb(50, 50, 50);
-  --text-color: whitesmoke;
+:root {
+  --main-color: 121, 191, 237;
 }
-
-.light {
-  --background-color: whitesmoke;
-  --text-color: rgb(120, 120, 120);
-}
-
 /* WELCOME PAGE ////////////////////////////////////////////////////////// */
 
 .welcome-container {
@@ -68,7 +59,7 @@ body {
 
 .welcome-logo {
   margin: 0;
-  color: rgb(121, 191, 237);
+  color: rgb(--main-color);
   animation: pulse 5s infinite;
   height: 12rem;
   width: 12rem;
@@ -124,42 +115,19 @@ body {
 .header {
   display: grid;
   width: 100%;
-  grid-template: 1fr 1fr / 1fr 1fr;
+  grid-template: 1fr 1fr 1fr/ 1fr 1fr;
   font-weight: bold;
   font-size: 1.25rem;
   overflow: hidden;
 }
 
-.player-1-score {
-  grid-area: 1/1;
-}
-
-.player-2-score {
-  grid-area: 2/1;
-}
-
 .blue {
-  color: #79bfed;
+  color: rgb(var(--main-color));
   transition: 0.2s;
 }
 
 .round {
   justify-self: end;
-  grid-area: 2/2;
-}
-
-.gear-icon {
-  position: fixed;
-  top: 1rem;
-  right: 1.5rem;
-  background: none;
-  border: none;
-  font: inherit;
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: whitesmoke;
-  font-weight: bold;
-  padding: 0;
 }
 
 /* ROUND INFO /////////////////////////////////////////////////////////*/
@@ -203,7 +171,7 @@ body {
 }
 
 .locked {
-  background-color: #79bfed;
+  background-color: rgb(var(--main-color));
   color: rgb(100, 100, 100);
 }
 
@@ -255,7 +223,7 @@ body {
 }
 
 .restart-active {
-  color: #79bfed;
+  color: rgb(var(--main-color));
   animation: rotate 2s ease-in-out;
   display: inline-block;
   animation-direction: reverse;
@@ -379,14 +347,14 @@ body {
 @keyframes pulse {
   0%,
   100% {
-    text-shadow: 0 0 30px rgba(121, 191, 237, 0.3);
-    box-shadow: 0 0 30px rgba(121, 191, 237, 0.3);
+    text-shadow: 0 0 30px rgba(var(--main-color), 0.3);
+    box-shadow: 0 0 30px rgba(var(--main-color), 0.3);
   }
   30%,
   70% {
-    text-shadow: 0 0 30px rgba(121, 191, 237, 1);
-    box-shadow: 0 0 30px rgba(121, 191, 237, 1);
-    color: rgba(121, 191, 237);
+    text-shadow: 0 0 30px rgba(var(--main-color), 1);
+    box-shadow: 0 0 30px rgba(var(--main-color), 1);
+    color: rgba(var(--main-color));
     filter: brightness(1.05);
   }
 }
