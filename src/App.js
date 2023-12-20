@@ -22,6 +22,7 @@ function App() {
   const [isOnline, setIsOnline] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
+  let [modalActive, setModalActive] = useState(false);
   const [npcState, setNpcState] = useState({
     hasRolled: false,
     hasLocked: true,
@@ -171,24 +172,6 @@ function App() {
   ]);
 
   // FUNCTIONS ///////////////////////////////////////////////////////
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (resetActive) {
-        setResetActive(false);
-      }
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [resetActive]);
-
-  function handleReset() {
-    if (!resetActive) {
-      setResetActive(true);
-    } else if (resetActive) {
-      startNewGame();
-    }
-  }
-
   function getButtonText() {
     if (gameIsOver) {
       return "Again!";
@@ -238,8 +221,6 @@ function App() {
   function toggleSettings() {
     setShowSettings(!showSettings);
   }
-  // /////////
-  let [modalActive, setModalActive] = useState(false);
 
   function handleYes() {
     setModalActive(false);
@@ -308,24 +289,20 @@ function App() {
     }
   }, [autoRotate, playerTurn, flipped]);
 
-  console.log("rot:", autoRotate, "flip:", flipped, "turn:", playerTurn);
+  function setGameMode(name) {
+    if (name === "single") {
+      setNpcState((prev) => ({ ...prev, npcIsActive: true }));
+    } else if (name === "online") {
+      setIsOnline(true);
+    }
+    setWelcomeScreen(false);
+  }
 
   // RETURN //////////////////////////////////////////////
   return (
     <div className={`App ${flipped ? "flip-screen" : ""}`}>
       {modal()}
-      {welcomeScreen && (
-        <Welcome
-          clicked={(name) => {
-            if (name === "single") {
-              setNpcState((prev) => ({ ...prev, npcIsActive: true }));
-            } else if (name === "online") {
-              setIsOnline(true);
-            }
-            setWelcomeScreen(false);
-          }}
-        />
-      )}
+      {welcomeScreen && <Welcome clicked={setGameMode} />}
       {showSettings && (
         <Settings rotateScreen={rotateScreen} autoRotate={autoRotate} />
       )}
@@ -344,36 +321,34 @@ function App() {
         rollCount={rollCount}
         messageText={messageText}
       />
-      <div>
-        <div className="dice-container">
-          {dice.map((die) => (
-            <Dice
-              key={die.id}
-              value={
-                gameIsOver && p1Score === p2Score
-                  ? "🤝"
-                  : gameIsOver
-                  ? "🎉"
-                  : die.value
-              }
-              isLocked={die.isLocked}
-              isPermLocked={die.isPermLocked}
-              isSpinning={isSpinning}
-              clicked={() => {
-                handleDiceClick(
-                  die.id,
-                  gameIsStarted,
-                  betweenRound,
-                  setDice,
-                  npcIsActive,
-                  playerTurn
-                );
-              }}
-              isHilo={die.isHilo}
-              gameIsOver={gameIsOver}
-            />
-          ))}
-        </div>
+      <div className="dice-container">
+        {dice.map((die) => (
+          <Dice
+            key={die.id}
+            value={
+              gameIsOver && p1Score === p2Score
+                ? "🤝"
+                : gameIsOver
+                ? "🎉"
+                : die.value
+            }
+            isLocked={die.isLocked}
+            isPermLocked={die.isPermLocked}
+            isSpinning={isSpinning}
+            clicked={() => {
+              handleDiceClick(
+                die.id,
+                gameIsStarted,
+                betweenRound,
+                setDice,
+                npcIsActive,
+                playerTurn
+              );
+            }}
+            isHilo={die.isHilo}
+            gameIsOver={gameIsOver}
+          />
+        ))}
       </div>
       <button
         className="button"

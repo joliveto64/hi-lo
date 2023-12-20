@@ -12,10 +12,10 @@ export default function Header({
 }) {
   return (
     <div className="header">
-      <span className="quit-button" onClick={handleQuitGame}>
+      <span className="quit-btn" onClick={handleQuitGame}>
         {welcomeScreen ? "" : "Quit"}
       </span>{" "}
-      <span className="rules-button-main" onClick={toggleSettings}>
+      <span className="menu-btn" onClick={toggleSettings}>
         {showSettings ? "Close" : "Menu"}
       </span>
       <span className={`p1-score ${playerTurn === 1 ? "blue" : ""}`}>
@@ -24,8 +24,8 @@ export default function Header({
       <span className={`p2-score ${playerTurn === 2 ? "blue" : ""}`}>
         P2 score: {p2Score}
       </span>
-      <span className="round-info">{messageText()}</span>
-      <span className="round">
+      <span className="roll-count">{messageText()}</span>
+      <span className="round-count">
         Round: {roundCount <= totalRounds ? roundCount : totalRounds}/
         {totalRounds}
       </span>

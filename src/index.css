@@ -126,14 +126,23 @@ body {
 .blue {
   color: rgb(var(--main-color));
   transition: 0.2s;
+  font-weight: bold;
 }
 
-.round {
+.round-count {
   justify-self: end;
 }
 
 .p2-score {
   justify-self: end;
+}
+
+.p1-score,
+.p2-score,
+.round-count,
+.roll-count {
+  font-size: 1rem;
+  padding-top: 0.5rem;
 }
 
 /* ROUND INFO /////////////////////////////////////////////////////////*/
@@ -247,8 +256,8 @@ body {
   padding: 1.5rem;
 }
 
-.rules-button-main {
-  justify-self: end;
+.menu-btn,
+.quit-btn {
   text-align: center;
   line-height: 1.6rem;
   border: none;
@@ -258,19 +267,11 @@ body {
   width: 4rem;
   border-radius: 0.2rem;
   font-size: 1rem;
-  z-index: 1000;
 }
 
-.quit-button {
-  text-align: center;
-  line-height: 1.6rem;
-  border: none;
-  color: whitesmoke;
-  background-color: rgb(100, 100, 100);
-  height: 1.75rem;
-  width: 4rem;
-  border-radius: 0.2rem;
-  font-size: 1rem;
+.menu-btn {
+  justify-self: end;
+  z-index: 1000;
 }
 
 .charts {
