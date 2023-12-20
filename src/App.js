@@ -216,6 +216,7 @@ function App() {
     setNpcState((prev) => ({ ...prev, npcIsActive: false }));
     setWelcomeScreen(true);
     setShowSettings(false);
+    setFlipped(false);
   }
 
   function toggleSettings() {
@@ -261,9 +262,7 @@ function App() {
 
   function messageText() {
     if (!gameIsOver) {
-      return `${
-        playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
-      } Roll: ${rollCount}/5`;
+      return `Roll: ${rollCount}/5`;
     }
     if (gameIsOver && p1Score === p2Score) {
       return "Tie game!";

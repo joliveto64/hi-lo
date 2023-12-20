@@ -2,7 +2,10 @@ export default function Settings(props) {
   return (
     <div className="settings">
       <span onClick={props.rotateScreen}>
-        {props.autoRotate ? "Auto-rotate: On" : "Auto-rotate: Off"}
+        {props.autoRotate ? "Auto-rotate: " : "Auto-rotate: Off"}
+        {props.autoRotate && (
+          <span style={{ color: "rgb(var(--main-color))" }}>On</span>
+        )}
       </span>
       <div className="settings-bottom">
         <div className="rules">

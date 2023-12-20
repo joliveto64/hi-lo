@@ -10,6 +10,10 @@ export default function Header({
   handleQuitGame,
   welcomeScreen,
 }) {
+  let styles = {
+    color: "rgb(var(--main-color))",
+    fontWeight: "bold",
+  };
   return (
     <>
       <span className="quit-btn" onClick={handleQuitGame}>
@@ -19,10 +23,10 @@ export default function Header({
         {showSettings ? "Close" : "Menu"}
       </span>
       <div className="header">
-        <span className={`p1-score ${playerTurn === 1 ? "blue" : ""}`}>
+        <span style={playerTurn === 1 ? styles : {}} className="p1-score">
           P1 score: {p1Score}
         </span>
-        <span className={`p2-score ${playerTurn === 2 ? "blue" : ""}`}>
+        <span style={playerTurn === 2 ? styles : {}} className="p2-score">
           P2 score: {p2Score}
         </span>
         <span className="roll-count">{messageText()}</span>
