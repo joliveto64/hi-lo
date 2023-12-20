@@ -74,7 +74,6 @@ body {
   font-weight: bold;
   border-radius: 0.75rem;
   background: none;
-  transition: 0.2s;
 }
 
 .welcome-arrows {
@@ -84,7 +83,7 @@ body {
 .welcome-text {
   font-weight: bold;
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -102,7 +101,7 @@ body {
   margin-bottom: 0.5rem;
   border-radius: 0.2rem;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: whitesmoke;
   background-color: rgb(100, 100, 100);
   letter-spacing: 0.05rem;
@@ -122,17 +121,34 @@ body {
   grid-template: 1fr 1fr/ 1fr 1fr;
   font-size: 1.25rem;
   overflow: hidden;
-  margin-bottom: 1rem;
   align-self: flex-start;
 }
 
-.menu-quit-buttons {
+.menu-btn,
+.quit-btn {
+  text-align: center;
+  line-height: 1.6rem;
+  border: none;
+  color: whitesmoke;
+  background-color: rgb(100, 100, 100);
+  height: 1.75rem;
+  width: 4rem;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+}
+
+.quit-btn {
   position: absolute;
   top: 1.5rem;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding-inline: 1.5rem;
+  left: 1.5rem;
+}
+
+.menu-btn {
+  justify-self: end;
+  z-index: 1000;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
 }
 
 .blue {
@@ -162,6 +178,7 @@ body {
   grid-template: 1fr 1fr 1fr / 1fr 1fr;
   gap: 1rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .die {
@@ -238,18 +255,6 @@ body {
   transition: 0.2s;
 }
 
-/* RESTART BUTTON /////////////////////////////////////////*/
-.restart {
-  cursor: pointer;
-}
-
-.restart-active {
-  color: rgb(var(--main-color));
-  animation: rotate 2s ease-in-out;
-  display: inline-block;
-  animation-direction: reverse;
-}
-
 /* SETTINGS PAGE /////////////////////////////////////////////*/
 .settings {
   position: fixed;
@@ -264,24 +269,6 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
-}
-
-.menu-btn,
-.quit-btn {
-  text-align: center;
-  line-height: 1.6rem;
-  border: none;
-  color: whitesmoke;
-  background-color: rgb(100, 100, 100);
-  height: 1.75rem;
-  width: 4rem;
-  border-radius: 0.2rem;
-  font-size: 1rem;
-}
-
-.menu-btn {
-  justify-self: end;
-  z-index: 1000;
 }
 
 .charts {
