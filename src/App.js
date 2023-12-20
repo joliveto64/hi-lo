@@ -305,22 +305,23 @@ function App() {
       {showSettings && (
         <Settings rotateScreen={rotateScreen} autoRotate={autoRotate} />
       )}
-      <Header
-        p1Score={p1Score}
-        p2Score={p2Score}
-        roundCount={roundCount}
-        playerTurn={playerTurn}
-        totalRounds={totalRounds}
-        toggleSettings={toggleSettings}
-        showSettings={showSettings}
-        resetToWelcomeScreen={resetToWelcomeScreen}
-        handleQuitGame={handleQuitGame}
-        welcomeScreen={welcomeScreen}
-        gameIsOver={gameIsOver}
-        rollCount={rollCount}
-        messageText={messageText}
-      />
+
       <div className="dice-button-container">
+        <Header
+          p1Score={p1Score}
+          p2Score={p2Score}
+          roundCount={roundCount}
+          playerTurn={playerTurn}
+          totalRounds={totalRounds}
+          toggleSettings={toggleSettings}
+          showSettings={showSettings}
+          resetToWelcomeScreen={resetToWelcomeScreen}
+          handleQuitGame={handleQuitGame}
+          welcomeScreen={welcomeScreen}
+          gameIsOver={gameIsOver}
+          rollCount={rollCount}
+          messageText={messageText}
+        />
         <div className="dice-container">
           {dice.map((die) => (
             <Dice
@@ -373,3 +374,5 @@ function App() {
 }
 
 export default App;
+
+// TODO: try moving scores, round, roll in dice-button container to align
