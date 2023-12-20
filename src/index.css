@@ -40,6 +40,9 @@ body {
 
 :root {
   --main-color: 121, 191, 237;
+  --dark-color: rgb(40, 40, 40);
+  --light-color: rgb(245, 245, 245);
+  --button-color: rgb(100, 100, 100);
 }
 /* WELCOME PAGE ////////////////////////////////////////////////////////// */
 
@@ -52,7 +55,7 @@ body {
   width: 100vw;
   height: calc(100vh - env(safe-area-inset-bottom));
   z-index: 1;
-  background-color: rgb(40, 40, 40);
+  background-color: var(--dark-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -103,7 +106,7 @@ body {
   font-weight: bold;
   font-size: 1rem;
   color: whitesmoke;
-  background-color: rgb(100, 100, 100);
+  background-color: var(--button-color);
   letter-spacing: 0.05rem;
   cursor: pointer;
 }
@@ -131,7 +134,7 @@ body {
   line-height: 1.6rem;
   border: none;
   color: whitesmoke;
-  background-color: rgb(100, 100, 100);
+  background-color: var(--button-color);
   height: 1.75rem;
   width: 4rem;
   border-radius: 0.2rem;
@@ -179,7 +182,7 @@ body {
   position: relative;
   height: calc(100vw / 3);
   width: calc(100vw / 3);
-  background-color: rgb(100, 100, 100);
+  background-color: var(--button-color);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   color: whitesmoke;
   display: flex;
@@ -194,13 +197,13 @@ body {
 }
 
 .hilo {
-  background-color: whitesmoke;
-  color: rgb(100, 100, 100);
+  background-color: var(--light-color);
+  color: var(--button-color);
 }
 
 .locked {
   background-color: rgb(var(--main-color));
-  color: rgb(100, 100, 100);
+  color: var(--button-color);
 }
 
 .perm-locked {
@@ -226,7 +229,7 @@ body {
 
 .button {
   border: none;
-  background-color: rgb(100, 100, 100);
+  background-color: var(--button-color);
   color: whitesmoke;
   font-size: 1.5rem;
   font-weight: bold;
@@ -257,8 +260,8 @@ body {
   left: 0;
   top: 0;
   z-index: 2;
-  background-color: whitesmoke;
-  background-color: rgb(40, 40, 40);
+  background-color: var(--light-color);
+  background-color: var(--dark-color);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -283,7 +286,7 @@ body {
 }
 
 .border-bottom {
-  border-bottom: 1px solid whitesmoke;
+  border-bottom: 1px solid var(--light-color);
 }
 
 .settings-bottom {
@@ -328,7 +331,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1rem;
-  background-color: rgb(40, 40, 40);
+  background-color: var(--dark-color);
   padding: 1rem;
   border-radius: 0.4rem;
   width: 85%;
