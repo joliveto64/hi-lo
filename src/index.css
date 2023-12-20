@@ -373,6 +373,7 @@ body {
 @media (min-width: 940px) {
   .welcome-container {
     justify-content: center;
+    transform: scale(1.1);
   }
 
   .welcome-logo {
@@ -390,24 +391,16 @@ body {
     height: calc(100vw / 7.5);
     width: calc(100vw / 7.5);
     font-size: 2.5rem;
-    flex-grow: 1;
-    flex-shrink: 1;
-  }
-
-  .menu-btn,
-  .quit-btn {
-    line-height: 2.25rem;
-    height: 2.5rem;
-    width: 6rem;
-    font-size: 1.5rem;
   }
 
   .menu-btn {
+    transform: scale(1.1);
     top: 3rem;
     right: 3rem;
   }
 
   .quit-btn {
+    transform: scale(1.1);
     top: 3rem;
     left: 3rem;
   }

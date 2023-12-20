@@ -374,5 +374,3 @@ function App() {
 }
 
 export default App;
-
-// TODO: try moving scores, round, roll in dice-button container to align
