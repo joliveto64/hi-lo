@@ -263,7 +263,7 @@ function App() {
     if (!gameIsOver) {
       return `${
         playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
-      } roll: ${rollCount}/5`;
+      } Roll: ${rollCount}/5`;
     }
     if (gameIsOver && p1Score === p2Score) {
       return "Tie game!";
@@ -321,52 +321,54 @@ function App() {
         rollCount={rollCount}
         messageText={messageText}
       />
-      <div className="dice-container">
-        {dice.map((die) => (
-          <Dice
-            key={die.id}
-            value={
-              gameIsOver && p1Score === p2Score
-                ? "🤝"
-                : gameIsOver
-                ? "🎉"
-                : die.value
+      <div className="dice-button-container">
+        <div className="dice-container">
+          {dice.map((die) => (
+            <Dice
+              key={die.id}
+              value={
+                gameIsOver && p1Score === p2Score
+                  ? "🤝"
+                  : gameIsOver
+                  ? "🎉"
+                  : die.value
+              }
+              isLocked={die.isLocked}
+              isPermLocked={die.isPermLocked}
+              isSpinning={isSpinning}
+              clicked={() => {
+                handleDiceClick(
+                  die.id,
+                  gameIsStarted,
+                  betweenRound,
+                  setDice,
+                  npcIsActive,
+                  playerTurn
+                );
+              }}
+              isHilo={die.isHilo}
+              gameIsOver={gameIsOver}
+            />
+          ))}
+        </div>
+        <button
+          className="button"
+          onClick={() => {
+            if (!gameIsOver) {
+              handleButton();
+            } else {
+              startNewGame(setDice, setGameState, setNpcState);
             }
-            isLocked={die.isLocked}
-            isPermLocked={die.isPermLocked}
-            isSpinning={isSpinning}
-            clicked={() => {
-              handleDiceClick(
-                die.id,
-                gameIsStarted,
-                betweenRound,
-                setDice,
-                npcIsActive,
-                playerTurn
-              );
-            }}
-            isHilo={die.isHilo}
-            gameIsOver={gameIsOver}
-          />
-        ))}
-      </div>
-      <button
-        className="button"
-        onClick={() => {
-          if (!gameIsOver) {
-            handleButton();
-          } else {
-            startNewGame(setDice, setGameState, setNpcState);
+          }}
+          disabled={
+            (!betweenRound && lockCount < rollCount) ||
+            (rollFive && !allDiceLocked) ||
+            (npcIsActive && playerTurn === 2)
           }
-        }}
-        disabled={
-          (!betweenRound && lockCount < rollCount) ||
-          (rollFive && !allDiceLocked) ||
-          (npcIsActive && playerTurn === 2)
-        }
-      >
-        {getButtonText()}
-      </button>
+        >
+          {getButtonText()}
+        </button>
+      </div>
     </div>
   );
 }

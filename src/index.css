@@ -25,12 +25,13 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .flip-screen {
@@ -118,15 +119,25 @@ body {
 .header {
   display: grid;
   width: 100%;
-  grid-template: 1fr 1fr 1fr/ 1fr 1fr;
+  grid-template: 1fr 1fr/ 1fr 1fr;
   font-size: 1.25rem;
   overflow: hidden;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+}
+
+.menu-quit-buttons {
+  position: absolute;
+  top: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 1.5rem;
 }
 
 .blue {
   color: rgb(var(--main-color));
   transition: 0.2s;
-  font-weight: bold;
 }
 
 .round-count {
@@ -145,17 +156,12 @@ body {
   padding-top: 0.5rem;
 }
 
-/* ROUND INFO /////////////////////////////////////////////////////////*/
-
-.round-info {
-  margin: 0 0 0.5rem 0;
-}
-
 /* DICE COMPONENT ///////////////////////////////////////////////////*/
 .dice-container {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 1fr;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .die {
@@ -199,6 +205,10 @@ body {
 
 .click {
   animation: click 0.2s ease-in-out;
+}
+
+.dice-button-container {
+  text-align: center;
 }
 
 /* MAIN BUTTON ///////////////////////////////////////////////////*/
