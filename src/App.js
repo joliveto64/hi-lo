@@ -44,7 +44,7 @@ function App() {
   const rollCount =
     masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
   const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 5;
+  const totalRounds = 1;
   const gameIsOver = roundCount > totalRounds;
   const gameIsStarted = masterCount >= 1;
   const rollFive = rollCount === 5;

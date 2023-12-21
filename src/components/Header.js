@@ -9,11 +9,33 @@ export default function Header({
   messageText,
   handleQuitGame,
   welcomeScreen,
+  gameIsOver,
 }) {
   let styles = {
     color: "rgb(var(--main-color))",
     fontWeight: "bold",
   };
+
+  function playerHighlight() {
+    if (gameIsOver) {
+      if (p1Score === p2Score) {
+        return "tie";
+      } else if (p1Score > p2Score) {
+        return "p1";
+      } else if (p2Score > p1Score) {
+        return "p2";
+      }
+    }
+
+    if (!gameIsOver) {
+      if (playerTurn === 1) {
+        return "p1";
+      } else if (playerTurn === 2) {
+        return "p2";
+      }
+    }
+  }
+
   return (
     <>
       <span className="quit-btn" onClick={handleQuitGame}>
@@ -23,13 +45,27 @@ export default function Header({
         {showSettings ? "Close" : "Menu"}
       </span>
       <div className="header">
-        <span style={playerTurn === 1 ? styles : {}} className="p1-score">
+        <span
+          style={
+            playerHighlight() === "p1" || playerHighlight() === "tie"
+              ? styles
+              : {}
+          }
+          className="p1-score"
+        >
           P1 score: {p1Score}
         </span>
-        <span style={playerTurn === 2 ? styles : {}} className="p2-score">
+        <span className="roll-count">{messageText()}</span>
+        <span
+          style={
+            playerHighlight() === "p2" || playerHighlight() === "tie"
+              ? styles
+              : {}
+          }
+          className="p2-score"
+        >
           P2 score: {p2Score}
         </span>
-        <span className="roll-count">{messageText()}</span>
         <span className="round-count">
           Round: {roundCount <= totalRounds ? roundCount : totalRounds}/
           {totalRounds}

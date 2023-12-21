@@ -9,9 +9,9 @@ export default function Settings(props) {
       </span>
       <div className="settings-bottom">
         <div className="rules">
-          <h1 className="change-color">
+          <span className="change-color how-to-play">
             <strong>How to play:</strong>
-          </h1>
+          </span>
           <p>1. You are given five rolls per turn. Tap on a die to lock it.</p>
           <p>
             2. The number of dice locked must be equal to or greater than the

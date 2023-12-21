@@ -8,6 +8,7 @@ body,
 #root,
 .App {
   height: 100%;
+  font-size: 1rem;
 }
 
 body {
@@ -86,7 +87,6 @@ body {
 .welcome-text {
   font-weight: bold;
   margin-bottom: 1rem;
-  font-size: 1rem;
   text-align: center;
 }
 
@@ -104,11 +104,11 @@ body {
   margin-bottom: 0.5rem;
   border-radius: 0.2rem;
   font-weight: bold;
-  font-size: 1rem;
   color: whitesmoke;
   background-color: var(--button-color);
   letter-spacing: 0.05rem;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 
 .welcome-button-container button:active {
@@ -121,7 +121,6 @@ body {
 .header {
   display: grid;
   grid-template: 1fr 1fr/ 1fr 1fr;
-  font-size: 1.25rem;
   overflow: hidden;
   align-self: flex-start;
   margin-top: 0.5rem;
@@ -137,7 +136,6 @@ body {
   height: 1.75rem;
   width: 4rem;
   border-radius: 0.2rem;
-  font-size: 1rem;
 }
 
 .quit-btn {
@@ -154,19 +152,9 @@ body {
   right: 1.5rem;
 }
 
-.round-count {
-  justify-self: end;
-}
-
-.p2-score {
-  justify-self: end;
-}
-
-.p1-score,
-.p2-score,
 .round-count,
 .roll-count {
-  font-size: 1rem;
+  justify-self: end;
 }
 
 /* DICE COMPONENT ///////////////////////////////////////////////////*/
@@ -219,6 +207,10 @@ body {
   will-change: transform;
 }
 
+.die:active {
+  filter: brightness(0.95);
+}
+
 .click {
   animation: click 0.2s ease-in-out;
 }
@@ -229,7 +221,6 @@ body {
   border: none;
   background-color: var(--button-color);
   color: whitesmoke;
-  font-size: 1.5rem;
   font-weight: bold;
   padding-block: 1rem;
   border-radius: 0.3rem;
@@ -238,6 +229,7 @@ body {
   margin: 0;
   width: 100%;
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 .button:active {
@@ -246,7 +238,7 @@ body {
 }
 
 .button:disabled {
-  filter: opacity(0.5);
+  filter: brightness(0.5);
   transition: 0.2s;
 }
 
@@ -269,7 +261,6 @@ body {
 .charts {
   display: flex;
   flex-direction: column;
-  font-size: 1.1rem;
   margin-bottom: 2rem;
 }
 
@@ -290,6 +281,7 @@ body {
 .settings-bottom {
   display: flex;
   flex-direction: column;
+  margin-top: 2rem;
 }
 
 .change-color {
@@ -297,14 +289,8 @@ body {
 }
 
 .rules {
-  font-size: 1.1rem;
   margin-bottom: 2rem;
   padding: 0;
-}
-
-.rules h1 {
-  font-size: 1.3rem;
-  margin: 2rem 0rem 0.25rem 0;
 }
 
 .rules li {
@@ -313,7 +299,6 @@ body {
 }
 
 .example {
-  font-size: 1.1rem;
   margin-bottom: 1rem;
   line-height: 1rem;
 }
@@ -328,14 +313,12 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1rem;
   background-color: var(--dark-color);
   padding: 1rem;
   border-radius: 0.4rem;
   width: 85%;
   box-shadow: 0px 0px 10px 8px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  /* border: 1px whitesmoke solid; */
 }
 
 .are-you-sure h1 {
@@ -366,8 +349,21 @@ body {
     font-size: 2.5rem;
   }
 
+  .button {
+    padding: 0.5rem;
+  }
+
   .welcome-container {
     flex-direction: row;
+  }
+
+  .settings {
+    padding-inline: 10%;
+    padding-block: 5%;
+  }
+
+  .are-you-sure {
+    width: 50%;
   }
 }
 
@@ -386,8 +382,13 @@ body {
     padding: 3rem;
   }
 
+  .button {
+    font-size: 2rem;
+    padding: 0.75rem;
+  }
+
   .settings {
-    padding-inline: 10%;
+    padding-inline: 20%;
     padding-block: 5%;
   }
 
@@ -398,13 +399,13 @@ body {
   }
 
   .menu-btn {
-    transform: scale(1.1);
+    transform: scale(1.2);
     top: 3rem;
     right: 3rem;
   }
 
   .quit-btn {
-    transform: scale(1.1);
+    transform: scale(1.2);
     top: 3rem;
     left: 3rem;
   }
@@ -413,7 +414,7 @@ body {
   .p2-score,
   .roll-count,
   .round-count {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 }
 
