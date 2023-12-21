@@ -201,6 +201,7 @@ function unlockDice(setDice) {
     oldDice.map((die) => ({ ...die, isLocked: false, isPermLocked: false }))
   );
 }
+
 function calculateScore(dice) {
   let total = 0;
   let totalPoints;

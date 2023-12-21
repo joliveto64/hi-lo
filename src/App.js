@@ -14,11 +14,12 @@ import {
   handleDiceClick,
 } from "./utils";
 
+// TODO: transform 3d for roll animation, fix flashing bug
+
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
   const [showSettings, setShowSettings] = useState(false);
   const [welcomeScreen, setWelcomeScreen] = useState(true);
-  const [resetActive, setResetActive] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
   const [flipped, setFlipped] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);

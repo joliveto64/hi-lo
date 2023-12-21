@@ -120,7 +120,6 @@ body {
 
 .header {
   display: grid;
-  /* width: 100%; */
   grid-template: 1fr 1fr/ 1fr 1fr;
   font-size: 1.25rem;
   overflow: hidden;
@@ -195,6 +194,7 @@ body {
   backface-visibility: hidden;
   cursor: pointer;
   flex-shrink: 1;
+  transform: translate3d(0, 0, 0);
 }
 
 .hilo {
@@ -208,7 +208,8 @@ body {
 }
 
 .perm-locked {
-  filter: opacity(0.5);
+  background-color: rgb(var(--main-color));
+  filter: brightness(0.7);
   transform: scale(0.9);
   box-shadow: none;
 }
@@ -381,16 +382,19 @@ body {
   }
 
   .App,
-  .welcome-container,
-  .settings {
+  .welcome-container {
     padding: 3rem;
   }
 
+  .settings {
+    padding-inline: 10%;
+    padding-block: 5%;
+  }
+
   .die {
-    aspect-ratio: 1/1;
     height: calc(100vw / 7.5);
     width: calc(100vw / 7.5);
-    font-size: 2.5rem;
+    font-size: 4rem;
   }
 
   .menu-btn {
