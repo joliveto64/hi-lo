@@ -23,17 +23,17 @@ body {
 }
 
 .App {
+  position: fixed;
   min-height: 650px;
-  width: 100vw;
+  width: 100%;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
   overflow-y: auto;
   padding: 1.5rem;
-  display: flex;
-  justify-content: center;
 }
 
 .flip-screen {
@@ -54,7 +54,7 @@ body {
   right: 0;
   bottom: 0;
   top: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   min-height: 650px;
   min-width: 350px;
@@ -150,7 +150,7 @@ body {
 
 .menu-btn {
   justify-self: end;
-  z-index: 1000;
+  z-index: 2;
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
@@ -249,9 +249,9 @@ body {
 /* SETTINGS PAGE /////////////////////////////////////////////*/
 .settings {
   position: fixed;
-  width: 100vw;
+  width: 100%;
   min-width: 350px;
-  height: calc(100vh - env(safe-area-inset-bottom));
+  height: 100vh;
   left: 0;
   top: 0;
   z-index: 2;
