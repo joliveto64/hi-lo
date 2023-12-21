@@ -24,7 +24,7 @@ body {
 
 .App {
   position: fixed;
-  min-height: 650px;
+  min-height: 500px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -58,7 +58,7 @@ body {
   height: 100vh;
   min-height: 650px;
   min-width: 350px;
-  z-index: 1;
+  z-index: 3;
   background-color: var(--dark-color);
   display: flex;
   flex-direction: column;
@@ -140,17 +140,19 @@ body {
   height: 1.75rem;
   width: 4rem;
   border-radius: 0.2rem;
+  cursor: pointer;
 }
 
 .quit-btn {
   position: absolute;
   top: 1.5rem;
   left: 1.5rem;
+  z-index: 2;
 }
 
 .menu-btn {
   justify-self: end;
-  z-index: 2;
+  z-index: 5;
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
@@ -170,7 +172,6 @@ body {
 }
 
 .die {
-  align-self: center;
   aspect-ratio: 1 / 1;
   width: calc(100vw / 3);
   min-width: 75px;
@@ -254,7 +255,7 @@ body {
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 2;
+  z-index: 4;
   background-color: var(--light-color);
   background-color: var(--dark-color);
   overflow-y: auto;
@@ -340,8 +341,18 @@ body {
   font-size: 1.5rem;
 }
 
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 4.5rem;
+  background-color: rgb(40, 40, 40);
+  z-index: 1;
+}
+
 /* MEDIA QUERIES ///////////////////////////////////////////////////*/
-@media (min-width: 600px) {
+@media (min-width: 550px) {
   .App,
   .settings,
   .welcome-container {
@@ -409,13 +420,7 @@ body {
     padding-block: 5%;
   }
 
-  .dice-container {
-    width: 90vw;
-  }
-
   .die {
-    height: auto;
-    width: auto;
     font-size: 4rem;
   }
 
