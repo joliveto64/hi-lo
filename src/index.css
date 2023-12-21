@@ -19,10 +19,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: whitesmoke;
+  background-color: rgb(40, 40, 40);
 }
 
 .App {
-  min-height: 100vh;
+  min-height: 650px;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -54,7 +55,9 @@ body {
   bottom: 0;
   top: 0;
   width: 100vw;
-  height: calc(100vh - env(safe-area-inset-bottom));
+  height: 100vh;
+  min-height: 650px;
+  min-width: 350px;
   z-index: 1;
   background-color: var(--dark-color);
   display: flex;
@@ -95,6 +98,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: min-content;
+  overflow-y: hidden;
 }
 
 .welcome-button-container button {
@@ -166,9 +170,10 @@ body {
 }
 
 .die {
-  position: relative;
-  height: calc(100vw / 3);
+  align-self: center;
+  aspect-ratio: 1 / 1;
   width: calc(100vw / 3);
+  min-width: 75px;
   background-color: var(--button-color);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   color: whitesmoke;
@@ -181,7 +186,6 @@ body {
   transition: 0.2s;
   backface-visibility: hidden;
   cursor: pointer;
-  flex-shrink: 1;
   transform: translate3d(0, 0, 0);
 }
 
@@ -246,6 +250,7 @@ body {
 .settings {
   position: fixed;
   width: 100vw;
+  min-width: 350px;
   height: calc(100vh - env(safe-area-inset-bottom));
   left: 0;
   top: 0;
@@ -336,7 +341,13 @@ body {
 }
 
 /* MEDIA QUERIES ///////////////////////////////////////////////////*/
-@media (min-width: 520px) {
+@media (min-width: 600px) {
+  .App,
+  .settings,
+  .welcome-container {
+    min-height: 350px;
+  }
+
   .dice-container {
     display: grid;
     grid-template: 1fr / 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -344,8 +355,8 @@ body {
   }
 
   .die {
-    height: calc(100vw / 8);
     width: calc(100vw / 8);
+    aspect-ratio: 1 / 1;
     font-size: 2.5rem;
   }
 
@@ -368,6 +379,12 @@ body {
 }
 
 @media (min-width: 940px) {
+  .App,
+  .settings,
+  .welcome-container {
+    min-height: 450px;
+  }
+
   .welcome-container {
     justify-content: center;
     transform: scale(1.1);
@@ -392,9 +409,13 @@ body {
     padding-block: 5%;
   }
 
+  .dice-container {
+    width: 90vw;
+  }
+
   .die {
-    height: calc(100vw / 7.5);
-    width: calc(100vw / 7.5);
+    height: auto;
+    width: auto;
     font-size: 4rem;
   }
 
