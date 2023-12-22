@@ -7,14 +7,16 @@ import TopButtons from "./components/TopButtons.js";
 import Settings from "./components/Settings";
 import Welcome from "./components/Welcome";
 import useGameState from "./components/useGameState.js";
-import {
-  generateDice,
-  keepDie,
-  rollDice,
-  unlockDice,
-  calculateScore,
-  handleDiceClick,
-} from "./utils";
+import Functions from "./components/Functions.js";
+
+// import {
+//   generateDice,
+//   keepDie,
+//   rollDice,
+//   unlockDice,
+//   calculateScore,
+//   handleDiceClick,
+// } from "./utils";
 
 // TODO: move menu button to all pages to stop weird scrolling issues
 
@@ -53,6 +55,15 @@ function App() {
   } = useGameState();
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
   const { hasRolled, hasLocked, npcIsActive } = npcState;
+
+  const {
+    generateDice,
+    keepDie,
+    rollDice,
+    unlockDice,
+    calculateScore,
+    handleDiceClick,
+  } = Functions();
 
   // Main button logic
   function handleButton() {
@@ -172,23 +183,6 @@ function App() {
   ]);
 
   // FUNCTIONS ///////////////////////////////////////////////////////
-  function getButtonText() {
-    if (gameIsOver) {
-      return "Again!";
-    } else if (
-      roundCount === totalRounds &&
-      playerTurn === 2 &&
-      (allDiceLocked || rollFive)
-    ) {
-      return "Finish!";
-    } else if (!gameIsStarted) {
-      return "Start";
-    } else if (allDiceLocked || rollFive) {
-      return "End";
-    } else {
-      return "Roll";
-    }
-  }
 
   function startNewGame() {
     handleDiceSpinAnimation();
@@ -295,6 +289,24 @@ function App() {
       setIsOnline(true);
     }
     setWelcomeScreen(false);
+  }
+
+  function getButtonText() {
+    if (gameIsOver) {
+      return "Again!";
+    } else if (
+      roundCount === totalRounds &&
+      playerTurn === 2 &&
+      (allDiceLocked || rollFive)
+    ) {
+      return "Finish!";
+    } else if (!gameIsStarted) {
+      return "Start";
+    } else if (allDiceLocked || rollFive) {
+      return "End";
+    } else {
+      return "Roll";
+    }
   }
 
   // RETURN //////////////////////////////////////////////
