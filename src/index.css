@@ -32,7 +32,7 @@ body {
   align-items: center;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
-  overflow: hidden;
+  overflow: auto;
   padding: 1.5rem;
 }
 
@@ -64,7 +64,7 @@ body {
   align-items: center;
   justify-content: space-evenly;
   padding: 1.5rem;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .welcome-logo {
@@ -97,7 +97,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: min-content;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .welcome-button-container button {
@@ -154,6 +154,21 @@ body {
 
 .menu-btn {
   justify-self: end;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.menu-btn-settings {
+  text-align: center;
+  line-height: 1.6rem;
+  border: none;
+  color: whitesmoke;
+  background-color: var(--button-color);
+  height: 1.75rem;
+  width: 4rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  position: absolute;
   top: 1.5rem;
   right: 1.5rem;
 }
@@ -344,20 +359,12 @@ body {
 }
 
 /* Z-INDEX */
-.quit-btn {
-  z-index: 2;
-}
-
 .welcome-container {
   z-index: 3;
 }
 
 .settings {
   z-index: 4;
-}
-
-.menu-btn {
-  z-index: 10;
 }
 
 .are-you-sure {

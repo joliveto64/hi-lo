@@ -308,7 +308,12 @@ function App() {
       />
       {welcomeScreen && <Welcome clicked={setGameMode} />}
       {showSettings && (
-        <Settings rotateScreen={rotateScreen} autoRotate={autoRotate} />
+        <Settings
+          rotateScreen={rotateScreen}
+          autoRotate={autoRotate}
+          toggleSettings={toggleSettings}
+          showSettings={showSettings}
+        />
       )}
 
       <div className="dice-button-container">

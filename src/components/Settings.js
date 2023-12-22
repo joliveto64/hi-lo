@@ -1,6 +1,9 @@
 export default function Settings(props) {
   return (
     <div className="settings">
+      <span className="menu-btn-settings" onClick={props.toggleSettings}>
+        {props.showSettings ? "Close" : "Menu"}
+      </span>
       <span onClick={props.rotateScreen}>
         {props.autoRotate ? "Auto-rotate: " : "Auto-rotate: Off"}
         {props.autoRotate && (
