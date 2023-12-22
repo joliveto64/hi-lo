@@ -1,14 +1,10 @@
 export default function Header({
   p1Score,
   p2Score,
-  toggleSettings,
   roundCount,
   totalRounds,
   playerTurn,
-  showSettings,
   messageText,
-  handleQuitGame,
-  welcomeScreen,
   gameIsOver,
 }) {
   let styles = {
@@ -38,12 +34,6 @@ export default function Header({
 
   return (
     <>
-      <span className="quit-btn" onClick={handleQuitGame}>
-        {welcomeScreen ? "" : "Quit"}
-      </span>{" "}
-      <span className="menu-btn" onClick={toggleSettings}>
-        {showSettings ? "Close" : "Menu"}
-      </span>
       <div className="header">
         <span
           style={

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
+import TopButtons from "./components/TopButtons.js";
 import Settings from "./components/Settings";
 import Welcome from "./components/Welcome";
 import { db } from "./firebase.js";
@@ -14,7 +15,7 @@ import {
   handleDiceClick,
 } from "./utils";
 
-// TODO: move menu button to all pages to stop weird scrolling. are-you-sure context still messed up when screen is flipped
+// TODO: move menu button to all pages to stop weird scrolling.
 
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
@@ -301,8 +302,13 @@ function App() {
   // RETURN //////////////////////////////////////////////
   return (
     <div className={`App ${flipped ? "flip-screen" : ""}`}>
-      <div className="top-bar"></div>
       {modal()}
+      <TopButtons
+        handleQuitGame={handleQuitGame}
+        welcomeScreen={welcomeScreen}
+        toggleSettings={toggleSettings}
+        showSettings={showSettings}
+      />
       {welcomeScreen && <Welcome clicked={setGameMode} />}
       {showSettings && (
         <Settings rotateScreen={rotateScreen} autoRotate={autoRotate} />

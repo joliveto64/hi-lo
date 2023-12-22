@@ -27,7 +27,7 @@ body {
   min-height: 500px;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
   background-color: rgb(40, 40, 40);
@@ -126,7 +126,14 @@ body {
   grid-template: 1fr 1fr/ 1fr 1fr;
   overflow: hidden;
   align-self: flex-start;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+}
+
+.top-buttons-container {
+  background-color: var(--dark-color);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .menu-btn,
@@ -143,14 +150,12 @@ body {
 }
 
 .quit-btn {
-  position: absolute;
   top: 1.5rem;
   left: 1.5rem;
 }
 
 .menu-btn {
   justify-self: end;
-  position: absolute;
   top: 1.5rem;
   right: 1.5rem;
 }
@@ -161,6 +166,10 @@ body {
 }
 
 /* DICE COMPONENT ///////////////////////////////////////////////////*/
+.dice-button-container {
+  margin-bottom: 45%;
+}
+
 .dice-container {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 1fr;
