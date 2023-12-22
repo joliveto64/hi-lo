@@ -348,7 +348,31 @@ body {
   width: 100vw;
   height: 4.5rem;
   background-color: rgb(40, 40, 40);
+}
+
+/* Z-INDEX */
+.top-bar {
   z-index: 1;
+}
+
+.quit-btn {
+  z-index: 2;
+}
+
+.welcome-container {
+  z-index: 3;
+}
+
+.settings {
+  z-index: 4;
+}
+
+.menu-btn {
+  z-index: 10;
+}
+
+.are-you-sure {
+  z-index: 1000;
 }
 
 /* MEDIA QUERIES ///////////////////////////////////////////////////*/
