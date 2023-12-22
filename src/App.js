@@ -7,21 +7,19 @@ import TopButtons from "./components/TopButtons.js";
 import Settings from "./components/Settings";
 import Welcome from "./components/Welcome";
 import useGameState from "./components/useGameState.js";
-import Functions from "./components/Functions.js";
-
-// import {
-//   generateDice,
-//   keepDie,
-//   rollDice,
-//   unlockDice,
-//   calculateScore,
-//   handleDiceClick,
-// } from "./utils";
+import {
+  generateDice,
+  keepDie,
+  rollDice,
+  unlockDice,
+  calculateScore,
+  handleDiceClick,
+} from "./utils";
 
 // TODO: move menu button to all pages to stop weird scrolling issues
 
 function App() {
-  // Imported State
+  // IMPORTED STATE
   const {
     showSettings,
     setShowSettings,
@@ -55,47 +53,6 @@ function App() {
   } = useGameState();
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
   const { hasRolled, hasLocked, npcIsActive } = npcState;
-
-  const {
-    generateDice,
-    keepDie,
-    rollDice,
-    unlockDice,
-    calculateScore,
-    handleDiceClick,
-  } = Functions();
-
-  // Main button logic
-  function handleButton() {
-    handleDiceSpinAnimation();
-    const score = calculateScore(dice);
-
-    if (betweenRound) {
-      rollDice(setDice);
-      setGameState((prev) => ({ ...prev, betweenRound: false }));
-      return;
-    }
-
-    if (allDiceLocked && !betweenRound) {
-      unlockDice(setDice);
-      setDice(generateDice);
-      setGameState((prev) => ({
-        ...prev,
-        masterCount: prev.masterCount + (6 - rollCount),
-        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
-        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
-        betweenRound: true,
-      }));
-    }
-
-    if (lockCount < 6 && !betweenRound) {
-      setGameState((previous) => ({
-        ...previous,
-        masterCount: previous.masterCount + 1,
-      }));
-      rollDice(setDice);
-    }
-  }
 
   // FIREBASE STUFF /////////////////////////////////////////////////////
   useEffect(() => {
@@ -150,7 +107,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOnline]);
 
-  // NPC Logic
+  // NPC Logic //////////////////////////////////////////
   useEffect(() => {
     let timeoutId;
     if (npcIsActive && playerTurn === 2 && hasLocked) {
@@ -183,6 +140,36 @@ function App() {
   ]);
 
   // FUNCTIONS ///////////////////////////////////////////////////////
+  function handleButton() {
+    handleDiceSpinAnimation();
+    const score = calculateScore(dice);
+
+    if (betweenRound) {
+      rollDice(setDice);
+      setGameState((prev) => ({ ...prev, betweenRound: false }));
+      return;
+    }
+
+    if (allDiceLocked && !betweenRound) {
+      unlockDice(setDice);
+      setDice(generateDice);
+      setGameState((prev) => ({
+        ...prev,
+        masterCount: prev.masterCount + (6 - rollCount),
+        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
+        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+        betweenRound: true,
+      }));
+    }
+
+    if (lockCount < 6 && !betweenRound) {
+      setGameState((previous) => ({
+        ...previous,
+        masterCount: previous.masterCount + 1,
+      }));
+      rollDice(setDice);
+    }
+  }
 
   function startNewGame() {
     handleDiceSpinAnimation();
@@ -387,6 +374,7 @@ function App() {
           {getButtonText()}
         </button>
       </div>
+      <div className="empty-bottom"></div>
     </div>
   );
 }

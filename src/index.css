@@ -32,7 +32,7 @@ body {
   align-items: center;
   background-color: rgb(40, 40, 40);
   color: whitesmoke;
-  overflow-y: hidden;
+  overflow: hidden;
   padding: 1.5rem;
 }
 
@@ -64,7 +64,7 @@ body {
   align-items: center;
   justify-content: space-evenly;
   padding: 1.5rem;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .welcome-logo {
@@ -97,7 +97,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: min-content;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .welcome-button-container button {
@@ -124,9 +124,7 @@ body {
 .header {
   display: grid;
   grid-template: 1fr 1fr/ 1fr 1fr;
-  overflow: hidden;
   align-self: flex-start;
-  margin-top: 1rem;
 }
 
 .top-buttons-container {
@@ -166,8 +164,8 @@ body {
 }
 
 /* DICE COMPONENT ///////////////////////////////////////////////////*/
-.dice-button-container {
-  margin-bottom: 45%;
+.empty-bottom {
+  height: 1.75rem;
 }
 
 .dice-container {
