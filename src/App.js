@@ -14,7 +14,7 @@ import {
   handleDiceClick,
 } from "./utils";
 
-// TODO: transform 3d for roll animation, fix flashing bug
+// TODO: move menu button to all pages to stop weird scrolling. are-you-sure context still messed up when screen is flipped
 
 function App() {
   // STATE INITIALIZATION /////////////////////////////////
