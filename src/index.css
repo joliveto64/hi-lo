@@ -58,7 +58,7 @@ body {
   height: 100vh;
   min-height: 650px;
   min-width: 350px;
-  z-index: 3;
+  z-index: 4;
   background-color: var(--dark-color);
   display: flex;
   flex-direction: column;
@@ -152,7 +152,7 @@ body {
 
 .menu-btn {
   justify-self: end;
-  z-index: 5;
+  z-index: 6;
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
@@ -255,7 +255,7 @@ body {
   height: 100vh;
   left: 0;
   top: 0;
-  z-index: 4;
+  z-index: 5;
   background-color: var(--light-color);
   background-color: var(--dark-color);
   overflow-y: auto;
@@ -324,7 +324,7 @@ body {
   border-radius: 0.4rem;
   width: 85%;
   box-shadow: 0px 0px 10px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 3;
 }
 
 .are-you-sure h1 {
