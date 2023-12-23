@@ -3,7 +3,6 @@ import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
-import TopButtons from "./components/TopButtons.js";
 import Settings from "./components/Settings";
 import Welcome from "./components/Welcome";
 import useGameState from "./components/useGameState.js";
@@ -300,12 +299,14 @@ function App() {
   return (
     <div className={`App ${flipped ? "flip-screen" : ""}`}>
       {modal()}
-      <TopButtons
-        handleQuitGame={handleQuitGame}
-        welcomeScreen={welcomeScreen}
-        toggleSettings={toggleSettings}
-        showSettings={showSettings}
-      />
+      <div className="top-buttons-container">
+        <span className="quit-btn" onClick={handleQuitGame}>
+          {welcomeScreen ? "" : "Quit"}
+        </span>{" "}
+        <span className="menu-btn" onClick={toggleSettings}>
+          {showSettings ? "Close" : "Menu"}
+        </span>
+      </div>
       {welcomeScreen && <Welcome clicked={setGameMode} />}
       {showSettings && (
         <Settings
@@ -315,7 +316,6 @@ function App() {
           showSettings={showSettings}
         />
       )}
-
       <div className="dice-button-container">
         <Header
           p1Score={p1Score}
