@@ -15,7 +15,7 @@ import {
   handleDiceClick,
 } from "./utils";
 
-// TODO: move menu button to all pages to stop weird scrolling issues
+// TODO: text size issue in landscape
 
 function App() {
   // IMPORTED STATE

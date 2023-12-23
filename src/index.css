@@ -20,6 +20,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: whitesmoke;
   background-color: rgb(40, 40, 40);
+  -webkit-text-size-adjust: 100%;
 }
 
 .App {
