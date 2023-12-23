@@ -279,12 +279,15 @@ body {
   height: 100vh;
   left: 0;
   top: 0;
-  background-color: var(--light-color);
   background-color: var(--dark-color);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
+}
+
+.auto-rotate {
+  margin-bottom: 2rem;
 }
 
 .charts {
@@ -329,7 +332,6 @@ body {
 
 .example {
   margin-bottom: 1rem;
-  line-height: 1rem;
 }
 
 /* ARE YOU SURE */

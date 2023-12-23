@@ -4,13 +4,13 @@ export default function Settings(props) {
       <span className="menu-btn-settings" onClick={props.toggleSettings}>
         {props.showSettings ? "Close" : "Menu"}
       </span>
-      <span onClick={props.rotateScreen}>
-        {props.autoRotate ? "Auto-rotate: On " : "Auto-rotate: Off"}
-        {props.autoRotate && (
-          <span style={{ color: "rgb(var(--main-color))" }}>On</span>
-        )}
-      </span>
       <div className="settings-bottom">
+        <span className="auto-rotate" onClick={props.rotateScreen}>
+          {props.autoRotate ? "Auto-rotate: " : "Auto-rotate: Off"}
+          {props.autoRotate && (
+            <span style={{ color: "rgb(var(--main-color))" }}>On</span>
+          )}
+        </span>
         <div className="rules">
           <span className="change-color how-to-play">
             <strong>How to play:</strong>
