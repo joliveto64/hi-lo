@@ -297,7 +297,7 @@ function App() {
 
   // RETURN //////////////////////////////////////////////
   return (
-    <div className={`App ${flipped ? "flip-screen" : ""}`}>
+    <div className="App">
       {modal()}
       <div className="top-buttons-container">
         <span className="quit-btn" onClick={handleQuitGame}>
@@ -316,7 +316,7 @@ function App() {
           showSettings={showSettings}
         />
       )}
-      <div className="dice-button-container">
+      <div className={`dice-button-container ${flipped ? "flip-screen" : ""}`}>
         <Header
           p1Score={p1Score}
           p2Score={p2Score}
