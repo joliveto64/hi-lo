@@ -9,9 +9,9 @@ export default function Dice({
 }) {
   const classList = [
     "die",
+    isPermLocked ? "perm-locked" : "",
     isLocked ? "locked click" : "",
     isSpinning ? "roll" : "",
-    isPermLocked ? "perm-locked" : "",
     isHilo && !gameIsOver ? "hilo" : "",
   ];
 

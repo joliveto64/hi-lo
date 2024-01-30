@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { db } from "./firebase.js";
+import { set, ref, onValue } from "firebase/database";
 import Header from "./components/Header";
 import Dice from "./components/Dice";
 import Settings from "./components/Settings";
 import Welcome from "./components/Welcome";
-import { db } from "./firebase.js";
-import { set, ref, onValue } from "firebase/database";
+import useGameState from "./components/useGameState.js";
 import {
   generateDice,
   keepDie,
@@ -14,74 +15,43 @@ import {
   handleDiceClick,
 } from "./utils";
 
+// TODO: text size issue in landscape
+
 function App() {
-  // STATE INITIALIZATION /////////////////////////////////
-  const [showSettings, setShowSettings] = useState(false);
-  const [welcomeScreen, setWelcomeScreen] = useState(true);
-  const [resetActive, setResetActive] = useState(false);
-  const [isOnline, setIsOnline] = useState(false);
-  const [npcState, setNpcState] = useState({
-    hasRolled: false,
-    hasLocked: true,
-    npcIsActive: false,
-  });
-  const [dice, setDice] = useState(generateDice);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [gameState, setGameState] = useState({
-    p1Score: 0,
-    p2Score: 0,
-    masterCount: 0,
-    betweenRound: false,
-  });
+  // IMPORTED STATE
+  const {
+    showSettings,
+    setShowSettings,
+    welcomeScreen,
+    setWelcomeScreen,
+    isOnline,
+    setIsOnline,
+    flipped,
+    setFlipped,
+    autoRotate,
+    setAutoRotate,
+    modalActive,
+    setModalActive,
+    npcState,
+    setNpcState,
+    dice,
+    setDice,
+    isSpinning,
+    setIsSpinning,
+    gameState,
+    setGameState,
+    rollCount,
+    roundCount,
+    totalRounds,
+    gameIsOver,
+    gameIsStarted,
+    rollFive,
+    playerTurn,
+    lockCount,
+    allDiceLocked,
+  } = useGameState();
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
   const { hasRolled, hasLocked, npcIsActive } = npcState;
-
-  // CONSTANTS/DERIVED STATES ///////////////////////////////////////
-  const rollCount =
-    masterCount === 0 ? 0 : masterCount % 5 === 0 ? 5 : masterCount % 5;
-  const roundCount = Math.ceil(masterCount / 10);
-  const totalRounds = 5;
-  const gameIsOver = roundCount > totalRounds;
-  const gameIsStarted = masterCount >= 1;
-  const rollFive = rollCount === 5;
-  const playerTurn = (Math.floor((masterCount - 1) / 5) % 2) + 1;
-  const lockCount = dice.reduce(
-    (total, die) => (die.isLocked ? total + 1 : total),
-    0
-  );
-  const allDiceLocked = lockCount === 6;
-
-  // MAIN LOGIC FOR BUTTON CLICK //////////////////////////////////////////
-  function handleButton() {
-    handleDiceSpinAnimation();
-    const score = calculateScore(dice);
-
-    if (betweenRound) {
-      rollDice(setDice);
-      setGameState((prev) => ({ ...prev, betweenRound: false }));
-      return;
-    }
-
-    if (allDiceLocked && !betweenRound) {
-      unlockDice(setDice);
-      setDice(generateDice);
-      setGameState((prev) => ({
-        ...prev,
-        masterCount: prev.masterCount + (6 - rollCount),
-        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
-        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
-        betweenRound: true,
-      }));
-    }
-
-    if (lockCount < 6 && !betweenRound) {
-      setGameState((previous) => ({
-        ...previous,
-        masterCount: previous.masterCount + 1,
-      }));
-      rollDice(setDice);
-    }
-  }
 
   // FIREBASE STUFF /////////////////////////////////////////////////////
   useEffect(() => {
@@ -136,7 +106,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOnline]);
 
-  // NPC STUFF ///////////////////////////////////////////////////////////
+  // NPC Logic //////////////////////////////////////////
   useEffect(() => {
     let timeoutId;
     if (npcIsActive && playerTurn === 2 && hasLocked) {
@@ -169,56 +139,35 @@ function App() {
   ]);
 
   // FUNCTIONS ///////////////////////////////////////////////////////
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (resetActive) {
-        setResetActive(false);
-      }
-    }, 2000);
+  function handleButton() {
+    handleDiceSpinAnimation();
+    const score = calculateScore(dice);
 
-    return () => clearTimeout(timer);
-  }, [resetActive]);
-
-  function handleReset() {
-    if (!resetActive) {
-      setResetActive(true);
-    } else if (resetActive) {
-      startNewGame();
-    }
-  }
-
-  function getButtonText() {
-    if (gameIsOver) {
-      return "Again!";
-    } else if (
-      roundCount === totalRounds &&
-      playerTurn === 2 &&
-      (allDiceLocked || rollFive)
-    ) {
-      return "Finish!";
-    } else if (!gameIsStarted) {
-      return "Start";
-    } else if (allDiceLocked || rollFive) {
-      return "End";
-    } else {
-      return "Roll";
-    }
-  }
-
-  function messageText() {
-    if (!gameIsOver) {
-      return `${
-        playerTurn === 1 ? " P1" : playerTurn === 2 ? " P2" : ""
-      } roll: ${rollCount}/5`;
-    }
-    if (gameIsOver && p1Score === p2Score) {
-      return "Tie game!";
-    }
-    if (gameIsOver && p1Score > p2Score) {
-      return "P1 wins!";
+    if (betweenRound) {
+      rollDice(setDice);
+      setGameState((prev) => ({ ...prev, betweenRound: false }));
+      return;
     }
 
-    return "P2 wins!";
+    if (allDiceLocked && !betweenRound) {
+      unlockDice(setDice);
+      setDice(generateDice);
+      setGameState((prev) => ({
+        ...prev,
+        masterCount: prev.masterCount + (6 - rollCount),
+        p1Score: playerTurn === 1 ? prev.p1Score + score : prev.p1Score,
+        p2Score: playerTurn === 2 ? prev.p2Score + score : prev.p2Score,
+        betweenRound: true,
+      }));
+    }
+
+    if (lockCount < 6 && !betweenRound) {
+      setGameState((previous) => ({
+        ...previous,
+        masterCount: previous.masterCount + 1,
+      }));
+      rollDice(setDice);
+    }
   }
 
   function startNewGame() {
@@ -247,57 +196,142 @@ function App() {
     setNpcState((prev) => ({ ...prev, npcIsActive: false }));
     setWelcomeScreen(true);
     setShowSettings(false);
+    setFlipped(false);
   }
 
   function toggleSettings() {
     setShowSettings(!showSettings);
   }
 
+  function handleYes() {
+    setModalActive(false);
+    resetToWelcomeScreen();
+  }
+
+  function handleNo() {
+    setModalActive(false);
+  }
+
+  function handleQuitGame() {
+    if (!gameIsStarted) {
+      handleYes();
+    } else {
+      setModalActive(true);
+    }
+  }
+
+  function modal() {
+    if (!modalActive) {
+      return <></>;
+    } else {
+      return (
+        <div className="are-you-sure">
+          <h1>Are you sure?</h1>
+          <div className="yes-no">
+            <span className="yes" onClick={handleYes}>
+              Yes
+            </span>
+            <span className="no" onClick={handleNo}>
+              No
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  function messageText() {
+    if (!gameIsOver) {
+      return `Roll: ${rollCount}/5`;
+    }
+    if (gameIsOver && p1Score === p2Score) {
+      return "Tie game!";
+    }
+    if (gameIsOver && p1Score > p2Score) {
+      return "P1 wins!";
+    }
+
+    return "P2 wins!";
+  }
+
+  function rotateScreen() {
+    setAutoRotate(!autoRotate);
+  }
+
+  useEffect(() => {
+    if (!npcIsActive) {
+      if (playerTurn === 2 && autoRotate && !flipped) {
+        setFlipped(true);
+      } else if (playerTurn === 1 && autoRotate && flipped) {
+        setFlipped(false);
+      }
+    }
+  }, [autoRotate, playerTurn, flipped]);
+
+  function setGameMode(name) {
+    if (name === "single") {
+      setNpcState((prev) => ({ ...prev, npcIsActive: true }));
+    } else if (name === "online") {
+      setIsOnline(true);
+    }
+    setWelcomeScreen(false);
+  }
+
+  function getButtonText() {
+    if (gameIsOver) {
+      return "Again!";
+    } else if (
+      roundCount === totalRounds &&
+      playerTurn === 2 &&
+      (allDiceLocked || rollFive)
+    ) {
+      return "Finish!";
+    } else if (!gameIsStarted) {
+      return "Start";
+    } else if (allDiceLocked || rollFive) {
+      return "End";
+    } else {
+      return "Roll";
+    }
+  }
+
   // RETURN //////////////////////////////////////////////
   return (
     <div className="App">
-      {welcomeScreen && (
-        <Welcome
-          toggleSettings={toggleSettings}
-          clicked={(name) => {
-            if (name === "single") {
-              setNpcState((prev) => ({ ...prev, npcIsActive: true }));
-            } else if (name === "online") {
-              setIsOnline(true);
-            }
-            setWelcomeScreen(false);
-          }}
-        />
-      )}
+      {modal()}
+      <div className="top-buttons-container">
+        <span className="quit-btn" onClick={handleQuitGame}>
+          {welcomeScreen ? "" : "Quit"}
+        </span>{" "}
+        <span className="menu-btn" onClick={toggleSettings}>
+          {showSettings ? "Close" : "Menu"}
+        </span>
+      </div>
+      {welcomeScreen && <Welcome clicked={setGameMode} />}
       {showSettings && (
         <Settings
-          menuClick={() => {
-            setShowSettings(!showSettings);
-          }}
-          welcomeScreen={welcomeScreen}
-          resetToWelcomeScreen={resetToWelcomeScreen}
+          rotateScreen={rotateScreen}
+          autoRotate={autoRotate}
           toggleSettings={toggleSettings}
+          showSettings={showSettings}
         />
       )}
-      <Header
-        p1Score={p1Score}
-        p2Score={p2Score}
-        roundCount={roundCount}
-        playerTurn={playerTurn}
-        totalRounds={totalRounds}
-        toggleSettings={toggleSettings}
-      />
-      <div>
-        <p className="round-info">
-          <span
-            className={`restart ${resetActive ? "restart-active" : ""}`}
-            onClick={handleReset}
-          >
-            ↺
-          </span>
-          &nbsp;
-          {messageText()}
-        </p>
+      <div className={`dice-button-container ${flipped ? "flip-screen" : ""}`}>
+        <Header
+          p1Score={p1Score}
+          p2Score={p2Score}
+          roundCount={roundCount}
+          playerTurn={playerTurn}
+          totalRounds={totalRounds}
+          toggleSettings={toggleSettings}
+          showSettings={showSettings}
+          resetToWelcomeScreen={resetToWelcomeScreen}
+          handleQuitGame={handleQuitGame}
+          welcomeScreen={welcomeScreen}
+          gameIsOver={gameIsOver}
+          rollCount={rollCount}
+          messageText={messageText}
+        />
         <div className="dice-container">
           {dice.map((die) => (
             <Dice
@@ -327,24 +361,25 @@ function App() {
             />
           ))}
         </div>
-      </div>
-      <button
-        className="button"
-        onClick={() => {
-          if (!gameIsOver) {
-            handleButton();
-          } else {
-            startNewGame(setDice, setGameState, setNpcState);
+        <button
+          className="button"
+          onClick={() => {
+            if (!gameIsOver) {
+              handleButton();
+            } else {
+              startNewGame(setDice, setGameState, setNpcState);
+            }
+          }}
+          disabled={
+            (!betweenRound && lockCount < rollCount) ||
+            (rollFive && !allDiceLocked) ||
+            (npcIsActive && playerTurn === 2)
           }
-        }}
-        disabled={
-          (!betweenRound && lockCount < rollCount) ||
-          (rollFive && !allDiceLocked) ||
-          (npcIsActive && playerTurn === 2)
-        }
-      >
-        {getButtonText()}
-      </button>
+        >
+          {getButtonText()}
+        </button>
+      </div>
+      <div className="empty-bottom"></div>
     </div>
   );
 }
