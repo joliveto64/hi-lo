@@ -1,5 +1,6 @@
 {
   "name": "hilo",
+  "_comment": "hello",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
