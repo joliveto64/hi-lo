@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { db } from "./firebase.js";
 import { set, ref, onValue } from "firebase/database";
 import Header from "./components/Header";
@@ -15,7 +15,7 @@ import {
   handleDiceClick,
 } from "./utils";
 
-// TODO: text size issue in landscape
+// TODO: text size issue in landscapw
 
 function App() {
   // IMPORTED STATE
@@ -52,6 +52,7 @@ function App() {
   } = useGameState();
   const { masterCount, p1Score, p2Score, betweenRound } = gameState;
   const { hasRolled, hasLocked, npcIsActive } = npcState;
+  const [magicLoopsComment, setMagicLoopsComment] = useState("");
 
   // FIREBASE STUFF /////////////////////////////////////////////////////
   useEffect(() => {
@@ -107,6 +108,37 @@ function App() {
   }, [isOnline]);
 
   // NPC Logic //////////////////////////////////////////
+
+  // Magic loops call
+  useEffect(() => {
+    // Define the async function inside useEffect
+    const fetchData = async () => {
+      try {
+        const url =
+          "https://magicloops.dev/api/loop/run/81b7950b-5b37-4576-a8bd-34577ceb7f50";
+        const response = await fetch(url, {
+          method: "POST",
+          body: JSON.stringify({ input: `${p1Score}` }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const responseJson = await response.json();
+        console.log("STATUS:", responseJson.status);
+        console.log("OUTPUT:", responseJson.loopOutput);
+
+        setMagicLoopsComment(responseJson.loopOutput);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Immediately invoke the async function
+    fetchData();
+  }, [p1Score]); // Add dependencies here if needed
+
   useEffect(() => {
     let timeoutId;
     if (npcIsActive && playerTurn === 2 && hasLocked) {
@@ -378,6 +410,7 @@ function App() {
         >
           {getButtonText()}
         </button>
+        <span>{magicLoopsComment}</span>
       </div>
       <div className="empty-bottom"></div>
     </div>
